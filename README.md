@@ -46,7 +46,7 @@ Options:
                          to write (see document for details)            [string]
   --digest               Digest algorithm for signing. (default: 'sha256')
                          Requires --sign option.
-                                            [string] [choices: "sha1", "sha256"]
+              [string] [choices: "sha1", "sha256", "sha512", "sha224", "sha384"]
   --file-description     File description for version resource          [string]
   --file-version         File version for version resource.
                          Must be 'n.n.n.n' format (n is an integer)     [string]
@@ -281,10 +281,13 @@ Note: It is not supported to input a password from stdin (i.e. prompting for a p
 
 #### `--digest <algorithm>`
 
-- Choices: `sha1`, `sha256`
+- Choices: `sha1`, `sha256`, `sha512`, `sha224`, `sha384`
+  - On Node.js v12, followings are also valid: `sha512-224`, `sha512-256`, `sha3-224`, `sha3-256`, `sha3-384`, `sha3-512`, `shake128`, `shake256`
 - Default: `sha256`
 
-Specifies an algorithm for generating digest.
+Specifies an algorithm for generating digest. Some algorithms are available only if Node.js supports.
+
+> Windows might not support some algorithms such as `sha512-224` and `sha3-512`.
 
 #### `--timestamp <server-url>`
 
@@ -444,7 +447,7 @@ await resedit({
 
 ## Notes
 
-- If none of resource options are specified, the entire resource data in the input exectable will be untouched. You can (re-)sign executables without modifying resources.
+- If none of resource options are specified, the entire resource data in the input executable will be untouched. You can (re-)sign executables without modifying resources.
 - Currently the extra data which does not belong to any sections in the input executable will be dropped.
 
 ## License
