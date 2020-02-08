@@ -1,0 +1,73 @@
+{
+  "name": "resedit-cli",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=10",
+    "npm": ">=6"
+  },
+  "engineStrict": true,
+  "description": "Command-line tool for editing Windows Resource data",
+  "bin": {
+    "resedit": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "author": "jet",
+  "license": "MIT",
+  "homepage": "https://github.com/jet2jet/resedit-js-cli",
+  "keywords": [
+    "windows",
+    "resource",
+    "cli",
+    "version",
+    "icon",
+    "edit",
+    "authenticode",
+    "signtool"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jet2jet/resedit-js-cli.git"
+  },
+  "scripts": {
+    "build": "tsc -p ./tsconfig.app.json",
+    "lint": "npm run lint:prettier && npm run lint:eslint",
+    "lint:eslint": "eslint -c .eslintrc.yml --ext .js,.jsx,.ts,.tsx .",
+    "lint:eslint:fix": "eslint -c .eslintrc.yml --fix --ext .js,.jsx,.ts,.tsx .",
+    "lint:fix": "npm run lint:prettier:fix && npm run lint:eslint:fix",
+    "lint:prettier": "prettier --config ./.prettierrc.yml --check \"**/*.{js,jsx,ts,tsx,yml,json,md}\"",
+    "lint:prettier:fix": "prettier --config ./.prettierrc.yml --write \"**/*.{js,jsx,ts,tsx,yml,json,md}\"",
+    "test": "jest --config ./jest.config.js",
+    "version": "node ./tools/updateVersion.js ./src/main/version.ts && git add -A ./src/main/version.ts"
+  },
+  "dependencies": {
+    "cosmiconfig": "^6.0.0",
+    "loglevel": "^1.6.6",
+    "node-forge": "^0.9.1",
+    "resedit": "~0.5.2",
+    "yargs": "^15.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.9.1",
+    "@types/node": "10",
+    "@types/node-forge": "^0.9.1",
+    "@types/request": "^2.48.4",
+    "@types/yargs": "^15.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.10.0",
+    "@typescript-eslint/parser": "^2.10.0",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-semistandard": "^15.0.0",
+    "eslint-config-standard": "^13.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^25.1.0",
+    "nock": "^11.7.2",
+    "prettier": "^1.19.1",
+    "ts-jest": "^25.0.0",
+    "typescript": "~3.7.5"
+  }
+}
