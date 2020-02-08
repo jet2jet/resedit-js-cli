@@ -1,5 +1,5 @@
 [![NPM version](https://badge.fury.io/js/resedit-cli.svg)](https://www.npmjs.com/package/resedit-cli)
-[![Build Status](https://travis-ci.org/jet2jet/resedit-js-cli.svg?branch=master)](https://travis-ci.org/jet2jet/resedit-js-cli)
+[![Build Status](https://api.travis-ci.com/jet2jet/resedit-js-cli.svg?branch=master)](https://www.travis-ci.com/jet2jet/resedit-js-cli)
 
 # resedit-js-cli
 
