@@ -25,7 +25,7 @@ describe('signing/requestTimestamp', () => {
 		jest.dontMock('@/log');
 	});
 	beforeEach(() => {
-		Object.keys(mockLog).forEach(method => {
+		Object.keys(mockLog).forEach((method) => {
 			((mockLog as any)[method] as jest.Mock).mockClear();
 		});
 	});

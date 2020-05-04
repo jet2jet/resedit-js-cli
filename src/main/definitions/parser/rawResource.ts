@@ -33,7 +33,7 @@ export default function parseRawResource(
 			);
 		}
 		const o: ParsedRawResourceDefinition = {} as ParsedRawResourceDefinition;
-		props.forEach(prop => {
+		props.forEach((prop) => {
 			const value = item[prop];
 			switch (prop) {
 				case 'type':

@@ -38,7 +38,7 @@ export function makeChainList<T extends CertLike>(
 	};
 	const map = new Map<any, TempChainData>();
 
-	list.forEach(d => {
+	list.forEach((d) => {
 		let c;
 		if ('cert' in d && d.cert) {
 			c = d.cert;
@@ -116,19 +116,19 @@ export function filterAndSortCertListByChain<
 			.concat(d.children.reduce(concatChainData, []));
 	};
 	// make list (each element is the list with elements whose root issuer is 'subject' of each ChainRoot item)
-	let sortedCertLists = makeChainList(list as T[]).map(d =>
+	let sortedCertLists = makeChainList(list as T[]).map((d) =>
 		concatChainData([], d).reverse()
 	);
 	switch (certSelect) {
 		default:
 		case CertificateSelectMode.Leaf:
 			// pick first element for each list
-			sortedCertLists = sortedCertLists.map(a => a.slice(0, 1));
+			sortedCertLists = sortedCertLists.map((a) => a.slice(0, 1));
 			break;
 		case CertificateSelectMode.NoRoot:
 			// remove 'Root' element for each list
-			sortedCertLists = sortedCertLists.map(a => {
-				return a.filter(elem => {
+			sortedCertLists = sortedCertLists.map((a) => {
+				return a.filter((elem) => {
 					return 'cert' in elem
 						? elem.cert!.subject.hash !== elem.cert!.issuer.hash
 						: (elem as TCert).subject.hash !==
@@ -146,7 +146,7 @@ function splitCertsFromPem(pemData: string) {
 	const ret: string[] = [];
 	let inSection = false;
 	let tempText = '';
-	pemData.split(/\r\n|\n/g).forEach(line => {
+	pemData.split(/\r\n|\n/g).forEach((line) => {
 		if (/^-----BEGIN CERTIFICATE-----$/.test(line)) {
 			inSection = true;
 			tempText = line + '\n';
@@ -174,12 +174,12 @@ export function getCertificatesFromPem(
 		throw new Error('No certificates in PEM data');
 	}
 	const sortedList = filterAndSortCertListByChain(
-		pems.map(onePemData => {
+		pems.map((onePemData) => {
 			return forge.pki.certificateFromPem(onePemData);
 		}),
 		certSelect
 	);
-	return sortedList.map(cert => {
+	return sortedList.map((cert) => {
 		const asn1 = forge.pki.certificateToAsn1(cert);
 		return Buffer.from(forge.asn1.toDer(asn1).getBytes(), 'binary');
 	});
@@ -216,7 +216,7 @@ export function verifyDERCertificates(
 				asn1Cert = forge.pki.certificateToAsn1(certificates[0]);
 				break;
 			case CertificateSelectMode.NoRoot:
-				signedData.certificates = certificates.filter(cert => {
+				signedData.certificates = certificates.filter((cert) => {
 					return cert.issuer.hash !== cert.subject.hash;
 				});
 				asn1Cert = signedData.toAsn1();
@@ -302,7 +302,7 @@ export function pickPrivateKeyFromPem(pemData: string) {
 	let isRSA: boolean | null = null;
 	let tempText = '';
 	let tempTextHeader = '';
-	pemData.split(/\r\n|\n/g).forEach(line => {
+	pemData.split(/\r\n|\n/g).forEach((line) => {
 		if (/^-----BEGIN RSA PRIVATE KEY-----$/.test(line)) {
 			if (!inSection) {
 				inSection = true;
@@ -389,7 +389,7 @@ export function pickKeysFromP12File(
 			certList,
 			certSelect
 		);
-		sortedCertList.forEach(certData => {
+		sortedCertList.forEach((certData) => {
 			let asn1;
 			if (certData.cert) {
 				asn1 = forge.pki.certificateToAsn1(certData.cert);

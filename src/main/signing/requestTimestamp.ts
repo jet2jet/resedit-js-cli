@@ -40,7 +40,7 @@ function requestSimpleUsingHttp(
 	const options: http.RequestOptions = opt;
 	const httpCallback = (res: http.IncomingMessage) => {
 		const results: Buffer[] = [];
-		res.on('data', chunk => {
+		res.on('data', (chunk) => {
 			results.push(chunk);
 		});
 		res.on('end', () => {
@@ -64,7 +64,7 @@ function requestSimpleUsingHttp(
 	} else {
 		req = http.request(url, options, httpCallback);
 	}
-	req.on('error', e => cb(e, {}, Buffer.from('')));
+	req.on('error', (e) => cb(e, {}, Buffer.from('')));
 	if (typeof opt.body !== 'undefined') {
 		req.write(opt.body);
 	}

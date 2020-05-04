@@ -145,7 +145,7 @@ export enum CertificateSelectMode {
 }
 export const certificateSelectModeValues: string[] = Object.keys(
 	CertificateSelectMode
-).map(k => CertificateSelectMode[k as keyof typeof CertificateSelectMode]);
+).map((k) => CertificateSelectMode[k as keyof typeof CertificateSelectMode]);
 
 /** The definition data for signing executables */
 export interface SigningDefinitionData {

@@ -54,7 +54,7 @@ export default async function emitRawResources(
 		}
 
 		const ent = res.entries.filter(
-			e => e.type === type && e.id === id && e.lang === itemLang
+			(e) => e.type === type && e.id === id && e.lang === itemLang
 		)[0];
 		if (ent) {
 			log.debug(`[raw] Replace existing resource data.`);

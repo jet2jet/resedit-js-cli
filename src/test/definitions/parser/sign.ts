@@ -66,7 +66,7 @@ describe('definitions/parser/sign', () => {
 		it.each([
 			'password',
 			'timestampServer',
-		])("should throw if '%s' is not a string", name =>
+		])("should throw if '%s' is not a string", (name) =>
 			testIfNotAString(name, { p12File: '' })
 		);
 		it("should throw if 'certSelect' is not valid", () => {

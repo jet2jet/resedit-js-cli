@@ -186,7 +186,7 @@ async function main(): Promise<number> {
 				nargs: 0,
 			})
 			.strict()
-			.check(a => {
+			.check((a) => {
 				const argv = a as Args;
 				if (argv.version) {
 					return true;

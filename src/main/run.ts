@@ -36,9 +36,9 @@ function convertOptionsToDefinitionData(
 		outDefinition.lang = lang;
 		const strings = outDefinition.version?.strings;
 		if (strings) {
-			const sameLangData = strings.filter(s => s.lang === lang)[0];
+			const sameLangData = strings.filter((s) => s.lang === lang)[0];
 			const undefLangData = strings.filter(
-				s => typeof s.lang === 'undefined'
+				(s) => typeof s.lang === 'undefined'
 			)[0];
 			if (undefLangData) {
 				// if 'sameLangData' is already available, merge to 'undefLangData'
@@ -47,11 +47,11 @@ function convertOptionsToDefinitionData(
 					log.info(
 						`Merging version string values for default language into '${lang}' language.`
 					);
-					Object.keys(sameLangData.values).forEach(k => {
+					Object.keys(sameLangData.values).forEach((k) => {
 						undefLangData.values[k] = sameLangData.values[k];
 					});
 					outDefinition.version!.strings = strings.filter(
-						s => s.lang !== lang
+						(s) => s.lang !== lang
 					);
 				} else {
 					log.debug(
@@ -289,7 +289,7 @@ function convertOptionsToDefinitionData(
 		);
 	}
 	function getVersionStringData(o: ParsedVersionDefinition) {
-		let s = o.strings.filter(s => s.lang === lang)[0];
+		let s = o.strings.filter((s) => s.lang === lang)[0];
 		if (!s) {
 			s = { lang, values: {} };
 			o.strings.push(s);
@@ -392,9 +392,9 @@ export default async function run(options: Options) {
 	log.info(`Load the executable file from '${options.in}'.`);
 	const inFile = await readFile(options.in);
 	log.debug(
-		`Parse the executable file '${options.in}' (ignore-signed: ${options[
-			'ignore-signed'
-		] || false}).`
+		`Parse the executable file '${options.in}' (ignore-signed: ${
+			options['ignore-signed'] || false
+		}).`
 	);
 	const executable = ResEdit.NtExecutable.from(inFile, {
 		ignoreCert: options['ignore-signed'],

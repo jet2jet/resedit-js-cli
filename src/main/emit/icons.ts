@@ -41,8 +41,8 @@ export default async function emitIcons(
 		const iconLang = typeof item.lang === 'number' ? item.lang : lang;
 		const prevIconId = prevIconIdMap[iconLang] || 0;
 		const usedIds = baseIcons
-			.filter(entry => entry.lang === iconLang)
-			.map(entry => entry.id);
+			.filter((entry) => entry.lang === iconLang)
+			.map((entry) => entry.id);
 		let iconId: number | string;
 		if (typeof item.id !== 'undefined') {
 			iconId = item.id;
@@ -63,7 +63,7 @@ export default async function emitIcons(
 			res.entries,
 			iconId,
 			iconLang,
-			icon.icons.map(item => item.data)
+			icon.icons.map((item) => item.data)
 		);
 	}
 	log.info(`[icon] Done.`);

@@ -25,7 +25,7 @@ export default function parseIcons(data: unknown): ParsedIconDefinition[] {
 			const result: ParsedIconDefinition = {
 				sourceFile: item.sourceFile,
 			};
-			Object.keys(item).forEach(key => {
+			Object.keys(item).forEach((key) => {
 				const value = (item as any)[key];
 				switch (key) {
 					case 'id':

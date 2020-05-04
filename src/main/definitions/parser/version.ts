@@ -81,7 +81,7 @@ function parseVersionBase(
 	const ret: Record<string, string> = {};
 
 	// check properties
-	getPreferredPropNamesForVersion(data, true).forEach(key => {
+	getPreferredPropNamesForVersion(data, true).forEach((key) => {
 		const lowerCaseName = key.toLowerCase();
 		if (
 			Object.prototype.hasOwnProperty.call(
@@ -101,7 +101,7 @@ function parseVersionBase(
 				);
 			}
 			// validate if each values are string and add to 'ret'
-			getPreferredPropNamesForVersion(value, false).forEach(k => {
+			getPreferredPropNamesForVersion(value, false).forEach((k) => {
 				const v = (value as any)[k];
 				validateStringValue(v, `${propName}.extraValues,${k}`);
 				ret[k] = v;
@@ -125,7 +125,7 @@ export function parseVersionTranslation(
 	if (props.indexOf('lang') < 0) {
 		throw new Error(`Invalid data: '${propName}.lang' is missing`);
 	}
-	props.forEach(prop => {
+	props.forEach((prop) => {
 		if (prop === 'lang') {
 			const v = (data as any)[prop];
 			validateIntegerValue(v, `${propName}.lang`);
@@ -157,7 +157,7 @@ export default function parseVersion(data: unknown): ParsedVersionDefinition {
 	const translations: ParsedVersionStrings[] = [];
 	ret.strings.push(thisVersionStrings);
 	// check other properties
-	props.forEach(key => {
+	props.forEach((key) => {
 		const adjustedKey = key.replace(/^([A-Z])/, (_, c: string) =>
 			c.toLowerCase()
 		);
@@ -226,7 +226,7 @@ export default function parseVersion(data: unknown): ParsedVersionDefinition {
 				break;
 		}
 	});
-	translations.forEach(t => {
+	translations.forEach((t) => {
 		if (t.lang === thisVersionStrings.lang) {
 			// merge translation data (values) with same 'lang' for 'thisVersionStrings' into 'thisVersionStrings.values'
 			thisVersionStrings.values = Object.assign(

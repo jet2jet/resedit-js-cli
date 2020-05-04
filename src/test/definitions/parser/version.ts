@@ -75,7 +75,7 @@ describe('definitions/parser/version', () => {
 			});
 			it.each(ALL_FIXED_INFO_KEYS)(
 				"should throw if '%s' is not an integer",
-				field => {
+				(field) => {
 					expect(() => {
 						parseVersion({ [field]: null });
 					}).toThrow();
@@ -92,7 +92,7 @@ describe('definitions/parser/version', () => {
 			);
 			it.each(ALL_STANDARD_STRING_KEYS)(
 				"should throw if '%s' is not a string",
-				field => {
+				(field) => {
 					expect(() => {
 						parseVersion({ [field]: null });
 					}).toThrow();
@@ -209,7 +209,7 @@ describe('definitions/parser/version', () => {
 			});
 			it.each(ALL_STANDARD_STRING_KEYS)(
 				"should throw if '%s' is not a string",
-				field => {
+				(field) => {
 					expect(() => {
 						parseVersionTranslation(
 							{ lang: 1041, [field]: null },
@@ -232,7 +232,7 @@ describe('definitions/parser/version', () => {
 			);
 			it.each(ALL_STANDARD_STRING_KEYS)(
 				"should not throw if '%s' is a string",
-				field => {
+				(field) => {
 					expect(() => {
 						parseVersionTranslation(
 							{ lang: 1041, [field]: '' },
@@ -296,7 +296,7 @@ describe('definitions/parser/version', () => {
 				const a = parseVersion({
 					lang: 1041,
 					translations: [{ lang: 1033 }],
-				})?.strings?.map(t => t.lang);
+				})?.strings?.map((t) => t.lang);
 				expect(a?.length).toEqual(2);
 				expect(a).toEqual(expect.arrayContaining([1033, 1041]));
 			});
@@ -304,21 +304,21 @@ describe('definitions/parser/version', () => {
 				const a = parseVersion({
 					lang: 1041,
 					translations: [{ lang: 1041 }],
-				}).strings.map(t => t.lang);
+				}).strings.map((t) => t.lang);
 				expect(a?.length).toEqual(1);
 				expect(a?.[0]).toEqual(1041);
 			});
 
 			it.each(ALL_FIXED_INFO_KEYS)(
 				"should store '%s' FixedInfo field",
-				field => {
+				(field) => {
 					const v = parseVersion({ [field]: 7 });
 					expect(v.fixedInfo[field]).toEqual(7);
 				}
 			);
 			it.each(ALL_STANDARD_STRING_KEYS)(
 				"should store '%s' standard field",
-				field => {
+				(field) => {
 					const v = parseVersion({ [field]: 'abc' });
 					expect(v.strings.length).toEqual(1);
 					expect(v.strings[0]?.lang).toBeUndefined();
@@ -331,7 +331,7 @@ describe('definitions/parser/version', () => {
 			);
 			it.each(ALL_STANDARD_STRING_KEYS)(
 				"should store '%s' standard field (case insensitive)",
-				field => {
+				(field) => {
 					const v = parseVersion({ [field.toLowerCase()]: 'abc' });
 					expect(v.strings.length).toEqual(1);
 					expect(v.strings[0]?.lang).toBeUndefined();
@@ -449,7 +449,7 @@ describe('definitions/parser/version', () => {
 				});
 				it.each([fieldsMS, fieldsLS])(
 					`should not overwrite '${fieldsMS}' and '${fieldsLS}' if '%s' is defined and '${fieldString}' is 'x.x.x.x' string`,
-					field => {
+					(field) => {
 						const input: VersionDefinition = {
 							lang: 1041,
 							[fieldString]: '3.4.5.6',
@@ -514,7 +514,7 @@ describe('definitions/parser/version', () => {
 			});
 			it.each(ALL_STANDARD_STRING_KEYS)(
 				"should store '%s' standard field",
-				field => {
+				(field) => {
 					const v = parseVersionTranslation(
 						{ lang: 1041, [field]: 'abc' },
 						PROP_NAME
@@ -527,7 +527,7 @@ describe('definitions/parser/version', () => {
 			);
 			it.each(ALL_STANDARD_STRING_KEYS)(
 				"should store '%s' standard field (case insensitive)",
-				field => {
+				(field) => {
 					const v = parseVersionTranslation(
 						{ lang: 1041, [field.toLowerCase()]: 'abc' },
 						PROP_NAME

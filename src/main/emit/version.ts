@@ -24,7 +24,7 @@ export default async function emitVersion(
 	}
 	// remove old data
 	// (16 === RT_VERSION)
-	res.entries = res.entries.filter(e => e.type !== 16);
+	res.entries = res.entries.filter((e) => e.type !== 16);
 
 	// create new one
 	const outVersion = ResEdit.Resource.VersionInfo.create({

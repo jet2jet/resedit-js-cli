@@ -47,7 +47,7 @@ const validDigestAlgorithm: DigestAlgorithmType[] = (() => {
 	];
 	const nodejsHashes = crypto.getHashes();
 	// filter algorithms with ones supported by Node.js
-	return base.filter(type => nodejsHashes.indexOf(type) >= 0);
+	return base.filter((type) => nodejsHashes.indexOf(type) >= 0);
 })();
 
 export function getValidDigestAlgorithm() {
@@ -110,7 +110,7 @@ export default function parseSignDefinition(
 	let password: string | undefined;
 	let digestAlgorithm: DigestAlgorithmType = 'sha256';
 	let timestampServer: string | undefined;
-	keys.forEach(key => {
+	keys.forEach((key) => {
 		const value: unknown = (data as any)[key];
 		switch (key) {
 			case 'p12File':

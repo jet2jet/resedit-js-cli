@@ -20,7 +20,7 @@ export default function parseDefinitionData(
 	}
 	const ret: ParsedDefinitionData = {};
 	// check properties
-	Object.keys(data).forEach(key => {
+	Object.keys(data).forEach((key) => {
 		const value: unknown = (data as any)[key];
 		switch (key) {
 			case 'lang':

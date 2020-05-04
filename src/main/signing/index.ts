@@ -28,7 +28,7 @@ class MySignerObject implements ResEdit.SignerObject {
 		timestampServer?: string
 	) {
 		if (timestampServer) {
-			this.timestampData = reqData =>
+			this.timestampData = (reqData) =>
 				requestTimestamp(timestampServer, reqData);
 		}
 	}
@@ -89,8 +89,9 @@ export async function prepareForSigningByP12(
 		return pickKeysFromP12File(p12Data, certSelect, password);
 	} catch (e) {
 		throw new Error(
-			`Invalid or unsupported p12/pfx file '${p12File}' (detail: ${e?.message ||
-				e})`
+			`Invalid or unsupported p12/pfx file '${p12File}' (detail: ${
+				e?.message || e
+			})`
 		);
 	}
 }
@@ -166,8 +167,9 @@ export async function doSign(
 	log.debug(
 		`[sign] isRSA = ${data.isRSA}, cert count = ${
 			data.certs.length
-		}, digest algorithm = ${digestAlgorithm}, timestamp server = ${timestampServer ||
-			'(not use)'}`
+		}, digest algorithm = ${digestAlgorithm}, timestamp server = ${
+			timestampServer || '(not use)'
+		}`
 	);
 	return ResEdit.generateExecutableWithSign(
 		nt,

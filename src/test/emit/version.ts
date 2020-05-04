@@ -35,7 +35,7 @@ function testVersionInfo(
 	const specifedFixedInfoKeys = Object.keys(src.fixedInfo);
 	if (baseEntry) {
 		// check values from base fixedInfo are used for unspecified keys
-		Object.keys(baseEntry.fixedInfo).forEach(key => {
+		Object.keys(baseEntry.fixedInfo).forEach((key) => {
 			if (specifedFixedInfoKeys.indexOf(key) >= 0) {
 				return;
 			}
@@ -44,7 +44,7 @@ function testVersionInfo(
 			);
 		});
 	}
-	specifedFixedInfoKeys.forEach(key => {
+	specifedFixedInfoKeys.forEach((key) => {
 		expect(v.fixedInfo[key as FixedInfoKeys]).toEqual(
 			src.fixedInfo[key as FixedInfoKeys]
 		);
@@ -52,9 +52,9 @@ function testVersionInfo(
 
 	// check strings
 	const allLanguages = v.getAllLanguagesForStringValues();
-	src.strings.forEach(table => {
+	src.strings.forEach((table) => {
 		const l = typeof table.lang !== 'undefined' ? table.lang : lang;
-		expect(allLanguages.some(t => t.lang === l)).toBeTruthy();
+		expect(allLanguages.some((t) => t.lang === l)).toBeTruthy();
 
 		const targetTable = v.getStringValues({
 			lang: l,
