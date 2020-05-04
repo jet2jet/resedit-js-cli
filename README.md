@@ -295,15 +295,19 @@ Specifies an algorithm for generating digest. Some algorithms are available only
 
 Specifies a URL of the Time Stamping Authority (TSA), to add a time-stamp information for signed binary. The server must accept and response Time-Stamp Protocol (TSP) based on RFC 3161.
 
-By default Node.js `http` or `https` module will be used for connection, but you can use [request](https://www.npmjs.com/package/request) module by installing it manually as followings:
+By default Node.js `http` or `https` module will be used for connection, but you can use [request](https://www.npmjs.com/package/request) module or [node-fetch](https://www.npmjs.com/package/node-fetch) by installing it manually as followings:
 
 ```
 npm install resedit-cli request
+- or -
+npm install resedit-cli node-fetch
 ```
 
-> At least `request@2.88.0` is expected. If less than 2.88.0, a warning log will be printed.
+> - For `request`, at least `request@2.88.0` is expected. If less than 2.88.0, a warning log will be printed.
+> - For `node-fetch`, you can instead set `global.fetch` variable with a valid function. This means that you can use another `fetch` library such as `isomorphic-fetch`.
+> - Currently if both `request` and fetch are available, `request` is used.
 
-By installing it, you can connect to the server with features that request module supports, such as with a HTTP proxy. (If request module is not installed, HTTP proxies cannot be used.)
+By installing one of them, you can connect to the server with features that those module supports, such as with a HTTP proxy. (If those modules are not installed, HTTP proxies cannot be used.)
 
 If this parameter is omitted, a time-stamp will not be added.
 
@@ -448,7 +452,6 @@ await resedit({
 ## Notes
 
 - If none of resource options are specified, the entire resource data in the input executable will be untouched. You can (re-)sign executables without modifying resources.
-- Currently the extra data which does not belong to any sections in the input executable will be dropped.
 
 ## License
 
