@@ -27,6 +27,11 @@ import emitVersion from './emit/version';
 
 import { doSign, prepare } from './signing';
 
+type ParsedSignDefinitionWithP12FileAndPartialPemFile =
+	ParsedSignDefinitionWithP12File & Partial<ParsedSignDefinitionWithPemFile>;
+type ParsedSignDefinitionWithPemFileAndPartialP12File =
+	ParsedSignDefinitionWithPemFile & Partial<ParsedSignDefinitionWithP12File>;
+
 function convertOptionsToDefinitionData(
 	outDefinition: ParsedDefinitionData,
 	options: Options
@@ -299,9 +304,9 @@ function convertOptionsToDefinitionData(
 	function storeSignObjectWithP12(p12File: string) {
 		if (outDefinition.sign) {
 			(outDefinition.sign as ParsedSignDefinitionWithP12File).p12File = p12File;
-			delete (outDefinition.sign as ParsedSignDefinitionWithPemFile)
+			delete (outDefinition.sign as ParsedSignDefinitionWithP12FileAndPartialPemFile)
 				.certificateFile;
-			delete (outDefinition.sign as ParsedSignDefinitionWithPemFile)
+			delete (outDefinition.sign as ParsedSignDefinitionWithP12FileAndPartialPemFile)
 				.privateKeyFile;
 		} else {
 			outDefinition.sign = {
@@ -321,7 +326,7 @@ function convertOptionsToDefinitionData(
 		if (outDefinition.sign) {
 			(outDefinition.sign as ParsedSignDefinitionWithPemFile).certificateFile = certificateFile;
 			(outDefinition.sign as ParsedSignDefinitionWithPemFile).privateKeyFile = privateKeyFile;
-			delete (outDefinition.sign as ParsedSignDefinitionWithP12File)
+			delete (outDefinition.sign as ParsedSignDefinitionWithPemFileAndPartialP12File)
 				.p12File;
 		} else {
 			outDefinition.sign = {
