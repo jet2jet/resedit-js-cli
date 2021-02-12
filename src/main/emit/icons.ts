@@ -12,7 +12,7 @@ function getNextPreferIconId(
 	const s = start;
 	while (true) {
 		++start;
-		if (usedIds.indexOf(start) < 0) {
+		if (!usedIds.includes(start)) {
 			return start;
 		}
 		if (start === 65535) {

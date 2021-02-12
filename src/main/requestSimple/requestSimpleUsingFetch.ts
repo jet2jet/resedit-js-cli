@@ -56,9 +56,10 @@ export default function requestSimpleUsingFetch(
 					buffer
 				);
 			}
-		} catch (error) {
+		} catch (error: unknown) {
 			cb(error, {}, Buffer.from(''));
 		}
 	}
+	// eslint-disable-next-line @typescript-eslint/no-floating-promises
 	inner();
 }

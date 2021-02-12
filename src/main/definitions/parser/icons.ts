@@ -12,7 +12,10 @@ export default function parseIcons(data: unknown): ParsedIconDefinition[] {
 		throw new Error("Invalid data: 'icons' is not an array");
 	}
 	return data.map(
-		(item, i): ParsedIconDefinition => {
+		(
+			item: Record<string, unknown> | null | undefined,
+			i
+		): ParsedIconDefinition => {
 			if (typeof item !== 'object' || !item) {
 				throw new Error(`Invalid data: 'icons[${i}]' is not an object`);
 			}
@@ -26,7 +29,7 @@ export default function parseIcons(data: unknown): ParsedIconDefinition[] {
 				sourceFile: item.sourceFile,
 			};
 			Object.keys(item).forEach((key) => {
-				const value = (item as any)[key];
+				const value = item[key];
 				switch (key) {
 					case 'id':
 						validateStringOrIntegerValue(value, `icons[${i}].id`);

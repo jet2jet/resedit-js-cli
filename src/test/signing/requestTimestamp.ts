@@ -1,5 +1,3 @@
-/// <reference types='jest' />
-
 import { SimpleCallback, SimpleOptions } from '@/requestSimple';
 
 const DUMMY_SERVER_HOST = 'localhost';
@@ -36,15 +34,17 @@ describe('signing/requestTimestamp', () => {
 	});
 
 	it("should call 'requestSimple' and resolve if timestamp data is replied", async () => {
-		mockRequestSimple.default.mockImplementation((_1, _2, cb: SimpleCallback) => {
-			cb(
-				null,
-				{
-					'content-type': 'application/timestamp-reply',
-				},
-				DUMMY_RESPONSE_DATA
-			);
-		});
+		mockRequestSimple.default.mockImplementation(
+			(_1, _2, cb: SimpleCallback) => {
+				cb(
+					null,
+					{
+						'content-type': 'application/timestamp-reply',
+					},
+					DUMMY_RESPONSE_DATA
+				);
+			}
+		);
 
 		const requestTimestamp = (await import('@/signing/requestTimestamp'))
 			.default;
@@ -66,15 +66,17 @@ describe('signing/requestTimestamp', () => {
 	});
 
 	it("should call 'requestSimple' and reject if unexpected data is replied", async () => {
-		mockRequestSimple.default.mockImplementation((_1, _2, cb: SimpleCallback) => {
-			cb(
-				null,
-				{
-					'content-type': 'text/plain',
-				},
-				DUMMY_RESPONSE_DATA
-			);
-		});
+		mockRequestSimple.default.mockImplementation(
+			(_1, _2, cb: SimpleCallback) => {
+				cb(
+					null,
+					{
+						'content-type': 'text/plain',
+					},
+					DUMMY_RESPONSE_DATA
+				);
+			}
+		);
 
 		const requestTimestamp = (await import('@/signing/requestTimestamp'))
 			.default;
@@ -98,9 +100,11 @@ describe('signing/requestTimestamp', () => {
 
 	it("should call 'requestSimple' and reject if the failure is replied", async () => {
 		const dummyError = new Error('dummy');
-		mockRequestSimple.default.mockImplementation((_1, _2, cb: SimpleCallback) => {
-			cb(dummyError, {}, DUMMY_RESPONSE_DATA);
-		});
+		mockRequestSimple.default.mockImplementation(
+			(_1, _2, cb: SimpleCallback) => {
+				cb(dummyError, {}, DUMMY_RESPONSE_DATA);
+			}
+		);
 
 		const requestTimestamp = (await import('@/signing/requestTimestamp'))
 			.default;

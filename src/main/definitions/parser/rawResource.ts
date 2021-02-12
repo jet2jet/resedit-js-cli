@@ -15,26 +15,26 @@ export default function parseRawResource(
 		throw new Error("Invalid data: 'raw' is not an array");
 	}
 	const ret: ParsedRawResourceDefinition[] = [];
-	data.forEach((item: any, i) => {
+	data.forEach((item: unknown, i) => {
 		// check if data is a non-null object
-		if (typeof item !== 'object' || !item) {
+		if (typeof item !== 'object' || item === null) {
 			throw new Error(`Invalid data: 'raw[${i}]' is not an object`);
 		}
 		const props = Object.keys(item);
-		if (props.indexOf('type') < 0) {
+		if (!props.includes('type')) {
 			throw new Error(`Invalid data: 'raw[${i}].type' is missing`);
 		}
-		if (props.indexOf('id') < 0) {
+		if (!props.includes('id')) {
 			throw new Error(`Invalid data: 'raw[${i}].id' is missing`);
 		}
-		if (props.indexOf('file') < 0 && props.indexOf('value') < 0) {
+		if (!props.includes('file') && !props.includes('value')) {
 			throw new Error(
 				`Invalid data: 'raw[${i}].file' and 'raw[${i}].value' is missing`
 			);
 		}
-		const o: ParsedRawResourceDefinition = {} as ParsedRawResourceDefinition;
+		const o: ParsedRawResourceDefinition = { type: '', id: 0 };
 		props.forEach((prop) => {
-			const value = item[prop];
+			const value = (item as Record<string, unknown>)[prop];
 			switch (prop) {
 				case 'type':
 				case 'id':

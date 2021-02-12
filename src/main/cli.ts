@@ -210,7 +210,7 @@ async function main(): Promise<number> {
 				return true;
 			})
 			.fail((msg, err, yargs?: yargs.Argv) => {
-				if (err) {
+				if (err !== null && err !== undefined) {
 					if (err instanceof CommandLineError) {
 						msg = err.message;
 					} else if (typeof err === 'string') {
@@ -228,9 +228,9 @@ async function main(): Promise<number> {
 			return 0;
 		}
 
-		if (argv.debug) {
+		if ('debug' in argv && argv.debug !== false) {
 			loglevel.setLevel('DEBUG');
-		} else if (argv.verbose) {
+		} else if ('verbose' in argv && argv.verbose !== false) {
 			loglevel.setLevel('INFO');
 		}
 
@@ -239,7 +239,7 @@ async function main(): Promise<number> {
 		if (s instanceof CommandLineError) {
 			console.error(s.message);
 		} else if (s instanceof Error) {
-			console.error(`${thisName}:`, s.stack || s.message);
+			console.error(`${thisName}:`, s.stack ?? s.message);
 		} else {
 			let msg: string | undefined;
 			if (typeof s !== 'string') {
@@ -247,7 +247,7 @@ async function main(): Promise<number> {
 			} else {
 				msg = s;
 			}
-			if (msg) {
+			if (msg !== undefined) {
 				console.error(msg);
 			}
 		}
@@ -256,6 +256,8 @@ async function main(): Promise<number> {
 	return 0;
 }
 
+// 'main' should not throw
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async () => {
 	process.exit(await main());
 })();

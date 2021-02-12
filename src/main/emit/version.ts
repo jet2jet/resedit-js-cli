@@ -57,7 +57,11 @@ export default async function emitVersion(
 		);
 	} else {
 		// adjust fields
-		log.debug(`[version] Make default FIXEDINFO data (isExe = ${isExe}).`);
+		log.debug(
+			`[version] Make default FIXEDINFO data (isExe = ${
+				isExe ? 'true' : 'false'
+			}).`
+		);
 		outVersion.fixedInfo.fileFlagsMask = 0x17;
 		outVersion.fixedInfo.fileFlags = 0;
 		outVersion.fixedInfo.fileOS =

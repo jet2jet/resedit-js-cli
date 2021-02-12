@@ -296,7 +296,9 @@ function getPrivateKeyAlgorithmTypeFromBase64(data: string) {
 }
 
 /** @return array of tuple `[<isRSA>, <pem>]` */
-export function pickPrivateKeyFromPem(pemData: string): Array<[isRSA: boolean, pem: string]> {
+export function pickPrivateKeyFromPem(
+	pemData: string
+): Array<[isRSA: boolean, pem: string]> {
 	const ret: Array<[boolean, string]> = [];
 	let inSection = false;
 	let isRSA: boolean | null = null;
@@ -392,9 +394,11 @@ export function pickKeysFromP12File(
 		sortedCertList.forEach((certData) => {
 			let asn1;
 			if (certData.cert) {
-				asn1 = forge.pki.certificateToAsn1(certData.cert);
+				asn1 = forge.pki.certificateToAsn1(certData.cert) as
+					| forge.asn1.Asn1
+					| undefined;
 			} else {
-				asn1 = certData.asn1;
+				asn1 = certData.asn1 as forge.asn1.Asn1 | undefined;
 			}
 			if (asn1) {
 				const certBin = forge.asn1.toDer(asn1);

@@ -1,5 +1,3 @@
-/// <reference types='jest' />
-
 import { timeoutErrorPromise } from '../testUtils';
 
 const DUMMY_SERVER_HOST = 'localhost';

@@ -1,5 +1,3 @@
-/// <reference types='jest' />
-
 import * as ResEdit from 'resedit';
 import { VersionDefinition } from '@/definitions/DefinitionData';
 import parseVersion, {

@@ -24,7 +24,9 @@ export default function requestSimpleUsingHttp(
 			if (res.statusCode! < 200 || res.statusCode! >= 400) {
 				cb(
 					new Error(
-						`Server error ${res.statusCode} ${res.statusMessage}`
+						`Server error ${res.statusCode!} ${
+							res.statusMessage ?? ''
+						}`
 					),
 					res.headers,
 					buff

@@ -1,5 +1,3 @@
-/// <reference types='jest' />
-
 import { timeoutErrorPromise } from '../testUtils';
 
 import requestNamespace = require('request');

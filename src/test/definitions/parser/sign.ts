@@ -1,5 +1,3 @@
-/// <reference types='jest' />
-
 import { CertificateSelectMode } from '@/definitions/DefinitionData';
 import parseSignDefinition, {
 	ParsedSignDefinition,

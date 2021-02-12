@@ -1,5 +1,3 @@
-/// <reference types='jest' />
-
 import * as nock from 'nock';
 
 import { SimpleOptions } from '@/requestSimple';

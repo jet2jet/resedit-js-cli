@@ -8,7 +8,10 @@ import requestSimple, { SimpleOptions } from '../requestSimple';
  * @param data binary data of TSQ
  * @return response from TSA
  */
-export default function requestTimestamp(server: string, data: ArrayBuffer): Promise<Buffer> {
+export default function requestTimestamp(
+	server: string,
+	data: ArrayBuffer
+): Promise<Buffer> {
 	return new Promise<Buffer>((resolve, reject) => {
 		const bin = Buffer.from(data);
 		const options: SimpleOptions = {
@@ -23,14 +26,16 @@ export default function requestTimestamp(server: string, data: ArrayBuffer): Pro
 			`[sign] Request timestamp server '${server}' (data length = ${data.byteLength}).`
 		);
 		requestSimple(server, options, (err, headers, body) => {
-			if (err) {
+			if (err !== null && err !== undefined) {
 				reject(err);
 				return;
 			}
 			if (headers['content-type'] !== 'application/timestamp-reply') {
 				reject(
 					new Error(
-						`Unexpected Content-Type for response: ${headers['content-type']}`
+						`Unexpected Content-Type for response: ${
+							headers['content-type'] ?? ''
+						}`
 					)
 				);
 				return;

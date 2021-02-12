@@ -48,14 +48,18 @@ export default async function emitRawResources(
 			}
 		} else {
 			log.debug(
-				`[raw] Load resource data from file '${item.file}' (type = ${type}, ID = ${id}, lang = ${itemLang})`
+				`[raw] Load resource data from file '${
+					item.file ?? ''
+				}' (type = ${type}, ID = ${id}, lang = ${itemLang})`
 			);
 			value = arrayBufferViewToArrayBuffer(await readFile(item.file!));
 		}
 
-		const ent = res.entries.filter(
-			(e) => e.type === type && e.id === id && e.lang === itemLang
-		)[0];
+		const ent = res.entries
+			.filter(
+				(e) => e.type === type && e.id === id && e.lang === itemLang
+			)
+			.shift();
 		if (ent) {
 			log.debug(`[raw] Replace existing resource data.`);
 			ent.bin = value;

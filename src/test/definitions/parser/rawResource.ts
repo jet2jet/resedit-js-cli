@@ -1,5 +1,3 @@
-/// <reference types='jest' />
-
 import parseRawResource, {
 	ParsedRawResourceDefinition,
 } from '@/definitions/parser/rawResource';

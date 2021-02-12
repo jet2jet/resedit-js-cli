@@ -1,4 +1,3 @@
-/// <reference types='jest' />
 import * as ResEdit from 'resedit';
 import { ParsedVersionDefinition } from '@/definitions/parser/version';
 import EmitResParameter from '@/emit/EmitResParameter';
@@ -36,7 +35,7 @@ function testVersionInfo(
 	if (baseEntry) {
 		// check values from base fixedInfo are used for unspecified keys
 		Object.keys(baseEntry.fixedInfo).forEach((key) => {
-			if (specifedFixedInfoKeys.indexOf(key) >= 0) {
+			if (specifedFixedInfoKeys.includes(key)) {
 				return;
 			}
 			expect(v.fixedInfo[key as FixedInfoKeys]).toEqual(

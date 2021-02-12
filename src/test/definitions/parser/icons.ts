@@ -1,5 +1,3 @@
-/// <reference types='jest' />
-
 import parseIcons, { ParsedIconDefinition } from '@/definitions/parser/icons';
 
 describe('definitions/parser/icons', () => {

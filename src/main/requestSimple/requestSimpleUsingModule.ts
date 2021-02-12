@@ -7,13 +7,24 @@ import requestNamespace = require('request');
 
 const request: typeof requestNamespace | null = (() => {
 	try {
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const packageJson = require('request/package.json');
-		const versionTokens = packageJson.version.split('.');
-		if (versionTokens[0] !== '2' || Number(versionTokens[1]) < 88) {
-			log.warn(
-				`'request' module is found but unsupported version: ${packageJson.version} (expected: ^2.88.0)`
-			);
+		const packageJson:
+			| Record<string, unknown>
+			| null
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
+			| undefined = require('request/package.json');
+		if (
+			typeof packageJson !== 'object' ||
+			packageJson === null ||
+			typeof packageJson.version !== 'string'
+		) {
+			log.warn("Cannot determine 'request' package version");
+		} else {
+			const versionTokens = packageJson.version.split('.');
+			if (versionTokens[0] !== '2' || Number(versionTokens[1]) < 88) {
+				log.warn(
+					`'request' module is found but unsupported version: ${packageJson.version} (expected: ^2.88.0)`
+				);
+			}
 		}
 		return require('request');
 	} catch {
@@ -36,11 +47,11 @@ export default function requestSimpleUsingModule(
 		...opt,
 		encoding: null,
 	};
-	request!(url, options, (err, res, body) => {
-		if (err) {
+	request!(url, options, (err: unknown, res, body) => {
+		if (err !== null && err !== undefined) {
 			cb(err, res.headers, body);
 		} else {
-			if (res.statusCode! < 200 || res.statusCode! >= 400) {
+			if (res.statusCode < 200 || res.statusCode >= 400) {
 				cb(
 					new Error(
 						`Server error ${res.statusCode} ${res.statusMessage}`

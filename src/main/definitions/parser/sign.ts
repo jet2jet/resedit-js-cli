@@ -47,7 +47,7 @@ const validDigestAlgorithm: DigestAlgorithmType[] = (() => {
 	];
 	const nodejsHashes = crypto.getHashes();
 	// filter algorithms with ones supported by Node.js
-	return base.filter((type) => nodejsHashes.indexOf(type) >= 0);
+	return base.filter((type) => nodejsHashes.includes(type));
 })();
 
 export function getValidDigestAlgorithm(): DigestAlgorithmType[] {
@@ -59,7 +59,7 @@ export function isValidDigestAlgorithm(
 ): value is DigestAlgorithmType {
 	return (
 		typeof value === 'string' &&
-		validDigestAlgorithm.indexOf(value as DigestAlgorithmType) >= 0
+		validDigestAlgorithm.includes(value as DigestAlgorithmType)
 	);
 }
 
@@ -83,10 +83,10 @@ export default function parseSignDefinition(
 	}
 	const keys = Object.keys(data);
 	let hasP12File = false;
-	if (keys.indexOf('p12File') >= 0) {
+	if (keys.includes('p12File')) {
 		if (
-			keys.indexOf('privateKeyFile') >= 0 ||
-			keys.indexOf('certificateFile') >= 0
+			keys.includes('privateKeyFile') ||
+			keys.includes('certificateFile')
 		) {
 			throw new Error(
 				"Only 'p12File' or ('privateKeyFile' and 'certificateFile') can be specified"
@@ -95,8 +95,8 @@ export default function parseSignDefinition(
 		hasP12File = true;
 	} else {
 		if (
-			keys.indexOf('privateKeyFile') < 0 ||
-			keys.indexOf('certificateFile') < 0
+			!keys.includes('privateKeyFile') ||
+			!keys.includes('certificateFile')
 		) {
 			throw new Error(
 				"Both 'privateKeyFile' and 'certificateFile' are required if 'p12File' is not specified"
@@ -128,7 +128,7 @@ export default function parseSignDefinition(
 			case 'certSelect':
 				if (
 					typeof value !== 'string' ||
-					certificateSelectModeValues.indexOf(value) < 0
+					!certificateSelectModeValues.includes(value)
 				) {
 					throw new Error(
 						`Invalid data: 'sign.certSelect' is not a valid value (choices: ${certificateSelectModeValues.join(

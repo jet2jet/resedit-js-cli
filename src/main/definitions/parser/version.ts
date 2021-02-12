@@ -91,11 +91,11 @@ function parseVersionBase(
 			)
 		) {
 			const actualName = standardVersionStringKeys[lowerCaseName];
-			const value = (data as any)[key];
+			const value = (data as Record<string, unknown>)[key];
 			validateStringValue(value, `${propName}.${key}`);
 			ret[actualName] = value;
 		} else if (key === 'extraValues') {
-			const value = (data as any)[key];
+			const value = (data as Record<string, unknown>)[key];
 			if (typeof value !== 'object' || !value) {
 				throw new Error(
 					`Invalid data: '${propName}.extraValues' is not an object`
@@ -123,7 +123,7 @@ export function parseVersionTranslation(
 	const props: string[] = [];
 	const versionStringData = parseVersionBase(data, propName, props);
 	let lang: number = 0;
-	if (props.indexOf('lang') < 0) {
+	if (!props.includes('lang')) {
 		throw new Error(`Invalid data: '${propName}.lang' is missing`);
 	}
 	props.forEach((prop) => {

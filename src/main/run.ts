@@ -27,10 +27,10 @@ import emitVersion from './emit/version';
 
 import { doSign, prepare } from './signing';
 
-type ParsedSignDefinitionWithP12FileAndPartialPemFile =
-	ParsedSignDefinitionWithP12File & Partial<ParsedSignDefinitionWithPemFile>;
-type ParsedSignDefinitionWithPemFileAndPartialP12File =
-	ParsedSignDefinitionWithPemFile & Partial<ParsedSignDefinitionWithP12File>;
+type ParsedSignDefinitionWithP12FileAndPartialPemFile = ParsedSignDefinitionWithP12File &
+	Partial<ParsedSignDefinitionWithPemFile>;
+type ParsedSignDefinitionWithPemFileAndPartialP12File = ParsedSignDefinitionWithPemFile &
+	Partial<ParsedSignDefinitionWithP12File>;
 
 function convertOptionsToDefinitionData(
 	outDefinition: ParsedDefinitionData,
@@ -41,10 +41,10 @@ function convertOptionsToDefinitionData(
 		outDefinition.lang = lang;
 		const strings = outDefinition.version?.strings;
 		if (strings) {
-			const sameLangData = strings.filter((s) => s.lang === lang)[0];
-			const undefLangData = strings.filter(
-				(s) => typeof s.lang === 'undefined'
-			)[0];
+			const sameLangData = strings.filter((s) => s.lang === lang).shift();
+			const undefLangData = strings
+				.filter((s) => typeof s.lang === 'undefined')
+				.shift();
 			if (undefLangData) {
 				// if 'sameLangData' is already available, merge to 'undefLangData'
 				// (overwrite values to 'undefLangData' and delete 'sameLangData')
@@ -160,7 +160,7 @@ function convertOptionsToDefinitionData(
 				`Add raw resource definitions from option. (count = ${options.raw.length})`
 			);
 		}
-		outDefinition.raw = (outDefinition.raw || []).concat(
+		outDefinition.raw = (outDefinition.raw ?? []).concat(
 			options.raw.map(
 				(value, i): ParsedRawResourceDefinition => {
 					const ra = /^([^,]+?),([^,]+?),(.+)$/.exec(value);
@@ -189,7 +189,7 @@ function convertOptionsToDefinitionData(
 		);
 	}
 
-	if (options.sign || outDefinition.sign) {
+	if ((options.sign !== undefined && options.sign) || outDefinition.sign) {
 		log.debug('Make executable with signing.');
 		if (
 			!outDefinition.sign &&
@@ -235,8 +235,8 @@ function convertOptionsToDefinitionData(
 			);
 		}
 		if (
-			options.select &&
-			certificateSelectModeValues.indexOf(options.select) >= 0 &&
+			options.select !== undefined &&
+			certificateSelectModeValues.includes(options.select) &&
 			outDefinition.sign
 		) {
 			outDefinition.sign.certSelect = options.select;
@@ -286,7 +286,7 @@ function convertOptionsToDefinitionData(
 	}
 	function getVersionObject() {
 		return (
-			outDefinition.version ||
+			outDefinition.version ??
 			(outDefinition.version = {
 				fixedInfo: {},
 				strings: [],
@@ -294,7 +294,7 @@ function convertOptionsToDefinitionData(
 		);
 	}
 	function getVersionStringData(o: ParsedVersionDefinition) {
-		let s = o.strings.filter((s) => s.lang === lang)[0];
+		let s = o.strings.filter((s) => s.lang === lang).shift();
 		if (!s) {
 			s = { lang, values: {} };
 			o.strings.push(s);
@@ -371,7 +371,7 @@ async function emitResources(
 export default async function run(options: Options): Promise<void> {
 	let convertedDefData: ParsedDefinitionData = {};
 
-	if (options.definition) {
+	if (options.definition !== undefined) {
 		if (typeof options.definition === 'string') {
 			const explorer = cosmiconfig('resedit');
 			log.info(
@@ -398,7 +398,7 @@ export default async function run(options: Options): Promise<void> {
 	const inFile = await readFile(options.in);
 	log.debug(
 		`Parse the executable file '${options.in}' (ignore-signed: ${
-			options['ignore-signed'] || false
+			options['ignore-signed'] ?? false ? 'true' : 'false'
 		}).`
 	);
 	const executable = ResEdit.NtExecutable.from(inFile, {

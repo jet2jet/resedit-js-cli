@@ -21,13 +21,13 @@ class MySignerObject implements ResEdit.SignerObject {
 	public timestampData?(reqData: ArrayBuffer): Promise<ArrayBufferView>;
 
 	constructor(
-		private privateKeyPem: string,
-		private isRSA: boolean,
-		private certificates: ArrayBufferView[],
-		private digestAlgorithm: DigestAlgorithmType,
+		private readonly privateKeyPem: string,
+		private readonly isRSA: boolean,
+		private readonly certificates: ArrayBufferView[],
+		private readonly digestAlgorithm: DigestAlgorithmType,
 		timestampServer?: string
 	) {
-		if (timestampServer) {
+		if (timestampServer !== undefined) {
 			this.timestampData = (reqData) =>
 				requestTimestamp(timestampServer, reqData);
 		}
@@ -89,9 +89,9 @@ export async function prepareForSigningByP12(
 		return pickKeysFromP12File(p12Data, certSelect, password);
 	} catch (e) {
 		throw new Error(
-			`Invalid or unsupported p12/pfx file '${p12File}' (detail: ${
-				e?.message || e
-			})`
+			`Invalid or unsupported p12/pfx file '${p12File}' (detail: ${String(
+				e?.message ?? e
+			)})`
 		);
 	}
 }
@@ -141,7 +141,9 @@ export async function prepareForSigning(
 	};
 }
 
-export async function prepare(defData: ParsedSignDefinition): Promise<CertAndKeyData> {
+export async function prepare(
+	defData: ParsedSignDefinition
+): Promise<CertAndKeyData> {
 	if ('p12File' in defData) {
 		return await prepareForSigningByP12(
 			defData.p12File,
@@ -158,17 +160,17 @@ export async function prepare(defData: ParsedSignDefinition): Promise<CertAndKey
 	}
 }
 
-export async function doSign(
+export function doSign(
 	nt: ResEdit.NtExecutable,
 	data: CertAndKeyData,
 	digestAlgorithm: DigestAlgorithmType,
 	timestampServer?: string
-): Promise<ArrayBuffer> {
+): PromiseLike<ArrayBuffer> {
 	log.debug(
-		`[sign] isRSA = ${data.isRSA}, cert count = ${
+		`[sign] isRSA = ${data.isRSA ? 'true' : 'false'}, cert count = ${
 			data.certs.length
 		}, digest algorithm = ${digestAlgorithm}, timestamp server = ${
-			timestampServer || '(not use)'
+			timestampServer ?? '(not use)'
 		}`
 	);
 	return ResEdit.generateExecutableWithSign(
