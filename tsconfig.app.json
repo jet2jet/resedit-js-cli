@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "declaration": true,
-    "lib": ["es2015"],
+    "lib": ["es2017"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitReturns": true,
@@ -12,11 +12,12 @@
     "paths": {
       "*": ["../../node_modules/@types/*", "../../node_modules/*"]
     },
+    "removeComments": true,
     "rootDir": "./src/main",
     "skipLibCheck": true,
     "strict": true,
     "stripInternal": true,
-    "target": "es2015",
+    "target": "es2017",
     "typeRoots": ["./node_modules/@types", "./node_modules"],
     "types": ["node"]
   },
