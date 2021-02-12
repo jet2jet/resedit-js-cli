@@ -50,7 +50,7 @@ const validDigestAlgorithm: DigestAlgorithmType[] = (() => {
 	return base.filter((type) => nodejsHashes.indexOf(type) >= 0);
 })();
 
-export function getValidDigestAlgorithm() {
+export function getValidDigestAlgorithm(): DigestAlgorithmType[] {
 	return validDigestAlgorithm;
 }
 

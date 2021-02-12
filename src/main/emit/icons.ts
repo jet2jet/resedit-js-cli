@@ -28,7 +28,7 @@ export default async function emitIcons(
 	res: EmitResParameter,
 	lang: number,
 	icons: ParsedIconDefinition[] | null | undefined
-) {
+): Promise<boolean> {
 	if (!icons || icons.length === 0) {
 		return false;
 	}

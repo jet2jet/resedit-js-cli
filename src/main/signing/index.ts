@@ -83,7 +83,7 @@ export async function prepareForSigningByP12(
 	p12File: string,
 	password: string | undefined,
 	certSelect: CertificateSelectMode
-) {
+): Promise<CertAndKeyData> {
 	const p12Data = await readFile(p12File);
 	try {
 		return pickKeysFromP12File(p12Data, certSelect, password);
@@ -101,7 +101,7 @@ export async function prepareForSigning(
 	certificateFile: string,
 	password: string | undefined,
 	certSelect: CertificateSelectMode
-) {
+): Promise<CertAndKeyData> {
 	const [pkeyFile, certFile] = await Promise.all([
 		readFile(privateKeyFile, 'utf8'),
 		readFile(certificateFile),
@@ -141,15 +141,15 @@ export async function prepareForSigning(
 	};
 }
 
-export async function prepare(defData: ParsedSignDefinition) {
+export async function prepare(defData: ParsedSignDefinition): Promise<CertAndKeyData> {
 	if ('p12File' in defData) {
-		return prepareForSigningByP12(
+		return await prepareForSigningByP12(
 			defData.p12File,
 			defData.password,
 			defData.certSelect
 		);
 	} else {
-		return prepareForSigning(
+		return await prepareForSigning(
 			defData.privateKeyFile,
 			defData.certificateFile,
 			defData.password,
@@ -163,7 +163,7 @@ export async function doSign(
 	data: CertAndKeyData,
 	digestAlgorithm: DigestAlgorithmType,
 	timestampServer?: string
-) {
+): Promise<ArrayBuffer> {
 	log.debug(
 		`[sign] isRSA = ${data.isRSA}, cert count = ${
 			data.certs.length

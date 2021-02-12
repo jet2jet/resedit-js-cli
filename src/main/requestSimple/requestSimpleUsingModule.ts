@@ -21,15 +21,15 @@ const request: typeof requestNamespace | null = (() => {
 	}
 })();
 
-export function isAvailable() {
-	return !!request;
+export function isAvailable(): boolean {
+	return request !== null;
 }
 
 export default function requestSimpleUsingModule(
 	url: string,
 	opt: SimpleOptions,
 	cb: SimpleCallback
-) {
+): void {
 	log.debug("[sign] Use 'request' module");
 
 	const options: requestNamespace.CoreOptions = {

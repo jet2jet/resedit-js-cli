@@ -32,6 +32,7 @@ const standardVersionStringKeys: Record<string, string> = {
 };
 
 function getPreferredPropNamesForVersion(
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	data: object,
 	pickExtraValuesFirst: boolean
 ): string[] {

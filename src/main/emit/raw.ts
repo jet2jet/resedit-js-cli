@@ -14,7 +14,7 @@ export default async function emitRawResources(
 	res: EmitResParameter,
 	lang: number,
 	raw: ParsedRawResourceDefinition[] | null | undefined
-) {
+): Promise<boolean> {
 	if (!raw || !raw.length) {
 		return false;
 	}

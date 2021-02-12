@@ -5,7 +5,7 @@ import parseSignDefinition, {
 	ParsedSignDefinition,
 } from '@/definitions/parser/sign';
 
-function testIfNotAString(name: string, baseObj: object = {}) {
+function testIfNotAString(name: string, baseObj: Record<string, unknown> = {}) {
 	expect(() => {
 		parseSignDefinition({
 			...baseObj,

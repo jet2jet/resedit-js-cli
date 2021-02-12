@@ -10,7 +10,7 @@ export default async function emitVersion(
 	lang: number,
 	isExe: boolean,
 	version: ParsedVersionDefinition | null | undefined
-) {
+): Promise<boolean> {
 	if (!version) {
 		return false;
 	}

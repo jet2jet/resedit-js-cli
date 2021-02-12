@@ -8,7 +8,7 @@ import requestSimple, { SimpleOptions } from '../requestSimple';
  * @param data binary data of TSQ
  * @return response from TSA
  */
-export default function requestTimestamp(server: string, data: ArrayBuffer) {
+export default function requestTimestamp(server: string, data: ArrayBuffer): Promise<Buffer> {
 	return new Promise<Buffer>((resolve, reject) => {
 		const bin = Buffer.from(data);
 		const options: SimpleOptions = {

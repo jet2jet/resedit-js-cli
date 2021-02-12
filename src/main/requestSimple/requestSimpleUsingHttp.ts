@@ -10,7 +10,7 @@ export default function requestSimpleUsingHttp(
 	url: string,
 	opt: SimpleOptions,
 	cb: SimpleCallback
-) {
+): void {
 	log.debug('[sign] Use native Node.js http/https library');
 
 	const options: http.RequestOptions = opt;

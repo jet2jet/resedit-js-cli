@@ -1,4 +1,4 @@
-export function timeoutErrorPromise(millisec: number) {
+export function timeoutErrorPromise(millisec: number): Promise<Error> {
 	const promise = new Promise<void>((resolve) =>
 		setTimeout(resolve, millisec)
 	).then(() => new Error('timeout'));

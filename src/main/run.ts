@@ -368,7 +368,7 @@ async function emitResources(
 	return modified;
 }
 
-export default async function run(options: Options) {
+export default async function run(options: Options): Promise<void> {
 	let convertedDefData: ParsedDefinitionData = {};
 
 	if (options.definition) {

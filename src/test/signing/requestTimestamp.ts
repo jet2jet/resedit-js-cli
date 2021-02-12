@@ -1,6 +1,6 @@
 /// <reference types='jest' />
 
-import { SimpleOptions } from '@/requestSimple';
+import { SimpleCallback, SimpleOptions } from '@/requestSimple';
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
@@ -36,7 +36,7 @@ describe('signing/requestTimestamp', () => {
 	});
 
 	it("should call 'requestSimple' and resolve if timestamp data is replied", async () => {
-		mockRequestSimple.default.mockImplementation((_1, _2, cb: Function) => {
+		mockRequestSimple.default.mockImplementation((_1, _2, cb: SimpleCallback) => {
 			cb(
 				null,
 				{
@@ -66,7 +66,7 @@ describe('signing/requestTimestamp', () => {
 	});
 
 	it("should call 'requestSimple' and reject if unexpected data is replied", async () => {
-		mockRequestSimple.default.mockImplementation((_1, _2, cb: Function) => {
+		mockRequestSimple.default.mockImplementation((_1, _2, cb: SimpleCallback) => {
 			cb(
 				null,
 				{
@@ -98,8 +98,8 @@ describe('signing/requestTimestamp', () => {
 
 	it("should call 'requestSimple' and reject if the failure is replied", async () => {
 		const dummyError = new Error('dummy');
-		mockRequestSimple.default.mockImplementation((_1, _2, cb: Function) => {
-			cb(dummyError, undefined, undefined);
+		mockRequestSimple.default.mockImplementation((_1, _2, cb: SimpleCallback) => {
+			cb(dummyError, {}, DUMMY_RESPONSE_DATA);
 		});
 
 		const requestTimestamp = (await import('@/signing/requestTimestamp'))

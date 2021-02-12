@@ -20,15 +20,15 @@ const fetchFunction: typeof fetchNamespace.default | null = (() => {
 	}
 })();
 
-export function isAvailable() {
-	return !!fetchFunction;
+export function isAvailable(): boolean {
+	return fetchFunction !== null;
 }
 
 export default function requestSimpleUsingFetch(
 	url: string,
 	opt: SimpleOptions,
 	cb: SimpleCallback
-) {
+): void {
 	log.debug('[sign] Use fetch function');
 
 	async function inner() {

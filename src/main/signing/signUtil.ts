@@ -296,7 +296,7 @@ function getPrivateKeyAlgorithmTypeFromBase64(data: string) {
 }
 
 /** @return array of tuple `[<isRSA>, <pem>]` */
-export function pickPrivateKeyFromPem(pemData: string) {
+export function pickPrivateKeyFromPem(pemData: string): Array<[isRSA: boolean, pem: string]> {
 	const ret: Array<[boolean, string]> = [];
 	let inSection = false;
 	let isRSA: boolean | null = null;
