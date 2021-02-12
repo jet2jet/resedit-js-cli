@@ -5,6 +5,8 @@
 
 resedit-js-cli is a command line (CLI) tool for manipulating resources in Windows Executable files, as well as signing executables. This tool runs on Node.js environment.
 
+Starting from v0.3.0, resedit-js-cli also supports creating empty (data-only) executable binaries.
+
 ## Table of contents
 
 - [Install](#install)
@@ -31,66 +33,79 @@ npm install resedit-cli
 
 ```
 Usage:
-  resedit [--in] <input> [--out] <output> [<options...>]
+  resedit [[--in] <input> | --new] [--out] <output> [<options...>]
 
 Options:
-  --help, -h, -?         Show help                                     [boolean]
-  --certificate, --cert  Certificate file for signing.
-                         (DER format file (.cer) or PEM format file (.pem) is
-                         supported)
-                         Requires --sign option.                        [string]
-  --company-name         Company name for version resource              [string]
-  --debug                Output more logs than verbose mode while processing.
-                                                                       [boolean]
-  --definition           Resource definition file which contains resource data
-                         to write (see document for details)            [string]
-  --digest               Digest algorithm for signing. (default: 'sha256')
-                         Requires --sign option.
+  -h, -?, --help             Show help                                 [boolean]
+      --as-32bit             Creates the executable binary as a 32-bit version
+                             (default: as 64-bit).
+                             Requires --new option.                    [boolean]
+      --as-exe-file          Creates the executable binary as an EXE file
+                             (default: as a DLL).
+                             Requires --new option.                    [boolean]
+      --certificate, --cert  Certificate file for signing.
+                             (DER format file (.cer) or PEM format file (.pem)
+                             is supported)
+                             Requires --sign option.                    [string]
+      --company-name         Company name for version resource          [string]
+      --debug                Output more logs than verbose mode while
+                             processing.                               [boolean]
+      --definition           Resource definition file which contains resource
+                             data to write (see document for details)   [string]
+      --digest               Digest algorithm for signing. (default: 'sha256')
+                             Requires --sign option.
               [string] [choices: "sha1", "sha256", "sha512", "sha224", "sha384"]
-  --file-description     File description for version resource          [string]
-  --file-version         File version for version resource.
-                         Must be 'n.n.n.n' format (n is an integer)     [string]
-  --icon                 One or more icon files to add to executable.
-                         Icon ID can be specified with following format:
-                         <ID>,<file-name>                                [array]
-  --ignore-signed        Force read input file even if it is a signed executable
-                                                                       [boolean]
-  --in, -i               Input executable file name                     [string]
-  --internal-name        Internal name for version resource             [string]
-  --lang                 Resource language id (default: 1033)           [number]
-  --original-filename    Original file name for version resource        [string]
-  --out, -o              Output executable file name                    [string]
-  --p12, --pfx           PKCS 12 file (.p12 or .pfx file), which contains
-                         private key and certificates, for signing.
-                         Requires --sign option.                        [string]
-  --password             Password/passphrase for private key.
-                         If an empty string password is required, specify ''
-                         (sh) or "" (cmd.exe).
-                         Requires --sign option.                        [string]
-  --private-key, --key   Private key file for signing.
-                         (only PEM format file (.pem) is supported)
-                         Requires --sign option.                        [string]
-  --product-name         Product name for version resource              [string]
-  --product-version      Product version for version resource.
-                         Must be 'n.n.n.n' format (n is an integer)     [string]
-  --raw                  One or more resources to add to executable.
-                         The value must be one of following format:
-                         * <type>,<ID>,<string-value>
-                         * <type>,<ID>,@<file-name>
-                         (<string-value> will be stored as UTF-8 string) [array]
-  --select               Certificate selection mode whether to pick certificates
-                         from the specified file (default: leaf)
-                         * leaf    : only pick 'leaf' certificate
-                         * no-root : pick certificates except for root
-                         certificate (i.e. issuer is equal to subject)
-                         * all     : no filter certificates (includes all
-                         certificates)
+      --file-description     File description for version resource      [string]
+      --file-version         File version for version resource.
+                             Must be 'n.n.n.n' format (n is an integer) [string]
+      --icon                 One or more icon files to add to executable.
+                             Icon ID can be specified with following format:
+                             <ID>,<file-name>                            [array]
+      --ignore-signed        Force read input file even if it is a signed
+                             executable                                [boolean]
+  -i, --in                   Input executable file name.
+                             Cannot specify --new if an input file is specified.
+                                                                        [string]
+      --internal-name        Internal name for version resource         [string]
+      --lang                 Resource language id (default: 1033)       [number]
+  -n, --new                  Create an empty (data-only) executable binary.
+                             Cannot specify an input file if this option is
+                             used.                                     [boolean]
+      --original-filename    Original file name for version resource    [string]
+  -o, --out                  Output executable file name                [string]
+      --p12, --pfx           PKCS 12 file (.p12 or .pfx file), which contains
+                             private key and certificates, for signing.
+                             Requires --sign option.                    [string]
+      --password             Password/passphrase for private key.
+                             If an empty string password is required, specify ''
+                             (sh) or "" (cmd.exe).
+                             Requires --sign option.                    [string]
+      --private-key, --key   Private key file for signing.
+                             (only PEM format file (.pem) is supported)
+                             Requires --sign option.                    [string]
+      --product-name         Product name for version resource          [string]
+      --product-version      Product version for version resource.
+                             Must be 'n.n.n.n' format (n is an integer) [string]
+      --raw                  One or more resources to add to executable.
+                             The value must be one of following format:
+                             * <type>,<ID>,<string-value>
+                             * <type>,<ID>,@<file-name>
+                             (<string-value> will be stored as UTF-8 string)
+                                                                         [array]
+      --select               Certificate selection mode whether to pick
+                             certificates from the specified file (default:
+                             leaf)
+                             * leaf    : only pick 'leaf' certificate
+                             * no-root : pick certificates except for root
+                             certificate (i.e. issuer is equal to subject)
+                             * all     : no filter certificates (includes all
+                             certificates)
                                     [string] [choices: "leaf", "no-root", "all"]
-  --sign, -s             Sign output executables                       [boolean]
-  --timestamp            Timestamp server to set timestamp for signed data.
-                         Requires --sign option.                        [string]
-  --verbose, -v          Output logs while processing.                 [boolean]
-  --version, -V          Show version number of this tool              [boolean]
+  -s, --sign                 Sign output executables                   [boolean]
+      --timestamp            Timestamp server to set timestamp for signed data.
+                             Requires --sign option.                    [string]
+  -v, --verbose              Output logs while processing.             [boolean]
+  -V, --version              Show version number of this tool          [boolean]
 ```
 
 ### Main options
@@ -98,7 +113,8 @@ Options:
 #### `[--in] <input>`
 
 - `string`
-- Required
+- Required if `--new` is not specified
+- Cannot use with `--new`
 - Alias: `-i`
 
 Specifies input executable file name. You can omit `--in`; the first parameter without option will be treated as 'input'.
@@ -109,9 +125,36 @@ Specifies input executable file name. You can omit `--in`; the first parameter w
 - Required
 - Alias: `-o`
 
-Specifies output executable file name. You can omit `--out`; the second parameter without option or, if `--in` is used, the first parameter without option will be treated as 'output'.
+Specifies output executable file name. You can omit `--out`; the second parameter without option or, if `--in` or `--new` is used, the first parameter without option will be treated as 'output'.
 
 > Note: This tool does not check whether the output file exists, so the output may be overwritten without any prompts.
+
+#### `--new`
+
+- Flag (boolean)
+- Required if an input file (or `--in`) is not specified
+- Cannot use with an input file
+- Alias: `-n`
+
+Generates an empty (data-only) executable binary. The generated binary will not contain `.code` section, so the binary cannot execute or load as a regular DLL. For example the binary can be used as a data file by calling `LoadLibraryEx` with `LOAD_LIBRARY_AS_DATAFILE`.
+
+#### `--as-32bit`
+
+- Flag (boolean)
+- Ignored if `--new` is not specified
+- Default: false
+
+When generating an empty binary, the binary will be as an 32-bit executable. If this option is not specified, the 64-bit executable will be generated.
+
+#### `--as-exe`
+
+- Flag (boolean)
+- Ignored if `--new` is not specified
+- Default: false
+
+When generating an empty binary, the binary will be as an EXE binary. If this option is not specified, the DLL binary will be generated.
+
+Note that this option does not affect the output file name (specified in `--out`)
 
 #### `--lang <lang-id>`
 
@@ -352,6 +395,12 @@ Adding or replacing '.manifest' file:
 
 ```
 resedit base/a.exe out/a.exe --raw 24,1,@res/myapp.manifest
+```
+
+Creating a resource-only DLL file from `myDefinition.yml` file (see below for 'the definition object'):
+
+```
+resedit --new out/x.dll --definition myDefinition.yml
 ```
 
 Signing an executable:

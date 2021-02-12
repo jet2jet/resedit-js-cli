@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.0
+
+- Add '--new' option to create an empty (data-only) executable binary
+- Update dependency packages (including `resedit` to 0.7.0)
+  - The usage message is changed due to `yargs` changes
+- Changed JS files to ES2017-based scripts
+  - At least Node.js v10 should be supported ES2017 features, so this would not be as a breaking change.
+
 ## v0.2.1
 
 - Fix dependencies for security fix (370c3a5c, 6d93ddd9)

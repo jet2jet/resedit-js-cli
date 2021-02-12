@@ -6,7 +6,7 @@
     "npm": ">=6"
   },
   "engineStrict": true,
-  "description": "Command-line tool for editing Windows Resource data",
+  "description": "Command-line tool for editing Windows Resource data in executable binaries",
   "bin": {
     "resedit": "./dist/cli.js"
   },
@@ -23,7 +23,9 @@
     "icon",
     "edit",
     "authenticode",
-    "signtool"
+    "signtool",
+    "pe-executable",
+    "dll"
   ],
   "repository": {
     "type": "git",
