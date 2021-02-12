@@ -41,7 +41,7 @@
     "version": "node ./tools/updateVersion.js ./src/main/version.ts && git add -A ./src/main/version.ts"
   },
   "dependencies": {
-    "cosmiconfig": "^6.0.0",
+    "cosmiconfig": "^7.0.0",
     "loglevel": "^1.7.1",
     "node-forge": "^0.10.0",
     "resedit": "~0.6.0",
