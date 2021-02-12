@@ -44,7 +44,7 @@
     "cosmiconfig": "^7.0.0",
     "loglevel": "^1.7.1",
     "node-forge": "^0.10.0",
-    "resedit": "~0.6.0",
+    "resedit": "~0.7.0",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
