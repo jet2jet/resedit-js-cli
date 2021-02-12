@@ -13,6 +13,7 @@ import { getValidDigestAlgorithm } from './definitions/parser/sign';
 const thisName = 'resedit';
 
 interface Args extends yargs.Arguments, Options {
+	new?: boolean;
 	version?: boolean;
 }
 
@@ -29,8 +30,20 @@ async function main(): Promise<number> {
 			.locale('en')
 			.usage(
 				`Usage:
-  ${thisName} [--in] <input> [--out] <output> [<options...>]`
+  ${thisName} [[--in] <input> | --new] [--out] <output> [<options...>]`
 			)
+			.option('as-32bit', {
+				type: 'boolean',
+				description:
+					'Creates the executable binary as a 32-bit version (default: as 64-bit).\nRequires --new option.',
+				nargs: 0,
+			})
+			.option('as-exe-file', {
+				type: 'boolean',
+				description:
+					'Creates the executable binary as an EXE file (default: as a DLL).\nRequires --new option.',
+				nargs: 0,
+			})
 			.option('certificate', {
 				alias: ['cert'],
 				description:
@@ -91,7 +104,8 @@ async function main(): Promise<number> {
 			})
 			.option('in', {
 				alias: 'i',
-				description: 'Input executable file name',
+				description:
+					'Input executable file name.\nCannot specify --new if an input file is specified.',
 				type: 'string',
 				nargs: 1,
 			})
@@ -104,6 +118,13 @@ async function main(): Promise<number> {
 				description: 'Resource language id (default: 1033)',
 				type: 'number',
 				nargs: 1,
+			})
+			.option('new', {
+				alias: ['n'],
+				type: 'boolean',
+				description:
+					'Create an empty (data-only) executable binary.\nCannot specify an input file if this option is used.',
+				nargs: 0,
 			})
 			.option('original-filename', {
 				description: 'Original file name for version resource',
@@ -195,16 +216,26 @@ async function main(): Promise<number> {
 				// - the first parameter is used for input file
 				// - the second parameter is used for output file
 				const restArgs = argv._;
-				if (!argv.in) {
+				if (!argv.new && (argv.in === undefined || argv.in === '')) {
 					const val = restArgs.splice(0, 1).shift();
-					argv.in = val !== undefined ? `${val}` : '';
+					const inVal = val !== undefined ? `${val}` : '';
+					if (inVal !== '') {
+						argv.in = inVal;
+					}
 				}
 				if (!argv.out) {
 					const val = restArgs.splice(0, 1).shift();
 					argv.out = val !== undefined ? `${val}` : '';
 				}
-				if (!argv.in) {
-					throw new CommandLineError('input file is missing.');
+				if (argv.in === undefined || argv.in === '') {
+					if (!argv.new) {
+						throw new CommandLineError('input file is missing.');
+					}
+					argv.in = undefined;
+				} else if (argv.new) {
+					throw new CommandLineError(
+						'cannot specify both input file and --new.'
+					);
 				}
 				if (!argv.out) {
 					throw new CommandLineError('output file is missing.');

@@ -4,11 +4,15 @@ import DefinitionData, {
 } from './definitions/DefinitionData';
 
 export default interface Options {
-	in: string;
+	in?: string;
 	out: string;
 	lang?: number;
 	definition?: string | DefinitionData;
 	'ignore-signed'?: boolean;
+	// only used when creating new binary
+	as32bit?: boolean;
+	// only used when creating new binary
+	asExeFile?: boolean;
 
 	// the following resource values will overwrite an object retrieved from `definition`
 

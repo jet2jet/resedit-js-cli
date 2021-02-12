@@ -394,23 +394,41 @@ export default async function run(options: Options): Promise<void> {
 	log.debug('Merge definition data with options (if specified).');
 	convertOptionsToDefinitionData(convertedDefData, options);
 
-	log.info(`Load the executable file from '${options.in}'.`);
-	const inFile = await readFile(options.in);
-	log.debug(
-		`Parse the executable file '${options.in}' (ignore-signed: ${
-			options['ignore-signed'] ?? false ? 'true' : 'false'
-		}).`
-	);
-	const executable = ResEdit.NtExecutable.from(inFile, {
-		ignoreCert: options['ignore-signed'],
-	});
+	let executable;
+	if (options.in === undefined) {
+		log.info(
+			`Create an empty executable binary (32-bit: ${
+				options.as32bit ? 'true' : 'false'
+			}, as EXE: ${options.asExeFile ? 'true' : 'false'}).`
+		);
+		executable = ResEdit.NtExecutable.createEmpty(
+			options.as32bit,
+			options.asExeFile !== undefined ? !options.asExeFile : true
+		);
+	} else {
+		log.info(`Load the executable file from '${options.in}'.`);
+		const inFile = await readFile(options.in);
+		log.debug(
+			`Parse the executable file '${options.in}' (ignore-signed: ${
+				options['ignore-signed'] ?? false ? 'true' : 'false'
+			}).`
+		);
+		executable = ResEdit.NtExecutable.from(inFile, {
+			ignoreCert: options['ignore-signed'],
+		});
+	}
 	const res = ResEdit.NtExecutableResource.from(executable);
 	const hasResOnBase = res.entries.length > 0;
 	log.debug(
 		`The input executable file has ${hasResOnBase ? '' : 'no '}resource(s).`
 	);
 
-	const isExe = /\.(?:exe|com)$/i.test(options.in);
+	const isExe =
+		options.in !== undefined
+			? /\.(?:exe|com)$/i.test(options.in)
+			: options.asExeFile !== undefined
+			? options.asExeFile
+			: false;
 	const modified = await emitResources(isExe, res, convertedDefData);
 
 	if (modified) {
