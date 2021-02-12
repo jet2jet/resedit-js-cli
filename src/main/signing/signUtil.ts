@@ -101,13 +101,13 @@ export function filterAndSortCertListByChain<T extends CertLike>(
 ): T[];
 // @internal
 export function filterAndSortCertListByChain<
-	T extends { cert?: TCert },
-	TCert extends CertLike
+	TCert extends CertLike,
+	T extends { cert?: TCert }
 >(list: T[], certSelect: CertificateSelectMode): T[];
 // @internal
 export function filterAndSortCertListByChain<
-	T extends { cert?: TCert },
-	TCert extends CertLike
+	TCert extends CertLike,
+	T extends { cert?: TCert }
 >(list: Array<T | TCert>, certSelect: CertificateSelectMode): Array<T | TCert> {
 	type TElem = T | TCert;
 	const concatChainData = (prev: TElem[], d: ChainDataT<TCert>): TElem[] => {
@@ -120,11 +120,6 @@ export function filterAndSortCertListByChain<
 		concatChainData([], d).reverse()
 	);
 	switch (certSelect) {
-		default:
-		case CertificateSelectMode.Leaf:
-			// pick first element for each list
-			sortedCertLists = sortedCertLists.map((a) => a.slice(0, 1));
-			break;
 		case CertificateSelectMode.NoRoot:
 			// remove 'Root' element for each list
 			sortedCertLists = sortedCertLists.map((a) => {
@@ -137,6 +132,11 @@ export function filterAndSortCertListByChain<
 			});
 			break;
 		case CertificateSelectMode.All:
+			break;
+		case CertificateSelectMode.Leaf:
+		default:
+			// pick first element for each list
+			sortedCertLists = sortedCertLists.map((a) => a.slice(0, 1));
 			break;
 	}
 	return sortedCertLists.reduce((prev, list) => prev.concat(list), []);
@@ -211,10 +211,6 @@ export function verifyDERCertificates(
 		// if no error has occurred, it is valid p7b data
 		let asn1Cert: forge.asn1.Asn1;
 		switch (certSelect) {
-			default:
-			case CertificateSelectMode.Leaf:
-				asn1Cert = forge.pki.certificateToAsn1(certificates[0]);
-				break;
 			case CertificateSelectMode.NoRoot:
 				signedData.certificates = certificates.filter((cert) => {
 					return cert.issuer.hash !== cert.subject.hash;
@@ -223,6 +219,10 @@ export function verifyDERCertificates(
 				break;
 			case CertificateSelectMode.All:
 				asn1Cert = asn1;
+				break;
+			case CertificateSelectMode.Leaf:
+			default:
+				asn1Cert = forge.pki.certificateToAsn1(certificates[0]);
 				break;
 		}
 		return Buffer.from(forge.asn1.toDer(asn1Cert).getBytes(), 'binary');
