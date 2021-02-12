@@ -45,7 +45,7 @@
     "loglevel": "^1.7.1",
     "node-forge": "^0.10.0",
     "resedit": "~0.6.0",
-    "yargs": "^15.3.1"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
@@ -53,7 +53,7 @@
     "@types/node-fetch": "^2.5.8",
     "@types/node-forge": "^0.9.7",
     "@types/request": "^2.48.5",
-    "@types/yargs": "^15.0.0",
+    "@types/yargs": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "eslint": "^7.19.0",

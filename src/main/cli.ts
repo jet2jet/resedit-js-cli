@@ -196,10 +196,12 @@ async function main(): Promise<number> {
 				// - the second parameter is used for output file
 				const restArgs = argv._;
 				if (!argv.in) {
-					argv.in = restArgs.splice(0, 1)[0];
+					const val = restArgs.splice(0, 1).shift();
+					argv.in = val !== undefined ? `${val}` : '';
 				}
 				if (!argv.out) {
-					argv.out = restArgs.splice(0, 1)[0];
+					const val = restArgs.splice(0, 1).shift();
+					argv.out = val !== undefined ? `${val}` : '';
 				}
 				if (!argv.in) {
 					throw new CommandLineError('input file is missing.');
