@@ -114,9 +114,9 @@ describe('definitions/parser/sign', () => {
 	});
 	describe('parsing', () => {
 		it("should return a parsed data with 'p12File' (with default values)", () => {
-			expect(parseSignDefinition({ p12File: 'p12' })).toStrictEqual<
-				ParsedSignDefinition
-			>({
+			expect(
+				parseSignDefinition({ p12File: 'p12' })
+			).toStrictEqual<ParsedSignDefinition>({
 				p12File: 'p12',
 				certSelect: CertificateSelectMode.Leaf,
 				digestAlgorithm: 'sha256',
