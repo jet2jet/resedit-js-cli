@@ -54,7 +54,9 @@ Options:
                              data to write (see document for details)   [string]
       --digest               Digest algorithm for signing. (default: 'sha256')
                              Requires --sign option.
-              [string] [choices: "sha1", "sha256", "sha512", "sha224", "sha384"]
+              [string] [choices: "sha1", "sha256", "sha512", "sha224", "sha384",
+     "sha512-224", "sha512-256", "sha3-224", "sha3-256", "sha3-384", "sha3-512",
+                                                         "shake128", "shake256"]
       --file-description     File description for version resource      [string]
       --file-version         File version for version resource.
                              Must be 'n.n.n.n' format (n is an integer) [string]

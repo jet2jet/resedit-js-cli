@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0
+
+- Drop Node.js v10
+
 ## v0.3.0
 
 - Add '--new' option to create an empty (data-only) executable binary
