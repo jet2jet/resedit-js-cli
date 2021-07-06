@@ -13,6 +13,10 @@ export default interface Options {
 	as32bit?: boolean;
 	// only used when creating new binary
 	asExeFile?: boolean;
+	// disallow growing resource section size (throw errors if data exceeds)
+	noGrow?: boolean;
+	// allow shrinking resource section size (if the data size is less than original)
+	allowShrink?: boolean;
 
 	// the following resource values will overwrite an object retrieved from `definition`
 

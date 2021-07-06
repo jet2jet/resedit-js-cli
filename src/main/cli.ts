@@ -32,6 +32,12 @@ async function main(): Promise<number> {
 				`Usage:
   ${thisName} [[--in] <input> | --new] [--out] <output> [<options...>]`
 			)
+			.option('allow-shrink', {
+				description:
+					'Allow shrinking resource section size (if the data size is less than original)',
+				type: 'boolean',
+				nargs: 0,
+			})
 			.option('as-32bit', {
 				type: 'boolean',
 				description:
@@ -124,6 +130,13 @@ async function main(): Promise<number> {
 				type: 'boolean',
 				description:
 					'Create an empty (data-only) executable binary.\nCannot specify an input file if this option is used.',
+				nargs: 0,
+			})
+			.option('no-grow', {
+				alias: ['N'],
+				description:
+					'Disallow growing resource section size (throw errors if data exceeds)',
+				type: 'boolean',
 				nargs: 0,
 			})
 			.option('original-filename', {
@@ -239,6 +252,11 @@ async function main(): Promise<number> {
 				}
 				if (!argv.out) {
 					throw new CommandLineError('output file is missing.');
+				}
+				if (argv.new && argv.noGrow) {
+					throw new CommandLineError(
+						'--no-grow cannot be used with --new'
+					);
 				}
 				return true;
 			})

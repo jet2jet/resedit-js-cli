@@ -371,6 +371,9 @@ async function emitResources(
 export default async function run(options: Options): Promise<void> {
 	let convertedDefData: ParsedDefinitionData = {};
 
+	log.debug('noGrow: ', !!options.noGrow);
+	log.debug('allowShrink: ', !!options.allowShrink);
+
 	if (options.definition !== undefined) {
 		if (typeof options.definition === 'string') {
 			const explorer = cosmiconfig('resedit');
@@ -435,8 +438,8 @@ export default async function run(options: Options): Promise<void> {
 		log.info(
 			'Resources has been created. Apply resources to the new executable.'
 		);
-		if (res.entries.length > 0) {
-			res.outputResource(executable);
+		if (res.entries.length > 0 || (!options.allowShrink && hasResOnBase)) {
+			res.outputResource(executable, options.noGrow, options.allowShrink);
 		} else if (hasResOnBase) {
 			// remove resource entry
 			executable.setSectionByEntry(
