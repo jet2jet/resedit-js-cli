@@ -37,6 +37,8 @@ Usage:
 
 Options:
   -h, -?, --help             Show help                                 [boolean]
+      --allow-shrink         Allow shrinking resource section size (if the data
+                             size is less than original)               [boolean]
       --as-32bit             Creates the executable binary as a 32-bit version
                              (default: as 64-bit).
                              Requires --new option.                    [boolean]
@@ -73,6 +75,8 @@ Options:
   -n, --new                  Create an empty (data-only) executable binary.
                              Cannot specify an input file if this option is
                              used.                                     [boolean]
+  -N, --no-grow              Disallow growing resource section size (throw
+                             errors if data exceeds)                   [boolean]
       --original-filename    Original file name for version resource    [string]
   -o, --out                  Output executable file name                [string]
       --p12, --pfx           PKCS 12 file (.p12 or .pfx file), which contains
@@ -157,6 +161,25 @@ When generating an empty binary, the binary will be as an 32-bit executable. If 
 When generating an empty binary, the binary will be as an EXE binary. If this option is not specified, the DLL binary will be generated.
 
 Note that this option does not affect the output file name (specified in `--out`)
+
+#### `--allow-shrink`
+
+- Flag (boolean)
+- Default: false
+
+If set, when replacing resource data into the executable, the resource section size will be the minimum (may be less than the original size).
+
+On default (if not set or set `false`), the resource section size is kept for the original size, even if actual resource data size is less than or equal to the original.
+
+#### `--no-grow`
+
+- Flag (boolean)
+- Default: false
+- Alias: `-N`
+
+If set, when replacing resource data size is larger than the original one in the executable, an error will be thrown.
+
+Some executable generation tools (such as `pkg`) rely on data locations, and if the locations changed, the executable will not run correctly. This option is usable for avoiding changing those locations unexpectedly.
 
 #### `--lang <lang-id>`
 
