@@ -2,7 +2,7 @@
 
 ## v1.1.0
 
-- Add --no-grow (-N) and --allow-shrink options (jet2jet/resedit#21)
+- Add --no-grow (-N) and --allow-shrink options (jet2jet/resedit-js#21)
 
 ## v1.0.0
 
