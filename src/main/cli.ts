@@ -13,6 +13,7 @@ import { getValidDigestAlgorithm } from './definitions/parser/sign';
 const thisName = 'resedit';
 
 interface Args extends yargs.Arguments, Options {
+	grow?: boolean;
 	new?: boolean;
 	version?: boolean;
 }
@@ -91,6 +92,11 @@ async function main(): Promise<number> {
 					"File version for version resource.\nMust be 'n.n.n.n' format (n is an integer)",
 				type: 'string',
 				nargs: 1,
+			})
+			// used for 'no-grow' option
+			.option('grow', {
+				type: 'boolean',
+				hidden: true,
 			})
 			.option('help', {
 				alias: ['h', '?'],
@@ -253,7 +259,7 @@ async function main(): Promise<number> {
 				if (!argv.out) {
 					throw new CommandLineError('output file is missing.');
 				}
-				if (argv.new && argv.noGrow) {
+				if (argv.new && (!!argv.noGrow || argv.grow === false)) {
 					throw new CommandLineError(
 						'--no-grow cannot be used with --new'
 					);
@@ -283,6 +289,9 @@ async function main(): Promise<number> {
 			loglevel.setLevel('DEBUG');
 		} else if ('verbose' in argv && argv.verbose !== false) {
 			loglevel.setLevel('INFO');
+		}
+		if (argv.noGrow === undefined && argv.grow !== undefined) {
+			argv.noGrow = !argv.grow;
 		}
 
 		await run(argv);
