@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.1
+
+- Fix to parsing 'no-grow' option
+
 ## v1.1.0
 
 - Add --no-grow (-N) and --allow-shrink options (jet2jet/resedit-js#21)
