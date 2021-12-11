@@ -1,4 +1,5 @@
 import { cosmiconfig } from 'cosmiconfig';
+import * as PE from 'pe-library';
 import * as ResEdit from 'resedit';
 
 import Options from './Options';
@@ -404,7 +405,7 @@ export default async function run(options: Options): Promise<void> {
 				options.as32bit ? 'true' : 'false'
 			}, as EXE: ${options.asExeFile ? 'true' : 'false'}).`
 		);
-		executable = ResEdit.NtExecutable.createEmpty(
+		executable = PE.NtExecutable.createEmpty(
 			options.as32bit,
 			options.asExeFile !== undefined ? !options.asExeFile : true
 		);
@@ -416,7 +417,7 @@ export default async function run(options: Options): Promise<void> {
 				options['ignore-signed'] ?? false ? 'true' : 'false'
 			}).`
 		);
-		executable = ResEdit.NtExecutable.from(inFile, {
+		executable = PE.NtExecutable.from(inFile, {
 			ignoreCert: options['ignore-signed'],
 		});
 	}

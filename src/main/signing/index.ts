@@ -1,4 +1,5 @@
 import * as crypto from 'crypto';
+import * as PE from 'pe-library';
 import * as ResEdit from 'resedit';
 
 import { readFile } from '../fs';
@@ -161,7 +162,7 @@ export async function prepare(
 }
 
 export function doSign(
-	nt: ResEdit.NtExecutable,
+	nt: PE.NtExecutable,
 	data: CertAndKeyData,
 	digestAlgorithm: DigestAlgorithmType,
 	timestampServer?: string
