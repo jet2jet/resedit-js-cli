@@ -5,10 +5,6 @@ import SimpleOptions from './SimpleOptions';
 
 import fetchNamespace = require('node-fetch');
 
-declare global {
-	let fetch: unknown;
-}
-
 const fetchFunction: typeof fetchNamespace.default | null = (() => {
 	if (typeof fetch === 'function') {
 		return fetch;
