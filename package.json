@@ -43,12 +43,12 @@
     "version": "node ./tools/updateVersion.js ./src/main/version.ts && git add -A ./src/main/version.ts"
   },
   "dependencies": {
-    "cosmiconfig": "^7.0.0",
-    "loglevel": "^1.7.1",
+    "cosmiconfig": "^7.0.1",
+    "loglevel": "^1.8.0",
     "node-forge": "^1.2.1",
     "pe-library": "^0.2.1",
     "resedit": "^1.5.0",
-    "yargs": "^17.0.1"
+    "yargs": "^17.3.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
@@ -56,7 +56,7 @@
     "@types/node-fetch": "^2.5.8",
     "@types/node-forge": "^1.0.0",
     "@types/request": "^2.48.5",
-    "@types/yargs": "^17.0.0",
+    "@types/yargs": "^17.0.8",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.24.0",
