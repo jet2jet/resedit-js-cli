@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.0
+
+- Update dependencies
+
 ## v1.1.1
 
 - Fix to parsing 'no-grow' option
