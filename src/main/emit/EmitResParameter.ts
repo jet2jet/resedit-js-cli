@@ -1,3 +1,3 @@
-import * as ResEdit from 'resedit';
-type EmitResParameter = Pick<ResEdit.NtExecutableResource, 'entries'>;
+import * as PE from 'pe-library';
+type EmitResParameter = Pick<PE.NtExecutableResource, 'entries'>;
 export default EmitResParameter;

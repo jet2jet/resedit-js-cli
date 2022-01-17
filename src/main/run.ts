@@ -355,7 +355,7 @@ function convertOptionsToDefinitionData(
 
 async function emitResources(
 	isExe: boolean,
-	res: ResEdit.NtExecutableResource,
+	res: PE.NtExecutableResource,
 	defData: ParsedDefinitionData
 ) {
 	const lang = typeof defData.lang !== 'undefined' ? defData.lang : 1033;
@@ -421,7 +421,7 @@ export default async function run(options: Options): Promise<void> {
 			ignoreCert: options['ignore-signed'],
 		});
 	}
-	const res = ResEdit.NtExecutableResource.from(executable);
+	const res = PE.NtExecutableResource.from(executable);
 	const hasResOnBase = res.entries.length > 0;
 	log.debug(
 		`The input executable file has ${hasResOnBase ? '' : 'no '}resource(s).`
