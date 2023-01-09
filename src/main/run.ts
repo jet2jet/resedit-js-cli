@@ -28,10 +28,10 @@ import emitVersion from './emit/version';
 
 import { doSign, prepare } from './signing';
 
-type ParsedSignDefinitionWithP12FileAndPartialPemFile = ParsedSignDefinitionWithP12File &
-	Partial<ParsedSignDefinitionWithPemFile>;
-type ParsedSignDefinitionWithPemFileAndPartialP12File = ParsedSignDefinitionWithPemFile &
-	Partial<ParsedSignDefinitionWithP12File>;
+type ParsedSignDefinitionWithP12FileAndPartialPemFile =
+	ParsedSignDefinitionWithP12File & Partial<ParsedSignDefinitionWithPemFile>;
+type ParsedSignDefinitionWithPemFileAndPartialP12File =
+	ParsedSignDefinitionWithPemFile & Partial<ParsedSignDefinitionWithP12File>;
 
 function convertOptionsToDefinitionData(
 	outDefinition: ParsedDefinitionData,
@@ -79,22 +79,20 @@ function convertOptionsToDefinitionData(
 				`Add icon definitions from option. (count = ${options.icon.length})`
 			);
 		}
-		outDefinition.icons = options.icon.map(
-			(value): IconDefinition => {
-				const ra = /^([^,]+),(.*)$/.exec(value);
-				if (ra) {
-					const iconId = convertIntegerOrStringValue(ra[1]);
-					return {
-						id: iconId,
-						sourceFile: ra[2].trim(),
-					};
-				} else {
-					return {
-						sourceFile: value,
-					};
-				}
+		outDefinition.icons = options.icon.map((value): IconDefinition => {
+			const ra = /^([^,]+),(.*)$/.exec(value);
+			if (ra) {
+				const iconId = convertIntegerOrStringValue(ra[1]);
+				return {
+					id: iconId,
+					sourceFile: ra[2].trim(),
+				};
+			} else {
+				return {
+					sourceFile: value,
+				};
 			}
-		);
+		});
 	}
 
 	if (typeof options['product-name'] !== 'undefined') {
@@ -162,31 +160,29 @@ function convertOptionsToDefinitionData(
 			);
 		}
 		outDefinition.raw = (outDefinition.raw ?? []).concat(
-			options.raw.map(
-				(value, i): ParsedRawResourceDefinition => {
-					const ra = /^([^,]+?),([^,]+?),(.+)$/.exec(value);
-					if (!ra) {
-						throw new Error(
-							`Invalid '--raw' option value (index: ${i}, expected: <type>,<ID>,<data>, actual: ${value})`
-						);
-					}
-					const type = convertIntegerOrStringValue(ra[1]);
-					const id = convertIntegerOrStringValue(ra[2]);
-					if (ra[3][0] === '@') {
-						return {
-							type,
-							id,
-							file: ra[3].substring(1),
-						};
-					} else {
-						return {
-							type,
-							id,
-							value: ra[3],
-						};
-					}
+			options.raw.map((value, i): ParsedRawResourceDefinition => {
+				const ra = /^([^,]+?),([^,]+?),(.+)$/.exec(value);
+				if (!ra) {
+					throw new Error(
+						`Invalid '--raw' option value (index: ${i}, expected: <type>,<ID>,<data>, actual: ${value})`
+					);
 				}
-			)
+				const type = convertIntegerOrStringValue(ra[1]);
+				const id = convertIntegerOrStringValue(ra[2]);
+				if (ra[3][0] === '@') {
+					return {
+						type,
+						id,
+						file: ra[3].substring(1),
+					};
+				} else {
+					return {
+						type,
+						id,
+						value: ra[3],
+					};
+				}
+			})
 		);
 	}
 
@@ -304,11 +300,14 @@ function convertOptionsToDefinitionData(
 	}
 	function storeSignObjectWithP12(p12File: string) {
 		if (outDefinition.sign) {
-			(outDefinition.sign as ParsedSignDefinitionWithP12File).p12File = p12File;
-			delete (outDefinition.sign as ParsedSignDefinitionWithP12FileAndPartialPemFile)
-				.certificateFile;
-			delete (outDefinition.sign as ParsedSignDefinitionWithP12FileAndPartialPemFile)
-				.privateKeyFile;
+			(outDefinition.sign as ParsedSignDefinitionWithP12File).p12File =
+				p12File;
+			delete (
+				outDefinition.sign as ParsedSignDefinitionWithP12FileAndPartialPemFile
+			).certificateFile;
+			delete (
+				outDefinition.sign as ParsedSignDefinitionWithP12FileAndPartialPemFile
+			).privateKeyFile;
 		} else {
 			outDefinition.sign = {
 				p12File,
@@ -325,10 +324,15 @@ function convertOptionsToDefinitionData(
 		privateKeyFile: string
 	) {
 		if (outDefinition.sign) {
-			(outDefinition.sign as ParsedSignDefinitionWithPemFile).certificateFile = certificateFile;
-			(outDefinition.sign as ParsedSignDefinitionWithPemFile).privateKeyFile = privateKeyFile;
-			delete (outDefinition.sign as ParsedSignDefinitionWithPemFileAndPartialP12File)
-				.p12File;
+			(
+				outDefinition.sign as ParsedSignDefinitionWithPemFile
+			).certificateFile = certificateFile;
+			(
+				outDefinition.sign as ParsedSignDefinitionWithPemFile
+			).privateKeyFile = privateKeyFile;
+			delete (
+				outDefinition.sign as ParsedSignDefinitionWithPemFileAndPartialP12File
+			).p12File;
 		} else {
 			outDefinition.sign = {
 				certificateFile,
