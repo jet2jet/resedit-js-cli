@@ -130,42 +130,42 @@ describe('definitions/parser/rawResource', () => {
 		});
 		it('should return a parsed data (with ArrayBuffer value)', () => {
 			const value = new ArrayBuffer(1);
-			const r = parseRawResource([{ type: 'A', id: 1, value: value }]);
+			const r = parseRawResource([{ type: 'A', id: 1, value }]);
 			expect(r.length).toEqual(1);
 			expect(r[0]).toStrictEqual<ParsedRawResourceDefinition>({
 				type: 'A',
 				id: 1,
-				value: value,
+				value,
 			});
 		});
 		it('should return a parsed data (with ArrayBufferView value - Uint8Array)', () => {
 			const value = new Uint8Array([0, 1]);
-			const r = parseRawResource([{ type: 'A', id: 1, value: value }]);
+			const r = parseRawResource([{ type: 'A', id: 1, value }]);
 			expect(r.length).toEqual(1);
 			expect(r[0]).toStrictEqual<ParsedRawResourceDefinition>({
 				type: 'A',
 				id: 1,
-				value: value,
+				value,
 			});
 		});
 		it('should return a parsed data (with ArrayBufferView value - DataView)', () => {
 			const value = new DataView(new ArrayBuffer(1));
-			const r = parseRawResource([{ type: 'A', id: 1, value: value }]);
+			const r = parseRawResource([{ type: 'A', id: 1, value }]);
 			expect(r.length).toEqual(1);
 			expect(r[0]).toStrictEqual<ParsedRawResourceDefinition>({
 				type: 'A',
 				id: 1,
-				value: value,
+				value,
 			});
 		});
 		it('should return a parsed data (with ArrayBufferView value - Buffer)', () => {
 			const value = Buffer.from([0, 1]);
-			const r = parseRawResource([{ type: 'A', id: 1, value: value }]);
+			const r = parseRawResource([{ type: 'A', id: 1, value }]);
 			expect(r.length).toEqual(1);
 			expect(r[0]).toStrictEqual<ParsedRawResourceDefinition>({
 				type: 'A',
 				id: 1,
-				value: value,
+				value,
 			});
 		});
 		it('should return a parsed data (with file)', () => {

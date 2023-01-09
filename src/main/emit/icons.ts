@@ -34,7 +34,7 @@ export default async function emitIcons(
 	}
 	log.info(`[icon] Emit icons. (count = ${icons.length})`);
 	const baseIcons = ResEdit.Resource.IconGroupEntry.fromEntries(res.entries);
-	const prevIconIdMap: { [lang: number]: number } = {};
+	const prevIconIdMap: Record<number, number> = {};
 	// MEMO: to use 'await', we do not use 'icons.forEach'
 	for (let i = 0, len = icons.length; i < len; ++i) {
 		const item = icons[i];

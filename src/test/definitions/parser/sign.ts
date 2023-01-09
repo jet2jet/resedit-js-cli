@@ -56,14 +56,14 @@ describe('definitions/parser/sign', () => {
 			}).toThrow();
 		});
 		it("should throw if 'p12File' is not a string", () =>
-			testIfNotAString('p12File'));
+			{ testIfNotAString('p12File'); });
 		it("should throw if 'privateKeyFile' is not a string", () =>
-			testIfNotAString('privateKeyFile', { certificateFile: '' }));
+			{ testIfNotAString('privateKeyFile', { certificateFile: '' }); });
 		it("should throw if 'certificateFile' is not a string", () =>
-			testIfNotAString('certificateFile', { privateKeyFile: '' }));
+			{ testIfNotAString('certificateFile', { privateKeyFile: '' }); });
 		it.each(['password', 'timestampServer'])(
 			"should throw if '%s' is not a string",
-			(name) => testIfNotAString(name, { p12File: '' })
+			(name) => { testIfNotAString(name, { p12File: '' }); }
 		);
 		it("should throw if 'certSelect' is not valid", () => {
 			testIfNotAString('certSelect', { p12File: '' });

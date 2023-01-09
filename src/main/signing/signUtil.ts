@@ -376,7 +376,7 @@ export function pickKeysFromP12File(
 		bagType: forge.pki.oids.pkcs8ShroudedKeyBag,
 	});
 	const pkeyData = pkeyBag[forge.pki.oids.pkcs8ShroudedKeyBag]?.[0];
-	if (!pkeyData || !pkeyData.key) {
+	if (!pkeyData?.key) {
 		throw new Error('No private key is found for p12 data');
 	}
 	const privatePem = forge.pki

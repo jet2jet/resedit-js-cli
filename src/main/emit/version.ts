@@ -28,7 +28,7 @@ export default async function emitVersion(
 
 	// create new one
 	const outVersion = ResEdit.Resource.VersionInfo.create({
-		lang: lang,
+		lang,
 		fixedInfo: version.fixedInfo,
 		strings: version.strings.map(
 			(s): ResEdit.Resource.VersionStringTable => {

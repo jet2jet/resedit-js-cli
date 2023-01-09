@@ -15,7 +15,7 @@ export default async function emitRawResources(
 	lang: number,
 	raw: ParsedRawResourceDefinition[] | null | undefined
 ): Promise<boolean> {
-	if (!raw || !raw.length) {
+	if (!raw || raw.length === 0) {
 		return false;
 	}
 	log.info(`[raw] Emit raw resources. (count = ${raw.length})`);
