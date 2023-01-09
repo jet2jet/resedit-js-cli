@@ -42,7 +42,9 @@ export default function requestSimpleUsingHttp(
 	} else {
 		req = http.request(url, options, httpCallback);
 	}
-	req.on('error', (e) => { cb(e, {}, Buffer.from('')); });
+	req.on('error', (e) => {
+		cb(e, {}, Buffer.from(''));
+	});
 	if (typeof opt.body !== 'undefined') {
 		req.write(opt.body);
 	}
