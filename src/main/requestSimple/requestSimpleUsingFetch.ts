@@ -1,9 +1,11 @@
+import { createRequire } from 'module';
+import type * as fetchNamespace from 'node-fetch';
 import * as log from '../log.js';
 
 import type SimpleCallback from './SimpleCallback.js';
 import type SimpleOptions from './SimpleOptions.js';
 
-import fetchNamespace = require('node-fetch');
+const require = createRequire(import.meta.url);
 
 const fetchFunction: typeof fetchNamespace.default | null = (() => {
 	if (typeof fetch === 'function') {

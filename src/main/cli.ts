@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-import * as loglevel from 'loglevel';
-import * as yargs from 'yargs';
+import { createRequire } from 'module';
+import type * as LogLevel from 'loglevel';
+import yargs, { type Arguments, type Argv } from 'yargs';
 
 import type Options from './Options';
 
@@ -10,9 +11,12 @@ import thisVersion from './version.js';
 import { certificateSelectModeValues } from './definitions/DefinitionData.js';
 import { getValidDigestAlgorithm } from './definitions/parser/sign.js';
 
+const require = createRequire(import.meta.url);
+const loglevel = require('loglevel') as typeof LogLevel;
+
 const thisName = 'resedit';
 
-interface Args extends yargs.Arguments, Options {
+interface Args extends Arguments, Options {
 	grow?: boolean;
 	new?: boolean;
 	version?: boolean;
@@ -25,7 +29,7 @@ class CommandLineError extends Error {}
 async function main(): Promise<number> {
 	loglevel.setDefaultLevel('WARN');
 	try {
-		const argv = yargs
+		const argv = yargs(process.argv.slice(2))
 			.scriptName(thisName)
 			.version(false)
 			.locale('en')
@@ -266,7 +270,7 @@ async function main(): Promise<number> {
 				}
 				return true;
 			})
-			.fail((msg, err, yargs?: yargs.Argv) => {
+			.fail((msg, err, yargs?: Argv) => {
 				if (err !== null && err !== undefined) {
 					if (err instanceof CommandLineError) {
 						msg = err.message;
@@ -317,7 +321,4 @@ async function main(): Promise<number> {
 }
 
 // 'main' should not throw
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-(async () => {
-	process.exit(await main());
-})();
+process.exit(await main());
