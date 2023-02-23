@@ -1,9 +1,9 @@
 import * as ResEdit from 'resedit';
 
-import * as log from '../log';
+import * as log from '../log.js';
 
-import type { ParsedVersionDefinition } from '../definitions/parser/version';
-import type EmitResParameter from './EmitResParameter';
+import type { ParsedVersionDefinition } from '../definitions/parser/version.js';
+import type EmitResParameter from './EmitResParameter.js';
 
 export default async function emitVersion(
 	res: EmitResParameter,

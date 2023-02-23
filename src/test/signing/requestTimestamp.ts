@@ -1,5 +1,5 @@
-import type * as Log from '@/log';
-import type { SimpleCallback, SimpleOptions } from '@/requestSimple';
+import type * as Log from '@/log.js';
+import type { SimpleCallback, SimpleOptions } from '@/requestSimple/index.js';
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
@@ -47,7 +47,7 @@ describe('signing/requestTimestamp', () => {
 			}
 		);
 
-		const requestTimestamp = (await import('@/signing/requestTimestamp'))
+		const requestTimestamp = (await import('@/signing/requestTimestamp.js'))
 			.default;
 		const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
 		const resp = await requestTimestamp(url, DUMMY_REQUEST_DATA);
@@ -79,7 +79,7 @@ describe('signing/requestTimestamp', () => {
 			}
 		);
 
-		const requestTimestamp = (await import('@/signing/requestTimestamp'))
+		const requestTimestamp = (await import('@/signing/requestTimestamp.js'))
 			.default;
 		const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
 		await expect(
@@ -107,7 +107,7 @@ describe('signing/requestTimestamp', () => {
 			}
 		);
 
-		const requestTimestamp = (await import('@/signing/requestTimestamp'))
+		const requestTimestamp = (await import('@/signing/requestTimestamp.js'))
 			.default;
 		const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
 		await expect(requestTimestamp(url, DUMMY_REQUEST_DATA)).rejects.toEqual(

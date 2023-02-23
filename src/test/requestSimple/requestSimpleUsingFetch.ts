@@ -1,4 +1,4 @@
-import { timeoutErrorPromise } from '../testUtils';
+import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
 
 const DUMMY_SERVER_HOST = 'localhost';
@@ -73,7 +73,7 @@ describe('requestSimpleUsingFetch', () => {
 			isModuleAvailable = true;
 
 			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingFetch')
+				await import('@/requestSimple/requestSimpleUsingFetch.js')
 			).isAvailable;
 
 			expect(isAvailable()).toEqual(true);
@@ -83,7 +83,7 @@ describe('requestSimpleUsingFetch', () => {
 			(global as any).fetch = mockFetch;
 
 			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingFetch')
+				await import('@/requestSimple/requestSimpleUsingFetch.js')
 			).isAvailable;
 
 			expect(isAvailable()).toEqual(true);
@@ -92,7 +92,7 @@ describe('requestSimpleUsingFetch', () => {
 			isModuleAvailable = false;
 
 			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingFetch')
+				await import('@/requestSimple/requestSimpleUsingFetch.js')
 			).isAvailable;
 
 			expect(isAvailable()).toEqual(false);
@@ -105,7 +105,7 @@ describe('requestSimpleUsingFetch', () => {
 				responseSuccess = true;
 
 				const requestSimpleUsingFetch = (
-					await import('@/requestSimple/requestSimpleUsingFetch')
+					await import('@/requestSimple/requestSimpleUsingFetch.js')
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
@@ -149,7 +149,7 @@ describe('requestSimpleUsingFetch', () => {
 				responseSuccess = false;
 
 				const requestSimpleUsingFetch = (
-					await import('@/requestSimple/requestSimpleUsingFetch')
+					await import('@/requestSimple/requestSimpleUsingFetch.js')
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
@@ -194,7 +194,7 @@ describe('requestSimpleUsingFetch', () => {
 				mockFetch.mockRejectedValueOnce(dummyError);
 
 				const requestSimpleUsingFetch = (
-					await import('@/requestSimple/requestSimpleUsingFetch')
+					await import('@/requestSimple/requestSimpleUsingFetch.js')
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;

@@ -1,9 +1,9 @@
 import * as ResEdit from 'resedit';
 
-import { readFile } from '../fs';
-import * as log from '../log';
-import type { ParsedIconDefinition } from '../definitions/parser/icons';
-import type EmitResParameter from './EmitResParameter';
+import { readFile } from '../fs.js';
+import * as log from '../log.js';
+import type { ParsedIconDefinition } from '../definitions/parser/icons.js';
+import type EmitResParameter from './EmitResParameter.js';
 
 function getNextPreferIconId(
 	start: number,

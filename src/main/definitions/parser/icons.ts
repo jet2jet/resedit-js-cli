@@ -1,9 +1,9 @@
-import type { IconDefinition } from '../DefinitionData';
+import type { IconDefinition } from '../DefinitionData.js';
 import {
 	validateStringOrIntegerValue,
 	validateStringValue,
 	validateIntegerValue,
-} from './utils';
+} from './utils.js';
 
 export type ParsedIconDefinition = IconDefinition;
 

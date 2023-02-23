@@ -1,7 +1,7 @@
 import * as ResEdit from 'resedit';
-import type { ParsedVersionDefinition } from '@/definitions/parser/version';
-import type EmitResParameter from '@/emit/EmitResParameter';
-import emitVersion from '@/emit/version';
+import type { ParsedVersionDefinition } from '@/definitions/parser/version.js';
+import type EmitResParameter from '@/emit/EmitResParameter.js';
+import emitVersion from '@/emit/version.js';
 
 const DUMMY_VERSION = (() => {
 	const v = ResEdit.Resource.VersionInfo.createEmpty();

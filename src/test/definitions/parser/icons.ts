@@ -1,6 +1,6 @@
 import parseIcons, {
 	type ParsedIconDefinition,
-} from '@/definitions/parser/icons';
+} from '@/definitions/parser/icons.js';
 
 describe('definitions/parser/icons', () => {
 	describe('invalid data', () => {

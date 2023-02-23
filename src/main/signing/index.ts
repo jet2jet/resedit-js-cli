@@ -2,21 +2,21 @@ import * as crypto from 'crypto';
 import type * as PE from 'pe-library';
 import * as ResEdit from 'resedit';
 
-import { readFile } from '../fs';
-import * as log from '../log';
-import requestTimestamp from './requestTimestamp';
+import { readFile } from '../fs.js';
+import * as log from '../log.js';
+import requestTimestamp from './requestTimestamp.js';
 import {
 	type CertAndKeyData,
 	getCertificatesFromPem,
 	pickKeysFromP12File,
 	pickPrivateKeyFromPem,
 	verifyDERCertificates,
-} from './signUtil';
+} from './signUtil.js';
 import type {
 	DigestAlgorithmType,
 	CertificateSelectMode,
-} from '../definitions/DefinitionData';
-import type { ParsedSignDefinition } from '../definitions/parser/sign';
+} from '../definitions/DefinitionData.js';
+import type { ParsedSignDefinition } from '../definitions/parser/sign.js';
 
 class MySignerObject implements ResEdit.SignerObject {
 	public timestampData?(reqData: ArrayBuffer): Promise<ArrayBufferView>;

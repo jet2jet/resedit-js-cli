@@ -3,8 +3,8 @@ import {
 	type ChainDataT,
 	filterAndSortCertListByChain,
 	makeChainList,
-} from '@/signing/signUtil';
-import { CertificateSelectMode } from '@/definitions/DefinitionData';
+} from '@/signing/signUtil.js';
+import { CertificateSelectMode } from '@/definitions/DefinitionData.js';
 
 const DUMMY_CERT_1_A: CertLike = {
 	issuer: { hash: 'a' },

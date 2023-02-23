@@ -1,4 +1,4 @@
-import { timeoutErrorPromise } from '../testUtils';
+import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
 
 import requestNamespace = require('request');
@@ -99,7 +99,7 @@ describe('requestSimpleUsingModule', () => {
 	describe('isAvailable', () => {
 		it('should return true if available', async () => {
 			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingModule')
+				await import('@/requestSimple/requestSimpleUsingModule.js')
 			).isAvailable;
 
 			expect(isAvailable()).toEqual(true);
@@ -108,7 +108,7 @@ describe('requestSimpleUsingModule', () => {
 			isRequestAvailable = false;
 
 			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingModule')
+				await import('@/requestSimple/requestSimpleUsingModule.js')
 			).isAvailable;
 
 			expect(isAvailable()).toEqual(false);
@@ -118,7 +118,7 @@ describe('requestSimpleUsingModule', () => {
 	describe('default function', () => {
 		it("should call 'request' module function if available (success)", async () => {
 			const requestSimpleUsingModule = (
-				await import('@/requestSimple/requestSimpleUsingModule')
+				await import('@/requestSimple/requestSimpleUsingModule.js')
 			).default;
 
 			const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
@@ -157,7 +157,7 @@ describe('requestSimpleUsingModule', () => {
 		it("should call 'request' module function if available (success but warn for module)", async () => {
 			mockRequestVersion = '2.87.0';
 			const requestSimpleUsingModule = (
-				await import('@/requestSimple/requestSimpleUsingModule')
+				await import('@/requestSimple/requestSimpleUsingModule.js')
 			).default;
 
 			const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
@@ -197,7 +197,7 @@ describe('requestSimpleUsingModule', () => {
 			returnSuccess = false;
 
 			const requestSimpleUsingModule = (
-				await import('@/requestSimple/requestSimpleUsingModule')
+				await import('@/requestSimple/requestSimpleUsingModule.js')
 			).default;
 
 			const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;

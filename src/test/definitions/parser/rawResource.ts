@@ -1,6 +1,6 @@
 import parseRawResource, {
 	type ParsedRawResourceDefinition,
-} from '@/definitions/parser/rawResource';
+} from '@/definitions/parser/rawResource.js';
 
 describe('definitions/parser/rawResource', () => {
 	describe('invalid data', () => {

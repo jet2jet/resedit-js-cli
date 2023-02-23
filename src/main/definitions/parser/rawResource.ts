@@ -1,10 +1,10 @@
-import type { RawResourceDefinitionData } from '../DefinitionData';
+import type { RawResourceDefinitionData } from '../DefinitionData.js';
 
 import {
 	validateIntegerValue,
 	validateStringOrIntegerValue,
 	validateStringValue,
-} from './utils';
+} from './utils.js';
 
 export type ParsedRawResourceDefinition = RawResourceDefinitionData;
 

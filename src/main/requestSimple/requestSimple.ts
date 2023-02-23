@@ -1,10 +1,10 @@
 import requestSimpleUsingModule, {
 	isAvailable as isRequestAvailable,
-} from './requestSimpleUsingModule';
+} from './requestSimpleUsingModule.js';
 import requestSimpleUsingFetch, {
 	isAvailable as isFetchAvailable,
-} from './requestSimpleUsingFetch';
-import requestSimpleUsingHttp from './requestSimpleUsingHttp';
+} from './requestSimpleUsingFetch.js';
+import requestSimpleUsingHttp from './requestSimpleUsingHttp.js';
 
 const requestSimple = isRequestAvailable()
 	? requestSimpleUsingModule

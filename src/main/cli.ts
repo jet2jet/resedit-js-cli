@@ -5,10 +5,10 @@ import * as yargs from 'yargs';
 
 import type Options from './Options';
 
-import run from './run';
-import thisVersion from './version';
-import { certificateSelectModeValues } from './definitions/DefinitionData';
-import { getValidDigestAlgorithm } from './definitions/parser/sign';
+import run from './run.js';
+import thisVersion from './version.js';
+import { certificateSelectModeValues } from './definitions/DefinitionData.js';
+import { getValidDigestAlgorithm } from './definitions/parser/sign.js';
 
 const thisName = 'resedit';
 

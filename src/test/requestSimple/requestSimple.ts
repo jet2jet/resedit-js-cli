@@ -22,22 +22,22 @@ describe('requestSimple', () => {
 
 	beforeAll(() => {
 		jest.doMock(
-			'@/requestSimple/requestSimpleUsingHttp',
+			'@/requestSimple/requestSimpleUsingHttp.js',
 			() => mockUsingHttpModule
 		);
 		jest.doMock(
-			'@/requestSimple/requestSimpleUsingModule',
+			'@/requestSimple/requestSimpleUsingModule.js',
 			() => mockUsingModuleModule
 		);
 		jest.doMock(
-			'@/requestSimple/requestSimpleUsingFetch',
+			'@/requestSimple/requestSimpleUsingFetch.js',
 			() => mockUsingFetchModule
 		);
 	});
 	afterAll(() => {
-		jest.dontMock('@/requestSimple/requestSimpleUsingHttp');
-		jest.dontMock('@/requestSimple/requestSimpleUsingModule');
-		jest.dontMock('@/requestSimple/requestSimpleUsingFetch');
+		jest.dontMock('@/requestSimple/requestSimpleUsingHttp.js');
+		jest.dontMock('@/requestSimple/requestSimpleUsingModule.js');
+		jest.dontMock('@/requestSimple/requestSimpleUsingFetch.js');
 	});
 	beforeEach(() => {
 		jest.resetModules();
@@ -48,7 +48,7 @@ describe('requestSimple', () => {
 		mockIsRequestAvailableFn.mockReturnValue(true);
 		mockIsFetchAvailableFn.mockReturnValue(false);
 
-		const request = (await import('@/requestSimple')).default;
+		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingModuleFn);
 		expect(mockIsRequestAvailableFn).toBeCalledWith();
@@ -58,7 +58,7 @@ describe('requestSimple', () => {
 		mockIsRequestAvailableFn.mockReturnValue(false);
 		mockIsFetchAvailableFn.mockReturnValue(true);
 
-		const request = (await import('@/requestSimple')).default;
+		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingFetchFn);
 		expect(mockIsRequestAvailableFn).toBeCalledWith();
@@ -69,7 +69,7 @@ describe('requestSimple', () => {
 		mockIsRequestAvailableFn.mockReturnValue(true);
 		mockIsFetchAvailableFn.mockReturnValue(true);
 
-		const request = (await import('@/requestSimple')).default;
+		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingModuleFn);
 		expect(mockIsRequestAvailableFn).toBeCalledWith();
@@ -79,7 +79,7 @@ describe('requestSimple', () => {
 		mockIsRequestAvailableFn.mockReturnValue(false);
 		mockIsFetchAvailableFn.mockReturnValue(false);
 
-		const request = (await import('@/requestSimple')).default;
+		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingHttpFn);
 		expect(mockIsRequestAvailableFn).toBeCalledWith();

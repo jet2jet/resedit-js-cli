@@ -1,5 +1,5 @@
 import * as forge from 'node-forge';
-import { CertificateSelectMode } from '../definitions/DefinitionData';
+import { CertificateSelectMode } from '../definitions/DefinitionData.js';
 
 export interface CertAndKeyData {
 	certs: ArrayBufferView[];

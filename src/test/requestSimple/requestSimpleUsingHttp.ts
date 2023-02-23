@@ -3,7 +3,7 @@ import * as nock from 'nock';
 import type * as Log from '@/log';
 import type { SimpleOptions } from '@/requestSimple';
 
-import { timeoutErrorPromise } from '../testUtils';
+import { timeoutErrorPromise } from '../testUtils/index.js';
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
@@ -76,7 +76,7 @@ describe('requestSimpleUsingHttp', () => {
 					break;
 			}
 			const requestSimpleUsingHttp = (
-				await import('@/requestSimple/requestSimpleUsingHttp')
+				await import('@/requestSimple/requestSimpleUsingHttp.js')
 			).default;
 			const url = `${protocol}://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
 			const dummyOptions: SimpleOptions = {
