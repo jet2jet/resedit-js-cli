@@ -91,7 +91,11 @@ export async function prepareForSigningByP12(
 	} catch (e) {
 		throw new Error(
 			`Invalid or unsupported p12/pfx file '${p12File}' (detail: ${String(
-				e?.message ?? e
+				e == null
+					? ''
+					: typeof e === 'object' && 'message' in e
+					? String(e.message)
+					: e
 			)})`
 		);
 	}

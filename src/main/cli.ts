@@ -303,7 +303,7 @@ async function main(): Promise<number> {
 		} else {
 			let msg: string | undefined;
 			if (typeof s !== 'string') {
-				msg = s.toString();
+				msg = String(s);
 			} else {
 				msg = s;
 			}
