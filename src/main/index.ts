@@ -1,8 +1,7 @@
-import Options from './Options';
+import type Options from './Options';
 import run from './run';
 
-import DefinitionData, {
-	CertificateSelectMode,
+import type {
 	DigestAlgorithmType,
 	IconDefinition,
 	RawResourceDefinitionData,
@@ -11,17 +10,19 @@ import DefinitionData, {
 	VersionDefinitionBase,
 	VersionDefinitionTranslation,
 } from './definitions/DefinitionData';
+import type DefinitionData from './definitions/DefinitionData';
+import { CertificateSelectMode } from './definitions/DefinitionData';
 
 export {
 	CertificateSelectMode,
-	DefinitionData,
-	DigestAlgorithmType,
-	IconDefinition,
-	Options,
-	RawResourceDefinitionData,
-	SigningDefinitionData,
-	VersionDefinition,
-	VersionDefinitionBase,
-	VersionDefinitionTranslation,
+	type DefinitionData,
+	type DigestAlgorithmType,
+	type IconDefinition,
+	type Options,
+	type RawResourceDefinitionData,
+	type SigningDefinitionData,
+	type VersionDefinition,
+	type VersionDefinitionBase,
+	type VersionDefinitionTranslation,
 };
 export default run;

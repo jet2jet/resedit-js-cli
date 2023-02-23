@@ -1,4 +1,5 @@
 import { timeoutErrorPromise } from '../testUtils';
+import type * as Log from '@/log';
 
 import requestNamespace = require('request');
 
@@ -11,7 +12,7 @@ const DUMMY_RESPONSE_HEADER = {
 };
 
 describe('requestSimpleUsingModule', () => {
-	let mockLog: typeof import('@/log');
+	let mockLog: typeof Log;
 	beforeAll(() => {
 		mockLog = {
 			trace: jest.fn(),

@@ -1,6 +1,6 @@
 import { CertificateSelectMode } from '@/definitions/DefinitionData';
 import parseSignDefinition, {
-	ParsedSignDefinition,
+	type ParsedSignDefinition,
 } from '@/definitions/parser/sign';
 
 function testIfNotAString(name: string, baseObj: Record<string, unknown> = {}) {

@@ -2,8 +2,8 @@ import * as ResEdit from 'resedit';
 
 import * as log from '../log';
 
-import { ParsedVersionDefinition } from '../definitions/parser/version';
-import EmitResParameter from './EmitResParameter';
+import type { ParsedVersionDefinition } from '../definitions/parser/version';
+import type EmitResParameter from './EmitResParameter';
 
 export default async function emitVersion(
 	res: EmitResParameter,

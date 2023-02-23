@@ -1,4 +1,5 @@
 import { timeoutErrorPromise } from '../testUtils';
+import type * as Log from '@/log';
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
@@ -9,7 +10,7 @@ const DUMMY_RESPONSE_HEADER = {
 };
 
 describe('requestSimpleUsingFetch', () => {
-	let mockLog: typeof import('@/log');
+	let mockLog: typeof Log;
 	beforeAll(() => {
 		mockLog = {
 			trace: jest.fn(),

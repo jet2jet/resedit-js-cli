@@ -1,5 +1,5 @@
 import parseRawResource, {
-	ParsedRawResourceDefinition,
+	type ParsedRawResourceDefinition,
 } from '@/definitions/parser/rawResource';
 
 describe('definitions/parser/rawResource', () => {

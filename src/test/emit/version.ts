@@ -1,6 +1,6 @@
 import * as ResEdit from 'resedit';
-import { ParsedVersionDefinition } from '@/definitions/parser/version';
-import EmitResParameter from '@/emit/EmitResParameter';
+import type { ParsedVersionDefinition } from '@/definitions/parser/version';
+import type EmitResParameter from '@/emit/EmitResParameter';
 import emitVersion from '@/emit/version';
 
 const DUMMY_VERSION = (() => {

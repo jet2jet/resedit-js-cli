@@ -1,4 +1,4 @@
-import { RawResourceDefinitionData } from '../DefinitionData';
+import type { RawResourceDefinitionData } from '../DefinitionData';
 
 import {
 	validateIntegerValue,

@@ -2,23 +2,23 @@ import { cosmiconfig } from 'cosmiconfig';
 import * as PE from 'pe-library';
 import * as ResEdit from 'resedit';
 
-import Options from './Options';
+import type Options from './Options';
 import { readFile, writeFile } from './fs';
 import * as log from './log';
 
 import {
-	IconDefinition,
+	type IconDefinition,
 	CertificateSelectMode,
 	certificateSelectModeValues,
 } from './definitions/DefinitionData';
 import parseDefinitionData, {
-	ParsedDefinitionData,
+	type ParsedDefinitionData,
 } from './definitions/parser';
-import { ParsedVersionDefinition } from './definitions/parser/version';
-import { ParsedRawResourceDefinition } from './definitions/parser/rawResource';
+import type { ParsedVersionDefinition } from './definitions/parser/version';
+import type { ParsedRawResourceDefinition } from './definitions/parser/rawResource';
 import {
-	ParsedSignDefinitionWithP12File,
-	ParsedSignDefinitionWithPemFile,
+	type ParsedSignDefinitionWithP12File,
+	type ParsedSignDefinitionWithPemFile,
 	isValidDigestAlgorithm,
 } from './definitions/parser/sign';
 

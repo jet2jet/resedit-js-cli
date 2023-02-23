@@ -1,7 +1,8 @@
-import DefinitionData, {
+import type {
 	CertificateSelectMode,
 	DigestAlgorithmType,
 } from './definitions/DefinitionData';
+import type DefinitionData from './definitions/DefinitionData';
 
 export default interface Options {
 	in?: string;

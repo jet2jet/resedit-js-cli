@@ -1,4 +1,4 @@
-import * as ResEdit from 'resedit';
+import type * as ResEdit from 'resedit';
 
 /** Icon definition object which represents individual icon resource (RT_ICON_GROUP) data */
 export interface IconDefinition {

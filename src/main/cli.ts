@@ -3,7 +3,7 @@
 import * as loglevel from 'loglevel';
 import * as yargs from 'yargs';
 
-import Options from './Options';
+import type Options from './Options';
 
 import run from './run';
 import thisVersion from './version';
@@ -303,7 +303,7 @@ async function main(): Promise<number> {
 		} else {
 			let msg: string | undefined;
 			if (typeof s !== 'string') {
-				msg = s.toString();
+				msg = String(s);
 			} else {
 				msg = s;
 			}

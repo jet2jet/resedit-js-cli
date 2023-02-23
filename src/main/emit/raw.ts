@@ -1,7 +1,7 @@
 import { readFile } from '../fs';
 import * as log from '../log';
-import { ParsedRawResourceDefinition } from '../definitions/parser/rawResource';
-import EmitResParameter from './EmitResParameter';
+import type { ParsedRawResourceDefinition } from '../definitions/parser/rawResource';
+import type EmitResParameter from './EmitResParameter';
 
 function arrayBufferViewToArrayBuffer(view: ArrayBufferView): ArrayBuffer {
 	return view.buffer.slice(
