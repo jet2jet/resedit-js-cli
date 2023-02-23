@@ -1,4 +1,4 @@
-import * as ResEdit from 'resedit';
+import type * as ResEdit from 'resedit';
 
 import { validateIntegerValue, validateStringValue } from './utils';
 

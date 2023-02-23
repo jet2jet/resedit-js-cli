@@ -3,8 +3,8 @@ import * as https from 'https';
 
 import * as log from '../log';
 
-import SimpleCallback from './SimpleCallback';
-import SimpleOptions from './SimpleOptions';
+import type SimpleCallback from './SimpleCallback';
+import type SimpleOptions from './SimpleOptions';
 
 export default function requestSimpleUsingHttp(
 	url: string,

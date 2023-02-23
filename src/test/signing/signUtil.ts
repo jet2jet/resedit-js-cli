@@ -1,6 +1,6 @@
 import {
-	CertLike,
-	ChainDataT,
+	type CertLike,
+	type ChainDataT,
 	filterAndSortCertListByChain,
 	makeChainList,
 } from '@/signing/signUtil';

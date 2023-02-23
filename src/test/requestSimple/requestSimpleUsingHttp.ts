@@ -1,6 +1,7 @@
 import * as nock from 'nock';
 
-import { SimpleOptions } from '@/requestSimple';
+import type * as Log from '@/log';
+import type { SimpleOptions } from '@/requestSimple';
 
 import { timeoutErrorPromise } from '../testUtils';
 
@@ -10,7 +11,7 @@ const DUMMY_REQUEST_DATA = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]).buffer;
 const DUMMY_RESPONSE_DATA = Buffer.from(new ArrayBuffer(16));
 
 describe('requestSimpleUsingHttp', () => {
-	let mockLog: typeof import('@/log');
+	let mockLog: typeof Log;
 	beforeAll(() => {
 		jest.resetModules();
 		mockLog = {

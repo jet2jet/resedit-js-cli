@@ -3,7 +3,7 @@
 import * as loglevel from 'loglevel';
 import * as yargs from 'yargs';
 
-import Options from './Options';
+import type Options from './Options';
 
 import run from './run';
 import thisVersion from './version';

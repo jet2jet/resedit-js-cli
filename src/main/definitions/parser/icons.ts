@@ -1,4 +1,4 @@
-import { IconDefinition } from '../DefinitionData';
+import type { IconDefinition } from '../DefinitionData';
 import {
 	validateStringOrIntegerValue,
 	validateStringValue,

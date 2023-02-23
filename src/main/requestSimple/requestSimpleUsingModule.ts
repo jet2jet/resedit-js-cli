@@ -1,7 +1,7 @@
 import * as log from '../log';
 
-import SimpleCallback from './SimpleCallback';
-import SimpleOptions from './SimpleOptions';
+import type SimpleCallback from './SimpleCallback';
+import type SimpleOptions from './SimpleOptions';
 
 import requestNamespace = require('request');
 

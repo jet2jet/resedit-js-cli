@@ -1,4 +1,4 @@
-import * as http from 'http';
+import type * as http from 'http';
 
 // TODO: replace 'any' to 'unknown'
 type SimpleCallback = (

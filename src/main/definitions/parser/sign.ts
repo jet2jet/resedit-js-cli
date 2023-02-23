@@ -3,7 +3,7 @@ import * as crypto from 'crypto';
 import { validateStringValue } from './utils';
 import {
 	CertificateSelectMode,
-	DigestAlgorithmType,
+	type DigestAlgorithmType,
 	certificateSelectModeValues,
 } from '../../definitions/DefinitionData';
 

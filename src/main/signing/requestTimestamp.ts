@@ -1,6 +1,6 @@
 import * as log from '../log';
 
-import requestSimple, { SimpleOptions } from '../requestSimple';
+import requestSimple, { type SimpleOptions } from '../requestSimple';
 
 /**
  * Requests to TSA.

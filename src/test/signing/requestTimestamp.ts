@@ -1,4 +1,5 @@
-import { SimpleCallback, SimpleOptions } from '@/requestSimple';
+import type * as Log from '@/log';
+import type { SimpleCallback, SimpleOptions } from '@/requestSimple';
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
@@ -6,7 +7,7 @@ const DUMMY_REQUEST_DATA = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]).buffer;
 const DUMMY_RESPONSE_DATA = Buffer.from(new ArrayBuffer(16));
 
 describe('signing/requestTimestamp', () => {
-	const mockLog: typeof import('@/log') = {
+	const mockLog: typeof Log = {
 		trace: jest.fn(),
 		debug: jest.fn(),
 		info: jest.fn(),

@@ -1,9 +1,9 @@
-import * as ResEdit from 'resedit';
-import { VersionDefinition } from '@/definitions/DefinitionData';
+import type * as ResEdit from 'resedit';
+import type { VersionDefinition } from '@/definitions/DefinitionData';
 import parseVersion, {
 	parseVersionTranslation,
-	ParsedVersionDefinition,
-	ParsedVersionStrings,
+	type ParsedVersionDefinition,
+	type ParsedVersionStrings,
 } from '@/definitions/parser/version';
 
 const ALL_FIXED_INFO_KEYS: Array<keyof ResEdit.Resource.VersionFixedInfo> = [
