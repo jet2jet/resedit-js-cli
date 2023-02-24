@@ -1,18 +1,16 @@
-import { createRequire } from 'module';
-import type * as fetchNamespace from 'node-fetch';
+import type nodeFetch from 'node-fetch';
 import * as log from '../log.js';
 
 import type SimpleCallback from './SimpleCallback.js';
 import type SimpleOptions from './SimpleOptions.js';
 
-const require = createRequire(import.meta.url);
-
-const fetchFunction: typeof fetchNamespace.default | null = (() => {
+const fetchFunction: typeof nodeFetch | null = await (async () => {
 	if (typeof fetch === 'function') {
-		return fetch;
+		log.debug('[sign] Built-in fetch is found');
+		return fetch as typeof nodeFetch;
 	}
 	try {
-		return require('node-fetch');
+		return (await import('node-fetch')).default;
 	} catch {
 		return null;
 	}
@@ -36,7 +34,7 @@ export default function requestSimpleUsingFetch(
 				headers: opt.headers,
 				body: opt.body,
 			});
-			const buffer = await response.buffer();
+			const buffer = Buffer.from(await response.arrayBuffer());
 
 			const cbHeaders: Record<string, string> = {};
 			for (const pair of response.headers.entries()) {
