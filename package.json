@@ -43,7 +43,8 @@
     "lint:fix": "npm run lint:prettier:fix && npm run lint:eslint:fix",
     "lint:prettier": "prettier --config ./.prettierrc.yml --check \"**/*.{js,jsx,ts,tsx,yml,json,md}\"",
     "lint:prettier:fix": "prettier --config ./.prettierrc.yml --write \"**/*.{js,jsx,ts,tsx,yml,json,md}\"",
-    "test": "jest --config ./jest.config.js",
+    "test-base": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "npm run test-base -- --config ./jest.config.js",
     "version": "node ./tools/updateVersion.js ./src/main/version.ts && git add -A ./src/main/version.ts"
   },
   "dependencies": {

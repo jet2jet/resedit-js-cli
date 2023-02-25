@@ -1,3 +1,5 @@
+import { jest } from '@jest/globals';
+
 describe('requestSimple', () => {
 	const mockUsingModuleFn = jest.fn();
 	const mockUsingFetchFn = jest.fn();
@@ -21,15 +23,15 @@ describe('requestSimple', () => {
 	};
 
 	beforeAll(() => {
-		jest.doMock(
+		jest.unstable_mockModule(
 			'@/requestSimple/requestSimpleUsingHttp.js',
 			() => mockUsingHttpModule
 		);
-		jest.doMock(
+		jest.unstable_mockModule(
 			'@/requestSimple/requestSimpleUsingModule.js',
 			() => mockUsingModuleModule
 		);
-		jest.doMock(
+		jest.unstable_mockModule(
 			'@/requestSimple/requestSimpleUsingFetch.js',
 			() => mockUsingFetchModule
 		);

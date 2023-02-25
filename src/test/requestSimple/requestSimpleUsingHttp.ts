@@ -1,9 +1,14 @@
-import * as nock from 'nock';
+import { jest } from '@jest/globals';
+import { createRequire } from 'module';
+import type nockNamespace = require('nock');
 
 import type * as Log from '@/log';
 import type { SimpleOptions } from '@/requestSimple';
 
 import { timeoutErrorPromise } from '../testUtils/index.js';
+
+const require = createRequire(import.meta.url);
+const nock = require('nock') as typeof nockNamespace;
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
@@ -21,7 +26,7 @@ describe('requestSimpleUsingHttp', () => {
 			warn: jest.fn(),
 			error: jest.fn(),
 		};
-		jest.doMock('@/log', () => mockLog);
+		jest.unstable_mockModule('@/log', () => mockLog);
 	});
 	afterAll(() => {
 		jest.dontMock('@/log');
@@ -61,7 +66,7 @@ describe('requestSimpleUsingHttp', () => {
 				DUMMY_SERVER_PATH,
 				Buffer.from(DUMMY_REQUEST_DATA)
 			);
-			let scope: nock.Scope;
+			let scope: nockNamespace.Scope;
 			switch (responseType) {
 				case ResponseType.Success:
 					scope = interceptor.reply(200, DUMMY_RESPONSE_DATA, {

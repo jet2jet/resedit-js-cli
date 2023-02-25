@@ -1,4 +1,6 @@
+import { jest } from '@jest/globals';
 import type * as Log from '@/log.js';
+import type requestSimple from '@/requestSimple/index.js';
 import type { SimpleCallback, SimpleOptions } from '@/requestSimple/index.js';
 
 const DUMMY_SERVER_HOST = 'localhost';
@@ -16,12 +18,12 @@ describe('signing/requestTimestamp', () => {
 	};
 	const mockRequestSimple = {
 		__esModule: true,
-		default: jest.fn(),
+		default: jest.fn() as jest.MockedFunction<typeof requestSimple>,
 	};
 	beforeAll(() => {
 		jest.resetModules();
-		jest.doMock('@/log', () => mockLog);
-		jest.doMock('@/requestSimple', () => mockRequestSimple);
+		jest.unstable_mockModule('@/log', () => mockLog);
+		jest.unstable_mockModule('@/requestSimple', () => mockRequestSimple);
 	});
 	afterAll(() => {
 		jest.dontMock('@/requestSimple');

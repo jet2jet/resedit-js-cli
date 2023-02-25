@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import type * as requestNamespace from 'request';
 import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
@@ -20,7 +21,7 @@ describe('requestSimpleUsingModule', () => {
 			warn: jest.fn(),
 			error: jest.fn(),
 		};
-		jest.doMock('@/log', () => mockLog);
+		jest.unstable_mockModule('@/log', () => mockLog);
 	});
 	afterAll(() => {
 		jest.dontMock('@/log');

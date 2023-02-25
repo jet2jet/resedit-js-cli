@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
 
@@ -19,7 +20,7 @@ describe('requestSimpleUsingFetch', () => {
 			warn: jest.fn(),
 			error: jest.fn(),
 		};
-		jest.doMock('@/log', () => mockLog);
+		jest.unstable_mockModule('@/log', () => mockLog);
 	});
 	afterAll(() => {
 		jest.dontMock('@/log');
@@ -39,7 +40,7 @@ describe('requestSimpleUsingFetch', () => {
 			dummyHeaders.set(key, (DUMMY_RESPONSE_HEADER as any)[key]);
 		});
 		return {
-			async buffer() {
+			async arrayBuffer() {
 				return DUMMY_RESPONSE_DATA;
 			},
 			headers: dummyHeaders,
@@ -50,11 +51,11 @@ describe('requestSimpleUsingFetch', () => {
 	});
 
 	beforeAll(() => {
-		jest.doMock('node-fetch', () => {
+		jest.unstable_mockModule('node-fetch', () => {
 			if (!isModuleAvailable) {
 				throw new Error('Not found');
 			}
-			return mockFetch;
+			return { __esModule: true, default: mockFetch };
 		});
 	});
 	afterAll(() => {

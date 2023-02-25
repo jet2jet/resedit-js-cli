@@ -1,5 +1,5 @@
 import { createRequire } from 'module';
-import type * as requestNamespace from 'request';
+import type requestNamespace = require('request');
 
 import * as log from '../log.js';
 
