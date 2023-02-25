@@ -1,10 +1,10 @@
 import type * as ResEdit from 'resedit';
-import type { VersionDefinition } from '@/definitions/DefinitionData';
+import type { VersionDefinition } from '@/definitions/DefinitionData.js';
 import parseVersion, {
 	parseVersionTranslation,
 	type ParsedVersionDefinition,
 	type ParsedVersionStrings,
-} from '@/definitions/parser/version';
+} from '@/definitions/parser/version.js';
 
 const ALL_FIXED_INFO_KEYS: Array<keyof ResEdit.Resource.VersionFixedInfo> = [
 	'fileVersionMS',

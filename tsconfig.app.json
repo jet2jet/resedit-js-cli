@@ -3,7 +3,7 @@
     "baseUrl": "./",
     "declaration": true,
     "lib": ["es2017"],
-    "module": "commonjs",
+    "module": "ES2022",
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,

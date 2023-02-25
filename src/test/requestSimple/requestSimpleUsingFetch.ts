@@ -1,4 +1,5 @@
-import { timeoutErrorPromise } from '../testUtils';
+import { jest } from '@jest/globals';
+import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
 
 const DUMMY_SERVER_HOST = 'localhost';
@@ -19,7 +20,7 @@ describe('requestSimpleUsingFetch', () => {
 			warn: jest.fn(),
 			error: jest.fn(),
 		};
-		jest.doMock('@/log', () => mockLog);
+		jest.unstable_mockModule('@/log', () => mockLog);
 	});
 	afterAll(() => {
 		jest.dontMock('@/log');
@@ -39,7 +40,7 @@ describe('requestSimpleUsingFetch', () => {
 			dummyHeaders.set(key, (DUMMY_RESPONSE_HEADER as any)[key]);
 		});
 		return {
-			async buffer() {
+			async arrayBuffer() {
 				return DUMMY_RESPONSE_DATA;
 			},
 			headers: dummyHeaders,
@@ -50,11 +51,11 @@ describe('requestSimpleUsingFetch', () => {
 	});
 
 	beforeAll(() => {
-		jest.doMock('node-fetch', () => {
+		jest.unstable_mockModule('node-fetch', () => {
 			if (!isModuleAvailable) {
 				throw new Error('Not found');
 			}
-			return mockFetch;
+			return { __esModule: true, default: mockFetch };
 		});
 	});
 	afterAll(() => {
@@ -73,7 +74,7 @@ describe('requestSimpleUsingFetch', () => {
 			isModuleAvailable = true;
 
 			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingFetch')
+				await import('@/requestSimple/requestSimpleUsingFetch.js')
 			).isAvailable;
 
 			expect(isAvailable()).toEqual(true);
@@ -83,7 +84,7 @@ describe('requestSimpleUsingFetch', () => {
 			(global as any).fetch = mockFetch;
 
 			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingFetch')
+				await import('@/requestSimple/requestSimpleUsingFetch.js')
 			).isAvailable;
 
 			expect(isAvailable()).toEqual(true);
@@ -92,7 +93,7 @@ describe('requestSimpleUsingFetch', () => {
 			isModuleAvailable = false;
 
 			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingFetch')
+				await import('@/requestSimple/requestSimpleUsingFetch.js')
 			).isAvailable;
 
 			expect(isAvailable()).toEqual(false);
@@ -105,7 +106,7 @@ describe('requestSimpleUsingFetch', () => {
 				responseSuccess = true;
 
 				const requestSimpleUsingFetch = (
-					await import('@/requestSimple/requestSimpleUsingFetch')
+					await import('@/requestSimple/requestSimpleUsingFetch.js')
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
@@ -149,7 +150,7 @@ describe('requestSimpleUsingFetch', () => {
 				responseSuccess = false;
 
 				const requestSimpleUsingFetch = (
-					await import('@/requestSimple/requestSimpleUsingFetch')
+					await import('@/requestSimple/requestSimpleUsingFetch.js')
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
@@ -194,7 +195,7 @@ describe('requestSimpleUsingFetch', () => {
 				mockFetch.mockRejectedValueOnce(dummyError);
 
 				const requestSimpleUsingFetch = (
-					await import('@/requestSimple/requestSimpleUsingFetch')
+					await import('@/requestSimple/requestSimpleUsingFetch.js')
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;

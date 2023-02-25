@@ -1,18 +1,28 @@
 #!/usr/bin/env node
 
-import * as loglevel from 'loglevel';
-import * as yargs from 'yargs';
+import { createRequire } from 'module';
+import type * as LogLevel from 'loglevel';
+import type YArgsFactory from 'yargs';
+import type { Arguments } from 'yargs';
+import type * as YArgsHelper from 'yargs/helpers';
 
 import type Options from './Options';
 
-import run from './run';
-import thisVersion from './version';
-import { certificateSelectModeValues } from './definitions/DefinitionData';
-import { getValidDigestAlgorithm } from './definitions/parser/sign';
+import run from './run.js';
+import thisVersion from './version.js';
+import { certificateSelectModeValues } from './definitions/DefinitionData.js';
+import { getValidDigestAlgorithm } from './definitions/parser/sign.js';
+
+const require = createRequire(import.meta.url);
+const loglevel = require('loglevel') as typeof LogLevel;
+// I'll use CommonJS version of yargs to display help message with correct word-wrap
+// (see: https://github.com/yargs/yargs/issues/2112)
+const yargsFactory = require('yargs') as typeof YArgsFactory;
+const { hideBin } = require('yargs/helpers') as typeof YArgsHelper;
 
 const thisName = 'resedit';
 
-interface Args extends yargs.Arguments, Options {
+interface Args extends Arguments, Options {
 	grow?: boolean;
 	new?: boolean;
 	version?: boolean;
@@ -25,13 +35,14 @@ class CommandLineError extends Error {}
 async function main(): Promise<number> {
 	loglevel.setDefaultLevel('WARN');
 	try {
+		const yargs = yargsFactory(hideBin(process.argv));
 		const argv = yargs
 			.scriptName(thisName)
 			.version(false)
 			.locale('en')
 			.usage(
 				`Usage:
-  ${thisName} [[--in] <input> | --new] [--out] <output> [<options...>]`
+  ${thisName} [[--in] <in> | --new] [--out] <out> [<options...>]`
 			)
 			.option('allow-shrink', {
 				description:
@@ -165,14 +176,14 @@ async function main(): Promise<number> {
 			})
 			.option('password', {
 				description:
-					'Password/passphrase for private key.\nIf an empty string password is required, specify \'\' (sh) or "" (cmd.exe).\nRequires --sign option.',
+					'Password/passphrase for private key. If an empty string password is required, specify \'\' (sh) or "" (cmd.exe).\nRequires --sign option.',
 				type: 'string',
 				nargs: 1,
 			})
 			.option('private-key', {
 				alias: ['key'],
 				description:
-					'Private key file for signing.\n(only PEM format file (.pem) is supported)\nRequires --sign option.',
+					'Private key file for signing. (only PEM format file (.pem) is supported)\nRequires --sign option.',
 				type: 'string',
 				nargs: 1,
 			})
@@ -225,9 +236,10 @@ async function main(): Promise<number> {
 				description: 'Show version number of this tool',
 				nargs: 0,
 			})
-			.strict()
-			.check((a) => {
-				const argv = a as Args;
+			.command('$0', 'default command', (yargs) => {
+				yargs.positional('in', {}).positional('out', {});
+			})
+			.check((argv, _opts) => {
 				if (argv.version) {
 					return true;
 				}
@@ -235,18 +247,18 @@ async function main(): Promise<number> {
 				// - the first parameter is used for input file
 				// - the second parameter is used for output file
 				const restArgs = argv._;
-				if (!argv.new && (argv.in === undefined || argv.in === '')) {
+				if (!argv.new && (argv.in == null || argv.in === '')) {
 					const val = restArgs.splice(0, 1).shift();
 					const inVal = val !== undefined ? `${val}` : '';
 					if (inVal !== '') {
 						argv.in = inVal;
 					}
 				}
-				if (!argv.out) {
+				if (argv.out == null || argv.out === '') {
 					const val = restArgs.splice(0, 1).shift();
 					argv.out = val !== undefined ? `${val}` : '';
 				}
-				if (argv.in === undefined || argv.in === '') {
+				if (argv.in == null || argv.in === '') {
 					if (!argv.new) {
 						throw new CommandLineError('input file is missing.');
 					}
@@ -256,17 +268,22 @@ async function main(): Promise<number> {
 						'cannot specify both input file and --new.'
 					);
 				}
-				if (!argv.out) {
+				if (argv.out === '') {
 					throw new CommandLineError('output file is missing.');
 				}
-				if (argv.new && (!!argv.noGrow || argv.grow === false)) {
+				if (argv.new && argv.grow === false) {
 					throw new CommandLineError(
 						'--no-grow cannot be used with --new'
 					);
 				}
+				if (restArgs.length > 0) {
+					throw new CommandLineError(
+						'Unknown arguments: ' + restArgs.join(', ')
+					);
+				}
 				return true;
 			})
-			.fail((msg, err, yargs?: yargs.Argv) => {
+			.fail((msg, err, yargs) => {
 				if (err !== null && err !== undefined) {
 					if (err instanceof CommandLineError) {
 						msg = err.message;
@@ -276,7 +293,7 @@ async function main(): Promise<number> {
 						throw err;
 					}
 				}
-				msg = yargs!.help().toString() + '\n\nERROR: ' + msg;
+				msg = yargs.help().toString() + '\n\nERROR: ' + msg;
 				throw new CommandLineError(msg);
 			}).argv as Args;
 
@@ -317,7 +334,4 @@ async function main(): Promise<number> {
 }
 
 // 'main' should not throw
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-(async () => {
-	process.exit(await main());
-})();
+process.exit(await main());

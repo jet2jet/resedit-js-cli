@@ -3,30 +3,30 @@ import * as PE from 'pe-library';
 import * as ResEdit from 'resedit';
 
 import type Options from './Options';
-import { readFile, writeFile } from './fs';
-import * as log from './log';
+import { readFile, writeFile } from './fs.js';
+import * as log from './log.js';
 
 import {
 	type IconDefinition,
 	CertificateSelectMode,
 	certificateSelectModeValues,
-} from './definitions/DefinitionData';
+} from './definitions/DefinitionData.js';
 import parseDefinitionData, {
 	type ParsedDefinitionData,
-} from './definitions/parser';
+} from './definitions/parser/index.js';
 import type { ParsedVersionDefinition } from './definitions/parser/version';
 import type { ParsedRawResourceDefinition } from './definitions/parser/rawResource';
 import {
 	type ParsedSignDefinitionWithP12File,
 	type ParsedSignDefinitionWithPemFile,
 	isValidDigestAlgorithm,
-} from './definitions/parser/sign';
+} from './definitions/parser/sign.js';
 
-import emitIcons from './emit/icons';
-import emitRawResources from './emit/raw';
-import emitVersion from './emit/version';
+import emitIcons from './emit/icons.js';
+import emitRawResources from './emit/raw.js';
+import emitVersion from './emit/version.js';
 
-import { doSign, prepare } from './signing';
+import { doSign, prepare } from './signing/index.js';
 
 type ParsedSignDefinitionWithP12FileAndPartialPemFile =
 	ParsedSignDefinitionWithP12File & Partial<ParsedSignDefinitionWithPemFile>;

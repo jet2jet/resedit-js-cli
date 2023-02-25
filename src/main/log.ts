@@ -1,4 +1,8 @@
-import * as log from 'loglevel';
+import { createRequire } from 'module';
+import type * as LogLevel from 'loglevel';
+
+const require = createRequire(import.meta.url);
+const log = require('loglevel') as typeof LogLevel;
 
 function makeLogger(type: 'trace' | 'debug' | 'info' | 'warn' | 'error') {
 	const prefix = '[' + type.toUpperCase() + ']';

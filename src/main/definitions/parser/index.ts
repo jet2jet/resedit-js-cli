@@ -1,9 +1,9 @@
-import parseIcons, { type ParsedIconDefinition } from './icons';
+import parseIcons, { type ParsedIconDefinition } from './icons.js';
 import parseRawResource, {
 	type ParsedRawResourceDefinition,
-} from './rawResource';
-import parseVersion, { type ParsedVersionDefinition } from './version';
-import parseSignDefinition, { type ParsedSignDefinition } from './sign';
+} from './rawResource.js';
+import parseVersion, { type ParsedVersionDefinition } from './version.js';
+import parseSignDefinition, { type ParsedSignDefinition } from './sign.js';
 
 export interface ParsedDefinitionData {
 	lang?: number;

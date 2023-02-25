@@ -1,5 +1,5 @@
 import type Options from './Options';
-import run from './run';
+import run from './run.js';
 
 import type {
 	DigestAlgorithmType,
@@ -9,9 +9,9 @@ import type {
 	VersionDefinition,
 	VersionDefinitionBase,
 	VersionDefinitionTranslation,
-} from './definitions/DefinitionData';
-import type DefinitionData from './definitions/DefinitionData';
-import { CertificateSelectMode } from './definitions/DefinitionData';
+} from './definitions/DefinitionData.js';
+import type DefinitionData from './definitions/DefinitionData.js';
+import { CertificateSelectMode } from './definitions/DefinitionData.js';
 
 export {
 	CertificateSelectMode,

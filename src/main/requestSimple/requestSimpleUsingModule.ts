@@ -1,9 +1,12 @@
-import * as log from '../log';
+import { createRequire } from 'module';
+import type requestNamespace = require('request');
 
-import type SimpleCallback from './SimpleCallback';
-import type SimpleOptions from './SimpleOptions';
+import * as log from '../log.js';
 
-import requestNamespace = require('request');
+import type SimpleCallback from './SimpleCallback.js';
+import type SimpleOptions from './SimpleOptions.js';
+
+const require = createRequire(import.meta.url);
 
 const request: typeof requestNamespace | null = (() => {
 	try {

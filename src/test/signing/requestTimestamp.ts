@@ -1,5 +1,7 @@
-import type * as Log from '@/log';
-import type { SimpleCallback, SimpleOptions } from '@/requestSimple';
+import { jest } from '@jest/globals';
+import type * as Log from '@/log.js';
+import type requestSimple from '@/requestSimple/index.js';
+import type { SimpleCallback, SimpleOptions } from '@/requestSimple/index.js';
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
@@ -16,12 +18,12 @@ describe('signing/requestTimestamp', () => {
 	};
 	const mockRequestSimple = {
 		__esModule: true,
-		default: jest.fn(),
+		default: jest.fn() as jest.MockedFunction<typeof requestSimple>,
 	};
 	beforeAll(() => {
 		jest.resetModules();
-		jest.doMock('@/log', () => mockLog);
-		jest.doMock('@/requestSimple', () => mockRequestSimple);
+		jest.unstable_mockModule('@/log', () => mockLog);
+		jest.unstable_mockModule('@/requestSimple', () => mockRequestSimple);
 	});
 	afterAll(() => {
 		jest.dontMock('@/requestSimple');
@@ -47,7 +49,7 @@ describe('signing/requestTimestamp', () => {
 			}
 		);
 
-		const requestTimestamp = (await import('@/signing/requestTimestamp'))
+		const requestTimestamp = (await import('@/signing/requestTimestamp.js'))
 			.default;
 		const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
 		const resp = await requestTimestamp(url, DUMMY_REQUEST_DATA);
@@ -79,7 +81,7 @@ describe('signing/requestTimestamp', () => {
 			}
 		);
 
-		const requestTimestamp = (await import('@/signing/requestTimestamp'))
+		const requestTimestamp = (await import('@/signing/requestTimestamp.js'))
 			.default;
 		const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
 		await expect(
@@ -107,7 +109,7 @@ describe('signing/requestTimestamp', () => {
 			}
 		);
 
-		const requestTimestamp = (await import('@/signing/requestTimestamp'))
+		const requestTimestamp = (await import('@/signing/requestTimestamp.js'))
 			.default;
 		const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
 		await expect(requestTimestamp(url, DUMMY_REQUEST_DATA)).rejects.toEqual(

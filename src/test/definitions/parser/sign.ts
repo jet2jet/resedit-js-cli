@@ -1,7 +1,7 @@
-import { CertificateSelectMode } from '@/definitions/DefinitionData';
+import { CertificateSelectMode } from '@/definitions/DefinitionData.js';
 import parseSignDefinition, {
 	type ParsedSignDefinition,
-} from '@/definitions/parser/sign';
+} from '@/definitions/parser/sign.js';
 
 function testIfNotAString(name: string, baseObj: Record<string, unknown> = {}) {
 	expect(() => {

@@ -1,5 +1,9 @@
-import * as forge from 'node-forge';
-import { CertificateSelectMode } from '../definitions/DefinitionData';
+import { createRequire } from 'module';
+import type * as NodeForge from 'node-forge';
+import { CertificateSelectMode } from '../definitions/DefinitionData.js';
+
+const require = createRequire(import.meta.url);
+const forge = require('node-forge') as typeof NodeForge;
 
 export interface CertAndKeyData {
 	certs: ArrayBufferView[];
@@ -207,9 +211,10 @@ export function verifyDERCertificates(
 		if (!('certificates' in signedData)) {
 			throw new Error();
 		}
-		const certificates: forge.pki.Certificate[] = signedData.certificates;
+		const certificates: NodeForge.pki.Certificate[] =
+			signedData.certificates;
 		// if no error has occurred, it is valid p7b data
-		let asn1Cert: forge.asn1.Asn1;
+		let asn1Cert: NodeForge.asn1.Asn1;
 		switch (certSelect) {
 			case CertificateSelectMode.NoRoot:
 				signedData.certificates = certificates.filter((cert) => {
@@ -254,7 +259,7 @@ function getPrivateKeyAlgorithmTypeFromBase64(data: string) {
 	if (asn1.type !== forge.asn1.Type.SEQUENCE || asn1.value.length !== 3) {
 		return null;
 	}
-	const privateKeyAlgorithm = (asn1.value as forge.asn1.Asn1[])[1];
+	const privateKeyAlgorithm = (asn1.value as NodeForge.asn1.Asn1[])[1];
 	// PrivateKeyAlgorithmIdentifier ::= AlgorithmIdentifier
 	//   { PUBLIC-KEY, { PrivateKeyAlgorithms } }
 	// --- refs. https://tools.ietf.org/html/rfc5912
@@ -278,7 +283,7 @@ function getPrivateKeyAlgorithmTypeFromBase64(data: string) {
 	) {
 		return null;
 	}
-	const algorithm = (privateKeyAlgorithm.value as forge.asn1.Asn1[])[0];
+	const algorithm = (privateKeyAlgorithm.value as NodeForge.asn1.Asn1[])[0];
 	if (algorithm.type !== forge.asn1.Type.OID) {
 		return null;
 	}
@@ -387,18 +392,16 @@ export function pickKeysFromP12File(
 	const certList = certBag[forge.pki.oids.certBag];
 	const certsResult: ArrayBufferView[] = [];
 	if (certList) {
-		const sortedCertList: forge.pkcs12.Bag[] = filterAndSortCertListByChain(
-			certList,
-			certSelect
-		);
+		const sortedCertList: NodeForge.pkcs12.Bag[] =
+			filterAndSortCertListByChain(certList, certSelect);
 		sortedCertList.forEach((certData) => {
 			let asn1;
 			if (certData.cert) {
 				asn1 = forge.pki.certificateToAsn1(certData.cert) as
-					| forge.asn1.Asn1
+					| NodeForge.asn1.Asn1
 					| undefined;
 			} else {
-				asn1 = certData.asn1 as forge.asn1.Asn1 | undefined;
+				asn1 = certData.asn1 as NodeForge.asn1.Asn1 | undefined;
 			}
 			if (asn1) {
 				const certBin = forge.asn1.toDer(asn1);

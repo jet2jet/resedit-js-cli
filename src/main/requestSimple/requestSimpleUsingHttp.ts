@@ -1,10 +1,10 @@
 import * as http from 'http';
 import * as https from 'https';
 
-import * as log from '../log';
+import * as log from '../log.js';
 
-import type SimpleCallback from './SimpleCallback';
-import type SimpleOptions from './SimpleOptions';
+import type SimpleCallback from './SimpleCallback.js';
+import type SimpleOptions from './SimpleOptions.js';
 
 export default function requestSimpleUsingHttp(
 	url: string,

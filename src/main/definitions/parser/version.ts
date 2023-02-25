@@ -1,6 +1,6 @@
 import type * as ResEdit from 'resedit';
 
-import { validateIntegerValue, validateStringValue } from './utils';
+import { validateIntegerValue, validateStringValue } from './utils.js';
 
 export interface ParsedVersionStrings {
 	// if not specified root language is used

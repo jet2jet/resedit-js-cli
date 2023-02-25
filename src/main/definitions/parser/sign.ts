@@ -1,11 +1,11 @@
 import * as crypto from 'crypto';
 
-import { validateStringValue } from './utils';
+import { validateStringValue } from './utils.js';
 import {
 	CertificateSelectMode,
 	type DigestAlgorithmType,
 	certificateSelectModeValues,
-} from '../../definitions/DefinitionData';
+} from '../../definitions/DefinitionData.js';
 
 export interface ParsedSignDefinitionBase {
 	password: string | undefined;
