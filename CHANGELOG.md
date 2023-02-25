@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.0.0
+
+- Drop Node.js v12
+- Convert scripts to native ESM
+  - To use API, ES module `import` is required to load the module.
+- Update dependencies
+
 ## v1.3.0
 
 - Update dependencies
