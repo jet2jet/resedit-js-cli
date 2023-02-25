@@ -1,7 +1,6 @@
+import type * as requestNamespace from 'request';
 import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
-
-import requestNamespace = require('request');
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
