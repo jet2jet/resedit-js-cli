@@ -1,5 +1,5 @@
 [![NPM version](https://badge.fury.io/js/resedit-cli.svg)](https://www.npmjs.com/package/resedit-cli)
-[![Build Status](https://api.travis-ci.com/jet2jet/resedit-js-cli.svg?branch=master)](https://www.travis-ci.com/jet2jet/resedit-js-cli)
+[![Build Status](https://github.com/jet2jet/resedit-js-cli/actions/workflows/main-ci.yml/badge.svg)](https://github.com/jet2jet/resedit-js-cli)
 
 # resedit-js-cli
 
@@ -33,7 +33,12 @@ npm install resedit-cli
 
 ```
 Usage:
-  resedit [[--in] <input> | --new] [--out] <output> [<options...>]
+resedit [[--in] <in> | --new] [--out] <out> [<options...>]
+
+Positionals:
+  in, i   Input executable file name.
+          Cannot specify --new if an input file is specified.           [string]
+  out, o  Output executable file name                                   [string]
 
 Options:
   -h, -?, --help             Show help                                 [boolean]
@@ -67,9 +72,6 @@ Options:
                              <ID>,<file-name>                            [array]
       --ignore-signed        Force read input file even if it is a signed
                              executable                                [boolean]
-  -i, --in                   Input executable file name.
-                             Cannot specify --new if an input file is specified.
-                                                                        [string]
       --internal-name        Internal name for version resource         [string]
       --lang                 Resource language id (default: 1033)       [number]
   -n, --new                  Create an empty (data-only) executable binary.
@@ -78,16 +80,15 @@ Options:
   -N, --no-grow              Disallow growing resource section size (throw
                              errors if data exceeds)                   [boolean]
       --original-filename    Original file name for version resource    [string]
-  -o, --out                  Output executable file name                [string]
       --p12, --pfx           PKCS 12 file (.p12 or .pfx file), which contains
                              private key and certificates, for signing.
                              Requires --sign option.                    [string]
-      --password             Password/passphrase for private key.
-                             If an empty string password is required, specify ''
-                             (sh) or "" (cmd.exe).
+      --password             Password/passphrase for private key. If an empty
+                             string password is required, specify '' (sh) or ""
+                             (cmd.exe).
                              Requires --sign option.                    [string]
-      --private-key, --key   Private key file for signing.
-                             (only PEM format file (.pem) is supported)
+      --private-key, --key   Private key file for signing. (only PEM format file
+                             (.pem) is supported)
                              Requires --sign option.                    [string]
       --product-name         Product name for version resource          [string]
       --product-version      Product version for version resource.
@@ -116,7 +117,7 @@ Options:
 
 ### Main options
 
-#### `[--in] <input>`
+#### `[--in] <in>`
 
 - `string`
 - Required if `--new` is not specified
@@ -125,7 +126,7 @@ Options:
 
 Specifies input executable file name. You can omit `--in`; the first parameter without option will be treated as 'input'.
 
-#### `[--out] <output>`
+#### `[--out] <out>`
 
 - `string`
 - Required
@@ -349,8 +350,7 @@ Note: It is not supported to input a password from stdin (i.e. prompting for a p
 
 #### `--digest <algorithm>`
 
-- Choices: `sha1`, `sha256`, `sha512`, `sha224`, `sha384`
-  - On Node.js v12, followings are also valid: `sha512-224`, `sha512-256`, `sha3-224`, `sha3-256`, `sha3-384`, `sha3-512`, `shake128`, `shake256`
+- Choices: `sha1`, `sha256`, `sha512`, `sha224`, `sha384`, `sha512-224`, `sha512-256`, `sha3-224`, `sha3-256`, `sha3-384`, `sha3-512`, `shake128`, `shake256`
 - Default: `sha256`
 
 Specifies an algorithm for generating digest. Some algorithms are available only if Node.js supports.
@@ -372,7 +372,7 @@ npm install resedit-cli node-fetch
 ```
 
 > - For `request`, at least `request@2.88.0` is expected. If less than 2.88.0, a warning log will be printed.
-> - For `node-fetch`, you can instead set `global.fetch` variable with a valid function. This means that you can use another `fetch` library such as `isomorphic-fetch`.
+> - For `node-fetch`, `node-fetch@3` is expected. You can instead set `global.fetch` variable with a valid function. This means that you can use another `fetch` library such as `isomorphic-fetch`.
 > - Currently if both `request` and fetch are available, `request` is used.
 
 By installing one of them, you can connect to the server with features that those module supports, such as with a HTTP proxy. (If those modules are not installed, HTTP proxies cannot be used.)
@@ -461,10 +461,10 @@ version:
 As JS file:
 
 ```js
-const path = require('path');
+import * as path from 'path';
 
 // a user-defined function to retrieve data asynchronously
-const { promptPfxFile, promptPassword } = require('./func');
+import { promptPfxFile, promptPassword } from './func';
 
 // Asynchronously returns a definition object
 async function loadDefintion() {
@@ -504,8 +504,7 @@ module.exports = loadDefintion();
 This tool is created for the command line tool, but you can also use this as a Node.js library.
 
 ```js
-// NOTE: you must use 'default' in order to call API
-const resedit = require('resedit-cli').default;
+import resedit from 'resedit-cli';
 
 await resedit({
   in: '/path/to/input/MyApp.exe',
