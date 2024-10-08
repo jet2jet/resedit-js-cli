@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.1
+
+- Update resedit to fix #32
+
 ## v2.0.0
 
 - Drop Node.js v12
