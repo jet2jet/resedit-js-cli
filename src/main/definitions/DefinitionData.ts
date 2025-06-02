@@ -89,6 +89,55 @@ export interface VersionDefinition
 	translations?: VersionDefinitionTranslation[];
 }
 
+/** The predefined resource type name, converted to actual type numeric values. */
+export const PredefinedResourceTypeName = {
+	cursor: 1,
+	bitmap: 2,
+	icon: 3,
+	menu: 4,
+	dialog: 5,
+	string: 6,
+	fontdir: 7,
+	fontDir: 7,
+	font: 8,
+	accelerator: 9,
+	rcdata: 10,
+	rcData: 10,
+	messagetable: 11,
+	messageTable: 11,
+	groupcursor: 12,
+	groupCursor: 12,
+	groupicon: 14,
+	groupIcon: 14,
+	version: 16,
+	dlginclude: 17,
+	dlgInclude: 17,
+	plugplay: 19,
+	plugPlay: 19,
+	vxd: 20,
+	anicursor: 21,
+	aniCursor: 21,
+	aniicon: 22,
+	aniIcon: 22,
+	html: 23,
+	manifest: 24,
+} as const;
+/** The predefined resource type name, converted to actual type numeric values. */
+export type PredefinedResourceTypeName =
+	(typeof PredefinedResourceTypeName)[keyof typeof PredefinedResourceTypeName];
+
+/** The predefined resource type name, converted to actual type numeric values. */
+export const PredefinedResourceTypeNameForDelete = {
+	...PredefinedResourceTypeName,
+	allcursor: -1,
+	allCursor: -1,
+	allicon: -2,
+	allIcon: -2,
+} as const;
+/** The predefined resource type name, converted to actual type numeric values. */
+export type PredefinedResourceTypeNameForDelete =
+	(typeof PredefinedResourceTypeNameForDelete)[keyof typeof PredefinedResourceTypeNameForDelete];
+
 /**
  * The raw resource data definition object.
  * If there is the resource data with the same values for each of `type`, `id`, and `lang`,
@@ -116,6 +165,69 @@ export interface RawResourceDefinitionData {
 	 * - If the value is not a string, it will be stored without any conversion.
 	 */
 	value?: string | ArrayBuffer | ArrayBufferView;
+}
+
+/**
+ * The raw resource data definition object.
+ * If there is the resource data with the same values for each of `type`, `id`, and `lang`,
+ * it will be replaced by `RawResourceData`'s data.
+ *
+ * @note
+ * `value` is not cloned on parsing. The value of `value` must remain valid until finishing resource editing.
+ */
+export interface RawResourceDefinitionData2 {
+	/** The resource type */
+	typeName: PredefinedResourceTypeName;
+	/** The resource ID (string or integer) */
+	id: string | number;
+	/** The language value (LANGID). If omitted, the value in `DefinitionData` is used. */
+	lang?: number;
+	/**
+	 * The file name which contains resource data to add.
+	 * If `value` is also specified, this property (`file`) is ignored.
+	 */
+	file?: string;
+	/**
+	 * The resource data body. If `file` is also specified, `file` is ignored.
+	 *
+	 * - If the value is a string, it will be stored as UTF-8 string data.
+	 * - If the value is not a string, it will be stored without any conversion.
+	 */
+	value?: string | ArrayBuffer | ArrayBufferView;
+}
+
+/**
+ * The resource data definition object for deletion.
+ * If there is the resource data with the same values for each of `type`, `id`, and `lang`,
+ * it will be deleted.
+ * If not, no operation will be performed unless `failIfNoDelete` is true.
+ */
+export interface DeleteResourceDefinitionData {
+	/** The resource type (string or integer) */
+	type: string | number;
+	/** The resource ID (string or integer). If omitted, all resources matching the type (and `lang`) will be deleted. */
+	id?: string | number;
+	/** The language value (LANGID). Unlike `RawResourceDefinitionData`, if omitted, all resources matching the type (and `id`) will be deleted. */
+	lang?: number;
+	/** If true and the resource to be deleted does not exist, the operation will fail. */
+	failIfNoDelete?: boolean;
+}
+
+/**
+ * The resource data definition object for deletion.
+ * If there is the resource data with the same values for each of `type`, `id`, and `lang`,
+ * it will be deleted.
+ * If not, no operation will be performed unless `failIfNoDelete` is true.
+ */
+export interface DeleteResourceDefinitionData2 {
+	/** The resource type */
+	typeName: PredefinedResourceTypeNameForDelete;
+	/** The resource ID (string or integer). If omitted, all resources matching the type (and `lang`) will be deleted. */
+	id?: string | number;
+	/** The language value (LANGID). Unlike `RawResourceDefinitionData`, if omitted, all resources matching the type (and `id`) will be deleted. */
+	lang?: number;
+	/** If true and the resource to be deleted does not exist, the operation will fail. */
+	failIfNoDelete?: boolean;
 }
 
 /** Digest algorithm type for signing process. The type value is case-sensitive. */
@@ -202,7 +314,13 @@ export default interface DefinitionData {
 	 * This field is useful to add resource data whose format is not supported by
 	 * this program.
 	 */
-	raw?: RawResourceDefinitionData[];
+	raw?: Array<RawResourceDefinitionData | RawResourceDefinitionData2>;
+	/**
+	 * The definition data array for deleting resource data.
+	 */
+	delete?: Array<
+		DeleteResourceDefinitionData | DeleteResourceDefinitionData2
+	>;
 	/** The definition data for signing output executable binary */
 	sign?: SigningDefinitionData;
 }

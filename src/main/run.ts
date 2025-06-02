@@ -2,7 +2,7 @@ import { cosmiconfig } from 'cosmiconfig';
 import * as PE from 'pe-library';
 import * as ResEdit from 'resedit';
 
-import type Options from './Options';
+import type Options from './Options.js';
 import { readFile, writeFile } from './fs.js';
 import * as log from './log.js';
 
@@ -10,18 +10,22 @@ import {
 	type IconDefinition,
 	CertificateSelectMode,
 	certificateSelectModeValues,
+	PredefinedResourceTypeName,
+	PredefinedResourceTypeNameForDelete,
 } from './definitions/DefinitionData.js';
 import parseDefinitionData, {
 	type ParsedDefinitionData,
 } from './definitions/parser/index.js';
-import type { ParsedVersionDefinition } from './definitions/parser/version';
-import type { ParsedRawResourceDefinition } from './definitions/parser/rawResource';
+import type { ParsedDeleteResourceDefinition } from './definitions/parser/delete.js';
+import type { ParsedVersionDefinition } from './definitions/parser/version.js';
+import type { ParsedRawResourceDefinition } from './definitions/parser/rawResource.js';
 import {
 	type ParsedSignDefinitionWithP12File,
 	type ParsedSignDefinitionWithPemFile,
 	isValidDigestAlgorithm,
 } from './definitions/parser/sign.js';
 
+import deleteResources from './emit/delete.js';
 import emitIcons from './emit/icons.js';
 import emitRawResources from './emit/raw.js';
 import emitVersion from './emit/version.js';
@@ -185,6 +189,123 @@ function convertOptionsToDefinitionData(
 			})
 		);
 	}
+
+	if (options.raw2 && options.raw2.length > 0) {
+		if (outDefinition.raw && outDefinition.raw.length > 0) {
+			log.debug(
+				`Append raw resource definitions with ones from option '--raw2'. (count = ${options.raw2.length})`
+			);
+		} else {
+			log.debug(
+				`Add raw resource definitions from option '--raw2'. (count = ${options.raw2.length})`
+			);
+		}
+		outDefinition.raw = (outDefinition.raw ?? []).concat(
+			options.raw2.map((value, i): ParsedRawResourceDefinition => {
+				const ra = /^([^,]+?),([^,]+?),(.+)$/.exec(value);
+				if (!ra) {
+					throw new Error(
+						`Invalid '--raw2' option value (index: ${i}, expected: <typeName>,<ID>,<data>, actual: ${value})`
+					);
+				}
+				const typeName = ra[1];
+				if (!Object.keys(PredefinedResourceTypeName).includes(ra[1])) {
+					throw new Error(
+						`Invalid '--raw2' option value (index: ${i}, <typeName> is not valid; actual: ${value})`
+					);
+				}
+				const type =
+					PredefinedResourceTypeName[
+						typeName as keyof typeof PredefinedResourceTypeName
+					];
+				const id = convertIntegerOrStringValue(ra[2]);
+				if (ra[3][0] === '@') {
+					return {
+						type,
+						id,
+						file: ra[3].substring(1),
+					};
+				} else {
+					return {
+						type,
+						id,
+						value: ra[3],
+					};
+				}
+			})
+		);
+	}
+
+	if (options.delete) {
+		if (outDefinition.delete && outDefinition.delete.length > 0) {
+			log.debug(
+				`Append delete resource definitions with ones from option. (count = ${options.delete.length})`
+			);
+		} else {
+			log.debug(
+				`Add delete resource definitions from option. (count = ${options.delete.length})`
+			);
+		}
+		outDefinition.delete = (outDefinition.delete ?? []).concat(
+			options.delete.map((value, i): ParsedDeleteResourceDefinition => {
+				const ra = /^([^,]+?)(?:,(.+))?$/.exec(value);
+				if (!ra) {
+					throw new Error(
+						`Invalid '--delete' option value (index: ${i}, expected: <type>,<ID>, actual: ${value})`
+					);
+				}
+				const type = convertIntegerOrStringValue(ra[1]);
+				if (ra[2] == null) {
+					return { type };
+				}
+				const id = convertIntegerOrStringValue(ra[2]);
+				return {
+					type,
+					id,
+				};
+			})
+		);
+	}
+
+	// 'delete-xxx' options
+	Object.keys(PredefinedResourceTypeNameForDelete).forEach((_key) => {
+		const key = _key as keyof typeof PredefinedResourceTypeNameForDelete;
+		const optBase = options[`delete-${key}`];
+		if (optBase) {
+			const opt = [...optBase];
+			if (opt.length === 0) {
+				log.debug(`--delete-${key} is specified without arguments`);
+				opt.push('');
+			}
+			if (outDefinition.delete && outDefinition.delete.length > 0) {
+				log.debug(
+					`Append delete resource definitions with ones from option [--delete-${key}]. (count = ${opt.length})`
+				);
+			} else {
+				log.debug(
+					`Add delete resource definitions from option [--delete-${key}]. (count = ${opt.length})`
+				);
+			}
+			const type = PredefinedResourceTypeNameForDelete[key];
+			outDefinition.delete = (outDefinition.delete ?? []).concat(
+				opt
+					.map((value): ParsedDeleteResourceDefinition | null => {
+						if (typeof value === 'boolean') {
+							return value ? { type } : null;
+						}
+						if (value === '') {
+							return { type };
+						}
+						const id = convertIntegerOrStringValue(value);
+						return {
+							type,
+							id,
+						};
+					})
+					.filter((x): x is NonNullable<typeof x> => x != null)
+			);
+		}
+	});
 
 	if ((options.sign !== undefined && options.sign) || outDefinition.sign) {
 		log.debug('Make executable with signing.');
@@ -364,6 +485,8 @@ async function emitResources(
 ) {
 	const lang = typeof defData.lang !== 'undefined' ? defData.lang : 1033;
 	let modified = false;
+
+	modified = deleteResources(res, defData.delete) || modified;
 
 	modified = (await emitIcons(res, lang, defData.icons)) || modified;
 	modified =

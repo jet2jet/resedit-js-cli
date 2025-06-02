@@ -1,6 +1,7 @@
 import parseRawResource, {
 	type ParsedRawResourceDefinition,
 } from '@/definitions/parser/rawResource.js';
+import { PredefinedResourceTypeName } from '@/definitions/DefinitionData.js';
 
 describe('definitions/parser/rawResource', () => {
 	describe('invalid data', () => {
@@ -42,6 +43,19 @@ describe('definitions/parser/rawResource', () => {
 			expect(() => {
 				parseRawResource([{ type: 'A', id: 1 }]);
 			}).toThrow();
+			expect(() => {
+				parseRawResource([
+					{
+						typeName: PredefinedResourceTypeName.manifest,
+						value: 'x',
+					},
+				]);
+			}).toThrow();
+			expect(() => {
+				parseRawResource([
+					{ typeName: PredefinedResourceTypeName.manifest, id: 1 },
+				]);
+			}).toThrow();
 		});
 		it('should throw if type is neither a string nor an integer', () => {
 			expect(() => {
@@ -57,6 +71,24 @@ describe('definitions/parser/rawResource', () => {
 				parseRawResource([{ type: 1.25, id: 1, value: 'x' }]);
 			}).toThrow();
 		});
+		it('should throw if typeName is not a predefined name', () => {
+			expect(() => {
+				parseRawResource([{ typeName: null, id: 1, value: 'x' }]);
+			}).toThrow();
+			expect(() => {
+				parseRawResource([{ typeName: {}, id: 1, value: 'x' }]);
+			}).toThrow();
+			expect(() => {
+				parseRawResource([{ typeName: true, id: 1, value: 'x' }]);
+			}).toThrow();
+			expect(() => {
+				parseRawResource([{ typeName: 'xxxx', id: 1, value: 'x' }]);
+			}).toThrow();
+			expect(() => {
+				// currently case is sensitive
+				parseRawResource([{ typeName: 'VERSION', id: 1, value: 'x' }]);
+			}).toThrow();
+		});
 		it('should throw if id is neither a string nor an integer', () => {
 			expect(() => {
 				parseRawResource([{ type: 'A', id: null, value: 'x' }]);
@@ -65,10 +97,22 @@ describe('definitions/parser/rawResource', () => {
 				parseRawResource([{ type: 'A', id: {}, value: 'x' }]);
 			}).toThrow();
 			expect(() => {
-				parseRawResource([{ type: 'A', id: true, value: 'x' }]);
+				parseRawResource([
+					{
+						typeName: PredefinedResourceTypeName.manifest,
+						id: true,
+						value: 'x',
+					},
+				]);
 			}).toThrow();
 			expect(() => {
-				parseRawResource([{ type: 'A', id: 1.25, value: 'x' }]);
+				parseRawResource([
+					{
+						typeName: PredefinedResourceTypeName.manifest,
+						id: 1.25,
+						value: 'x',
+					},
+				]);
 			}).toThrow();
 		});
 		it('should throw if value is neither an ArrayBuffer, an ArrayBufferView, nor a string', () => {
@@ -128,6 +172,20 @@ describe('definitions/parser/rawResource', () => {
 				value: 'x',
 			});
 		});
+		it.each(Object.keys(PredefinedResourceTypeName))(
+			'should return a parsed data (with predefined type name)',
+			(typeName) => {
+				const r = parseRawResource([{ typeName, id: 1, value: 'x' }]);
+				expect(r.length).toEqual(1);
+				expect(r[0]).toStrictEqual<ParsedRawResourceDefinition>({
+					type: PredefinedResourceTypeName[
+						typeName as keyof typeof PredefinedResourceTypeName
+					],
+					id: 1,
+					value: 'x',
+				});
+			}
+		);
 		it('should return a parsed data (with ArrayBuffer value)', () => {
 			const value = new ArrayBuffer(1);
 			const r = parseRawResource([{ type: 'A', id: 1, value }]);

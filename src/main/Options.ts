@@ -1,10 +1,18 @@
 import type {
 	CertificateSelectMode,
 	DigestAlgorithmType,
+	PredefinedResourceTypeNameForDelete,
 } from './definitions/DefinitionData.js';
 import type DefinitionData from './definitions/DefinitionData.js';
 
-export default interface Options {
+export type DeletePredefinedOptions = {
+	/** delete resouces by predefined types (format: <ID> or `true` for delete all) */
+	[P in `delete-${keyof typeof PredefinedResourceTypeNameForDelete}`]?: Array<
+		string | boolean
+	>;
+};
+
+export default interface Options extends DeletePredefinedOptions {
 	in?: string;
 	out: string;
 	lang?: number;
@@ -39,6 +47,17 @@ export default interface Options {
 	// --- for raw (any) resource
 	/** raw resource data to add (format: '<type>,<ID>,<string-value>' or '<type>,<ID>,@<file-name>') */
 	raw?: string[];
+	/**
+	 * raw resource data to add (format: '<type-name>,<ID>,<string-value>' or '<type-name>,<ID>,@<file-name>')
+	 * <type-name> must be one of the value `PredefinedResourceTypeName`.
+	 */
+	raw2?: string[];
+
+	// --- for delete resource(s)
+	/** delete existing resource data (format: '<type>' or '<type>,<ID>') */
+	delete?: string[];
+	/** If true and the resource to be deleted does not exist, the operation will fail. */
+	'fail-if-no-delete'?: boolean;
 
 	// --- for signing
 	sign?: boolean;

@@ -4,12 +4,17 @@ import parseRawResource, {
 } from './rawResource.js';
 import parseVersion, { type ParsedVersionDefinition } from './version.js';
 import parseSignDefinition, { type ParsedSignDefinition } from './sign.js';
+import {
+	type ParsedDeleteResourceDefinition,
+	parseDeleteResource,
+} from './delete.js';
 
 export interface ParsedDefinitionData {
 	lang?: number;
 	icons?: ParsedIconDefinition[];
 	version?: ParsedVersionDefinition;
 	raw?: ParsedRawResourceDefinition[];
+	delete?: ParsedDeleteResourceDefinition[];
 	sign?: ParsedSignDefinition;
 }
 
@@ -39,6 +44,9 @@ export default function parseDefinitionData(
 				break;
 			case 'raw':
 				ret.raw = parseRawResource(value);
+				break;
+			case 'delete':
+				ret.delete = parseDeleteResource(value);
 				break;
 			case 'sign':
 				ret.sign = parseSignDefinition(value);

@@ -3,14 +3,17 @@
 import { createRequire } from 'module';
 import type * as LogLevel from 'loglevel';
 import type YArgsFactory from 'yargs';
-import type { Arguments } from 'yargs';
+import type { Arguments, Options as YargsOptions } from 'yargs';
 import type * as YArgsHelper from 'yargs/helpers';
-
-import type Options from './Options';
-
+import type Options from './Options.js';
+import type { DeletePredefinedOptions } from './Options.js';
 import run from './run.js';
 import thisVersion from './version.js';
-import { certificateSelectModeValues } from './definitions/DefinitionData.js';
+import {
+	certificateSelectModeValues,
+	PredefinedResourceTypeName,
+	PredefinedResourceTypeNameForDelete,
+} from './definitions/DefinitionData.js';
 import { getValidDigestAlgorithm } from './definitions/parser/sign.js';
 
 const require = createRequire(import.meta.url);
@@ -27,6 +30,10 @@ interface Args extends Arguments, Options {
 	new?: boolean;
 	version?: boolean;
 }
+
+type DeletePredefinedOptionsYargOptions = {
+	[P in keyof DeletePredefinedOptions]: YargsOptions;
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -80,6 +87,35 @@ async function main(): Promise<number> {
 					'Output more logs than verbose mode while processing.',
 				nargs: 0,
 			})
+			.option('delete', {
+				description:
+					'One or more resources to delete from executable.\nThe value must be one of following format:\n* <type>,<ID>\n* <type>',
+				type: 'array',
+				nargs: 1,
+			})
+			.option('delete-xxxxx', {
+				description:
+					'One or more resources to delete from executable (xxxxx is one of the predefined type names described below).\nThe value must be <ID> or no value.',
+				type: 'array',
+				requiresArg: false,
+			})
+			.options<DeletePredefinedOptionsYargOptions>(
+				Object.keys(PredefinedResourceTypeNameForDelete).reduce(
+					(prev, _key) => {
+						const key =
+							_key as keyof typeof PredefinedResourceTypeNameForDelete;
+						prev[`delete-${key}`] = {
+							description: `One or more resources to delete <type = ${PredefinedResourceTypeNameForDelete[key]}> from executable.\n* If the value is specified, the specific ID data will be deleted.\n* If the value is omitted, all data with the specified type will be deleted.`,
+							type: 'array',
+							requiresArg: false,
+							hidden: true,
+						};
+						return prev;
+					},
+					// eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter, @typescript-eslint/consistent-type-assertions
+					{} as DeletePredefinedOptionsYargOptions
+				)
+			)
 			.option('definition', {
 				description:
 					'Resource definition file which contains resource data to write (see document for details)',
@@ -92,6 +128,12 @@ async function main(): Promise<number> {
 				type: 'string',
 				choices: getValidDigestAlgorithm(),
 				nargs: 1,
+			})
+			.option('fail-if-no-delete', {
+				description:
+					'If specified and the resource to be deleted does not exist, the operation will fail.\nIf no delete options are specified, this flag is ignored.',
+				type: 'boolean',
+				nargs: 0,
 			})
 			.option('file-description', {
 				description: 'File description for version resource',
@@ -204,6 +246,13 @@ async function main(): Promise<number> {
 				type: 'array',
 				nargs: 1,
 			})
+			.option('raw2', {
+				description:
+					'One or more resources to add to executable.\nThe value must be one of following format:\n* <type-name>,<ID>,<string-value>\n* <type-name>,<ID>,@<file-name>\n(<string-value> will be stored as UTF-8 string)\n' +
+					'Type names must be the predefined names described below.',
+				type: 'array',
+				nargs: 1,
+			})
 			.option('select', {
 				type: 'string',
 				description:
@@ -236,6 +285,15 @@ async function main(): Promise<number> {
 				description: 'Show version number of this tool',
 				nargs: 0,
 			})
+			.epilogue(
+				`The predefined type names are: ${Object.keys(
+					PredefinedResourceTypeName
+				)
+					.sort((a, b) => a.localeCompare(b))
+					.join(
+						', '
+					)}\nIn addition, 'allicon'/'allIcon' and 'allcursor'/'allCursor' can also be used for --delete-xxxxx (e.g. --delete-allicon).`
+			)
 			.command('$0', 'default command', (yargs) => {
 				yargs.positional('in', {}).positional('out', {});
 			})

@@ -1,7 +1,10 @@
-import type { RawResourceDefinitionData } from '../DefinitionData.js';
-
+import {
+	PredefinedResourceTypeName,
+	type RawResourceDefinitionData,
+} from '../DefinitionData.js';
 import {
 	validateIntegerValue,
+	validatePredefinedResourceTypeName,
 	validateStringOrIntegerValue,
 	validateStringValue,
 } from './utils.js';
@@ -21,8 +24,10 @@ export default function parseRawResource(
 			throw new Error(`Invalid data: 'raw[${i}]' is not an object`);
 		}
 		const props = Object.keys(item);
-		if (!props.includes('type')) {
-			throw new Error(`Invalid data: 'raw[${i}].type' is missing`);
+		if (!props.includes('type') && !props.includes('typeName')) {
+			throw new Error(
+				`Invalid data: 'raw[${i}].type' or 'raw[${i}].typeName' is missing`
+			);
 		}
 		if (!props.includes('id')) {
 			throw new Error(`Invalid data: 'raw[${i}].id' is missing`);
@@ -40,6 +45,13 @@ export default function parseRawResource(
 				case 'id':
 					validateStringOrIntegerValue(value, `raw[${i}].${prop}`);
 					o[prop] = value;
+					break;
+				case 'typeName':
+					validatePredefinedResourceTypeName(
+						value,
+						`raw[${i}].${prop}`
+					);
+					o.type = PredefinedResourceTypeName[value];
 					break;
 				case 'lang':
 					validateIntegerValue(value, `raw[${i}].lang`);
