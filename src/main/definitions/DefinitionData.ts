@@ -135,14 +135,17 @@ export type DigestAlgorithmType =
 	| 'shake256';
 
 /** The mode how certificates are stored into the signed information data. */
-export enum CertificateSelectMode {
+export const CertificateSelectMode = {
 	/** Only picks the leaf certificate */
-	Leaf = 'leaf',
+	Leaf: 'leaf',
 	/** Picks certificates without root */
-	NoRoot = 'no-root',
+	NoRoot: 'no-root',
 	/** Pick all certificates */
-	All = 'all',
-}
+	All: 'all',
+} as const;
+/** The mode how certificates are stored into the signed information data. */
+export type CertificateSelectMode =
+	(typeof CertificateSelectMode)[keyof typeof CertificateSelectMode];
 export const certificateSelectModeValues: string[] = Object.keys(
 	CertificateSelectMode
 ).map((k) => CertificateSelectMode[k as keyof typeof CertificateSelectMode]);

@@ -64,6 +64,12 @@ rules:
       filter:
         regex: '^(?:child_process|ResEdit)$'
         match: true
+    - selector: variable
+      modifiers: ['const']
+      format:
+        - camelCase
+        - PascalCase
+        - UPPER_CASE
     - selector: enumMember
       format: null
       filter:
@@ -89,6 +95,7 @@ rules:
   '@typescript-eslint/no-explicit-any': off
   '@typescript-eslint/no-inferrable-types': off
   '@typescript-eslint/no-non-null-assertion': off
+  '@typescript-eslint/no-redeclare': off
   '@typescript-eslint/no-use-before-define': off
   '@typescript-eslint/no-useless-constructor': error
   '@typescript-eslint/no-unused-vars': off

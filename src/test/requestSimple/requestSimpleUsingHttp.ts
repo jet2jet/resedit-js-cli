@@ -37,11 +37,12 @@ describe('requestSimpleUsingHttp', () => {
 		});
 	});
 
-	const enum ResponseType {
-		Success = 'success',
-		Error = 'error',
-		ServerError = 'server error',
-	}
+	const ResponseType = {
+		Success: 'success',
+		Error: 'error',
+		ServerError: 'server error',
+	} as const;
+	type ResponseType = (typeof ResponseType)[keyof typeof ResponseType];
 	const cases: Array<['http' | 'https', ResponseType]> = [
 		['http', ResponseType.Success],
 		['http', ResponseType.Error],
