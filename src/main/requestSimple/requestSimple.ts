@@ -6,10 +6,10 @@ import requestSimpleUsingFetch, {
 } from './requestSimpleUsingFetch.js';
 import requestSimpleUsingHttp from './requestSimpleUsingHttp.js';
 
-const requestSimple = isRequestAvailable()
-	? requestSimpleUsingModule
-	: isFetchAvailable()
+const requestSimple = isFetchAvailable()
 	? requestSimpleUsingFetch
+	: isRequestAvailable()
+	? requestSimpleUsingModule
 	: requestSimpleUsingHttp;
 
 export default requestSimple;

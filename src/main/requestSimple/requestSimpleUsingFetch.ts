@@ -6,7 +6,6 @@ import type SimpleOptions from './SimpleOptions.js';
 
 const fetchFunction: typeof nodeFetch | null = await (async () => {
 	if (typeof fetch === 'function') {
-		log.debug('[sign] Built-in fetch is found');
 		return fetch as typeof nodeFetch;
 	}
 	try {
@@ -25,7 +24,11 @@ export default function requestSimpleUsingFetch(
 	opt: SimpleOptions,
 	cb: SimpleCallback
 ): void {
-	log.debug('[sign] Use fetch function');
+	log.debug(
+		`[sign] Use${
+			typeof fetch !== 'undefined' ? ' native' : ''
+		} fetch function`
+	);
 
 	async function inner() {
 		try {
