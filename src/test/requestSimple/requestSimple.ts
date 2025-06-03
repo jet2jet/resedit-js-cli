@@ -46,45 +46,45 @@ describe('requestSimple', () => {
 		jest.clearAllMocks();
 	});
 
-	it("should be 'requestSimpleUsingModule' if request is available", async () => {
-		mockIsRequestAvailableFn.mockReturnValue(true);
-		mockIsFetchAvailableFn.mockReturnValue(false);
-
-		const request = (await import('@/requestSimple/index.js')).default;
-
-		expect(request).toBe(mockUsingModuleFn);
-		expect(mockIsRequestAvailableFn).toBeCalledWith();
-	});
-
-	it("should be 'requestSimpleUsingFetch' if request is not available but fetch is available", async () => {
-		mockIsRequestAvailableFn.mockReturnValue(false);
+	it("should be 'requestSimpleUsingFetch' if fetch is available", async () => {
 		mockIsFetchAvailableFn.mockReturnValue(true);
+		mockIsRequestAvailableFn.mockReturnValue(false);
 
 		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingFetchFn);
-		expect(mockIsRequestAvailableFn).toBeCalledWith();
 		expect(mockIsFetchAvailableFn).toBeCalledWith();
 	});
 
-	it("should be 'requestSimpleUsingModule' if both request and fetch are available", async () => {
+	it("should be 'requestSimpleUsingModule' if fetch is not available but request is available", async () => {
+		mockIsFetchAvailableFn.mockReturnValue(false);
 		mockIsRequestAvailableFn.mockReturnValue(true);
-		mockIsFetchAvailableFn.mockReturnValue(true);
 
 		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingModuleFn);
+		expect(mockIsFetchAvailableFn).toBeCalledWith();
 		expect(mockIsRequestAvailableFn).toBeCalledWith();
 	});
 
+	it("should be 'requestSimpleUsingFetch' if both fetch and request are available", async () => {
+		mockIsFetchAvailableFn.mockReturnValue(true);
+		mockIsRequestAvailableFn.mockReturnValue(true);
+
+		const request = (await import('@/requestSimple/index.js')).default;
+
+		expect(request).toBe(mockUsingFetchFn);
+		expect(mockIsFetchAvailableFn).toBeCalledWith();
+	});
+
 	it("should be 'requestSimpleUsingHttp' if both request and fetch are not available", async () => {
-		mockIsRequestAvailableFn.mockReturnValue(false);
 		mockIsFetchAvailableFn.mockReturnValue(false);
+		mockIsRequestAvailableFn.mockReturnValue(false);
 
 		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingHttpFn);
-		expect(mockIsRequestAvailableFn).toBeCalledWith();
 		expect(mockIsFetchAvailableFn).toBeCalledWith();
+		expect(mockIsRequestAvailableFn).toBeCalledWith();
 	});
 });
