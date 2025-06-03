@@ -8,7 +8,7 @@
   "engineStrict": true,
   "description": "Command-line tool for editing Windows Resource data in executable binaries",
   "bin": {
-    "resedit": "./dist/cli.js"
+    "resedit": "dist/cli.js"
   },
   "type": "module",
   "module": "./dist/index.js",
@@ -33,7 +33,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jet2jet/resedit-js-cli.git"
+    "url": "git+https://github.com/jet2jet/resedit-js-cli.git"
   },
   "scripts": {
     "build": "tsc -p ./tsconfig.app.json",
