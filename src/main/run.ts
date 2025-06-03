@@ -307,6 +307,12 @@ function convertOptionsToDefinitionData(
 		}
 	});
 
+	if (options['fail-if-no-delete'] && outDefinition.delete) {
+		outDefinition.delete.forEach((d) => {
+			d.failIfNoDelete = true;
+		});
+	}
+
 	if ((options.sign !== undefined && options.sign) || outDefinition.sign) {
 		log.debug('Make executable with signing.');
 		if (
