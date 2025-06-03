@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.0
+
+- Add `--raw2` option to specify resource type from predefined names
+- Add `--delete` and `--delete-xxxxx` options to delete existing resources, as well as `--fail-if-no-delete` option
+- Update cosmiconfig to support .mjs files
+- Use fetch in preference to `request`
+
 ## v2.0.1
 
 - Update resedit to fix #32

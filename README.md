@@ -15,6 +15,7 @@ Starting from v0.3.0, resedit-js-cli also supports creating empty (data-only) ex
   - [Icon resource options](#icon-resource-options)
   - [Version resource options](#version-resource-options)
   - [Raw resource options](#raw-resource-options)
+  - [Delete options](#delete-options)
   - [Signing options](#signing-options)
   - [Other options](#other-options)
 - [Examples](#examples)
@@ -57,6 +58,14 @@ Options:
       --company-name         Company name for version resource          [string]
       --debug                Output more logs than verbose mode while
                              processing.                               [boolean]
+      --delete               One or more resources to delete from executable.
+                             The value must be one of following format:
+                             * <type>,<ID>
+                             * <type>                                    [array]
+      --delete-xxxxx         One or more resources to delete from executable
+                             (xxxxx is one of the predefined type names
+                             described below).
+                             The value must be <ID> or no value.         [array]
       --definition           Resource definition file which contains resource
                              data to write (see document for details)   [string]
       --digest               Digest algorithm for signing. (default: 'sha256')
@@ -64,6 +73,10 @@ Options:
               [string] [choices: "sha1", "sha256", "sha512", "sha224", "sha384",
      "sha512-224", "sha512-256", "sha3-224", "sha3-256", "sha3-384", "sha3-512",
                                                          "shake128", "shake256"]
+      --fail-if-no-delete    If specified and the resource to be deleted does
+                             not exist, the operation will fail.
+                             If no delete options are specified, this flag is
+                             ignored.                                  [boolean]
       --file-description     File description for version resource      [string]
       --file-version         File version for version resource.
                              Must be 'n.n.n.n' format (n is an integer) [string]
@@ -99,6 +112,13 @@ Options:
                              * <type>,<ID>,@<file-name>
                              (<string-value> will be stored as UTF-8 string)
                                                                          [array]
+      --raw2                 One or more resources to add to executable.
+                             The value must be one of following format:
+                             * <type-name>,<ID>,<string-value>
+                             * <type-name>,<ID>,@<file-name>
+                             (<string-value> will be stored as UTF-8 string)
+                             Type names must be the predefined names described
+                             below.                                      [array]
       --select               Certificate selection mode whether to pick
                              certificates from the specified file (default:
                              leaf)
@@ -113,6 +133,14 @@ Options:
                              Requires --sign option.                    [string]
   -v, --verbose              Output logs while processing.             [boolean]
   -V, --version              Show version number of this tool          [boolean]
+
+The predefined type names are: accelerator, anicursor, aniCursor, aniicon,
+aniIcon, bitmap, cursor, dialog, dlginclude, dlgInclude, font, fontdir, fontDir,
+groupcursor, groupCursor, groupicon, groupIcon, html, icon, manifest, menu,
+messagetable, messageTable, plugplay, plugPlay, rcdata, rcData, string, version,
+vxd
+In addition, 'allicon'/'allIcon' and 'allcursor'/'allCursor' can also be used
+for --delete-xxxxx (e.g. --delete-allicon).
 ```
 
 ### Main options
@@ -277,12 +305,60 @@ Note: The value from `--lang` will be used as the language for all resources. To
 
 Specifies any resource data to contain. `<data>` must be either `<type>,<ID>,<string-value>` or `<type>,<ID>,@<file-name>`, whose values are as followings:
 
-- `<type>` : Resource type value which must be integer or string. This tool does not convert the type value to commonly-used type identifier (e.g. specify `24` value for `RT_MANIFEST`, not specify `"RT_MANIFEST"`)
+- `<type>` : Resource type value which must be integer or string. This tool does not convert the type value to commonly-used type identifier (e.g. specify `24` value for `RT_MANIFEST`, not specify `"RT_MANIFEST"`). To use commonly name, use `--raw2` instead.
 - `<ID>` : Resource ID value which must be integer or string.
 - `<string-value>` : Actual resource data. The value will be stored as UTF-8 string data.
 - `@<file-name>` : File name containing data for the resource. `@` character must be followed by the file name.
 
 This option can be specified one or more.
+
+#### `--raw2 <data>`
+
+- `string`
+
+Specifies any resource data to contain. Similar to `--raw`, but `<type>` will be `<typeName>`, which must be the predefined type name, instead.
+
+`<data>` must be either `<typeName>,<ID>,<string-value>` or `<typeName>,<ID>,@<file-name>`, whose values are as followings:
+
+- `<typeName>` : Predefine resource type name. Valid names are: `accelerator`, `anicursor`, `aniCursor`, `aniicon`, `aniIcon`, `bitmap`, `cursor`, `dialog`, `dlginclude`, `dlgInclude`, `font`, `fontdir`, `fontDir`, `groupcursor`, `groupCursor`, `groupicon`, `groupIcon`, `html`, `icon`, `manifest`, `menu`, `messagetable`, `messageTable`, `plugplay`, `plugPlay`, `rcdata`, `rcData`, `string`, `version`, `vxd`
+- `<ID>` : Resource ID value which must be integer or string.
+- `<string-value>` : Actual resource data. The value will be stored as UTF-8 string data.
+- `@<file-name>` : File name containing data for the resource. `@` character must be followed by the file name.
+
+This option can be specified one or more.
+
+### Delete options
+
+If following options are used, appropriate resources are deleted first, and adding/replacing operations will be performed.
+
+#### `--delete <data>`
+
+- `string`
+
+Specifies resource data to delete. `<data>` must be `<type>` or `<type>,<ID>`, whose values are as followings:
+
+- `<type>` : Resource type value which must be integer or string. This tool does not convert the type value to commonly-used type identifier (e.g. specify `24` value for `RT_MANIFEST`, not specify `"RT_MANIFEST"`). To use commonly name, use `--delete-xxxxx` instead.
+- `<ID>` : (optional) Resource ID value which must be integer or string. `,<ID>` can be omitted; in this case, all resources with the type will be deleted.
+
+Note that `--lang` value is ignored for deletion.
+
+#### `--delete-xxxxx [<ID>]`
+
+- `string`
+
+Specifies resource data to delete by type. `xxxxx` is a placeholder (see below). `[<ID>]` is a resource ID value, which must be integer or string, to delete. If omitted, all resources with the type will be deleted.
+
+`xxxxx` must be the predefined names as: `accelerator`, `anicursor`, `aniCursor`, `aniicon`, `aniIcon`, `bitmap`, `cursor`, `dialog`, `dlginclude`, `dlgInclude`, `font`, `fontdir`, `fontDir`, `groupcursor`, `groupCursor`, `groupicon`, `groupIcon`, `html`, `icon`, `manifest`, `menu`, `messagetable`, `messageTable`, `plugplay`, `plugPlay`, `rcdata`, `rcData`, `string`, `version`, `vxd` (these are equal to the name available in `--raw2`).
+
+Additionally, `allicon`, `allIcon`, `allcursor`, `allCursor` can be used for `xxxxx`. `allicon` and `allIcon` deletes `icon`, `groupIcon`, and `aniIcon`, and `allcursor` and `allCursor` deletes `cursor`, `groupCursor`, and `aniCursor`.
+
+Note that `--lang` value is ignored for deletion.
+
+#### `--fail-if-no-delete`
+
+- Flag (`boolean`)
+
+If specified, and the resource data to be deleted does not exist, the tool will fail.
 
 ### Signing options
 
@@ -363,7 +439,7 @@ Specifies an algorithm for generating digest. Some algorithms are available only
 
 Specifies a URL of the Time Stamping Authority (TSA), to add a time-stamp information for signed binary. The server must accept and response Time-Stamp Protocol (TSP) based on RFC 3161.
 
-By default Node.js `http` or `https` module will be used for connection, but you can use [request](https://www.npmjs.com/package/request) module or [node-fetch](https://www.npmjs.com/package/node-fetch) by installing it manually as followings:
+By default Node.js native `fetch`, or `http` or `https` module will be used for connection, but you can use [request](https://www.npmjs.com/package/request) module or [node-fetch](https://www.npmjs.com/package/node-fetch) by installing it manually as followings:
 
 ```
 npm install resedit-cli request
@@ -373,7 +449,7 @@ npm install resedit-cli node-fetch
 
 > - For `request`, at least `request@2.88.0` is expected. If less than 2.88.0, a warning log will be printed.
 > - For `node-fetch`, `node-fetch@3` is expected. You can instead set `global.fetch` variable with a valid function. This means that you can use another `fetch` library such as `isomorphic-fetch`.
-> - Currently if both `request` and fetch are available, `request` is used.
+> - Currently if both `request` and fetch are available, fetch is used.
 
 By installing one of them, you can connect to the server with features that those module supports, such as with a HTTP proxy. (If those modules are not installed, HTTP proxies cannot be used.)
 
@@ -458,9 +534,9 @@ version:
   productVersion: 2.3.0.0
 ```
 
-As JS file:
+As JS file (.mjs):
 
-```js
+```mjs
 import * as path from 'path';
 
 // a user-defined function to retrieve data asynchronously
@@ -496,8 +572,10 @@ async function loadDefintion() {
 }
 
 // Since cosmiconfig supports, you can export 'Promise' object.
-module.exports = loadDefintion();
+export default loadDefintion();
 ```
+
+> .cjs is still supported.
 
 ## APIs
 
