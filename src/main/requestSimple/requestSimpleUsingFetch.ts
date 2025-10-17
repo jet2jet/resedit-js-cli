@@ -1,17 +1,14 @@
-import type nodeFetch from 'node-fetch';
 import * as log from '../log.js';
 import type SimpleCallback from './SimpleCallback.js';
 import type SimpleOptions from './SimpleOptions.js';
 
-const fetchFunction: typeof nodeFetch | null = await (async () => {
+type GlobalFetch = typeof globalThis.fetch;
+
+const fetchFunction: GlobalFetch | null = (() => {
 	if (typeof fetch === 'function') {
-		return fetch as typeof nodeFetch;
+		return fetch;
 	}
-	try {
-		return (await import('node-fetch')).default;
-	} catch {
-		return null;
-	}
+	return null;
 })();
 
 export function isAvailable(): boolean {
@@ -39,9 +36,9 @@ export default function requestSimpleUsingFetch(
 			const buffer = Buffer.from(await response.arrayBuffer());
 
 			const cbHeaders: Record<string, string> = {};
-			for (const pair of response.headers.entries()) {
-				cbHeaders[pair[0]] = pair[1];
-			}
+			response.headers.forEach((value, key) => {
+				cbHeaders[key] = value;
+			});
 
 			if (response.ok) {
 				cb(null, cbHeaders, buffer);

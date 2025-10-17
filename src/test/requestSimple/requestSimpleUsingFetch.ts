@@ -32,11 +32,9 @@ describe('requestSimpleUsingFetch', () => {
 		});
 	});
 
-	let isModuleAvailable = true;
-
 	let responseSuccess = true;
-	const mockFetch = jest.fn(() => {
-		const dummyHeaders = new Map<string, string>();
+	const mockFetch = jest.fn<typeof fetch>(() => {
+		const dummyHeaders = new Headers();
 		Object.keys(DUMMY_RESPONSE_HEADER).forEach((key) => {
 			dummyHeaders.set(
 				key,
@@ -51,43 +49,20 @@ describe('requestSimpleUsingFetch', () => {
 			ok: responseSuccess,
 			status: responseSuccess ? 200 : 400,
 			statusText: '',
-		});
+		} satisfies Partial<Response> as unknown as Response);
 	});
 
-	beforeAll(() => {
-		jest.unstable_mockModule('node-fetch', () => {
-			if (!isModuleAvailable) {
-				throw new Error('Not found');
-			}
-			return { __esModule: true, default: mockFetch };
-		});
-	});
-	afterAll(() => {
-		jest.dontMock('node-fetch');
-	});
 	beforeEach(() => {
 		jest.resetModules();
-		isModuleAvailable = true;
 		responseSuccess = true;
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-		delete (global as any).fetch;
+		// @ts-expect-error: for test
+		delete global.fetch;
 		mockFetch.mockClear();
 	});
 
 	describe('isAvailable', () => {
-		it('should return true if node-fetch is available', async () => {
-			isModuleAvailable = true;
-
-			const isAvailable = (
-				await import('@/requestSimple/requestSimpleUsingFetch.js')
-			).isAvailable;
-
-			expect(isAvailable()).toEqual(true);
-		});
 		it('should return true if global fetch is available', async () => {
-			isModuleAvailable = false;
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-			(global as any).fetch = mockFetch;
+			global.fetch = mockFetch;
 
 			const isAvailable = (
 				await import('@/requestSimple/requestSimpleUsingFetch.js')
@@ -96,8 +71,6 @@ describe('requestSimpleUsingFetch', () => {
 			expect(isAvailable()).toEqual(true);
 		});
 		it('should return false if not available', async () => {
-			isModuleAvailable = false;
-
 			const isAvailable = (
 				await import('@/requestSimple/requestSimpleUsingFetch.js')
 			).isAvailable;
@@ -255,17 +228,9 @@ describe('requestSimpleUsingFetch', () => {
 			});
 		}
 
-		describe('using node-fetch', () => {
-			beforeEach(() => {
-				isModuleAvailable = true;
-			});
-			performTest();
-		});
 		describe('using global fetch', () => {
 			beforeEach(() => {
-				isModuleAvailable = false;
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-				(global as any).fetch = mockFetch;
+				global.fetch = mockFetch;
 			});
 			performTest();
 		});
