@@ -1,10 +1,9 @@
 import * as ResEdit from 'resedit';
-
-import * as log from '../log.js';
-
 import type { ParsedVersionDefinition } from '../definitions/parser/version.js';
+import * as log from '../log.js';
 import type EmitResParameter from './EmitResParameter.js';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export default async function emitVersion(
 	res: EmitResParameter,
 	lang: number,

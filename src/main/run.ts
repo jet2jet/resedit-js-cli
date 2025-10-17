@@ -1,11 +1,6 @@
 import { cosmiconfig } from 'cosmiconfig';
 import * as PE from 'pe-library';
 import * as ResEdit from 'resedit';
-
-import type Options from './Options.js';
-import { readFile, writeFile } from './fs.js';
-import * as log from './log.js';
-
 import {
 	type IconDefinition,
 	CertificateSelectMode,
@@ -13,23 +8,24 @@ import {
 	PredefinedResourceTypeName,
 	PredefinedResourceTypeNameForDelete,
 } from './definitions/DefinitionData.js';
+import type { ParsedDeleteResourceDefinition } from './definitions/parser/delete.js';
 import parseDefinitionData, {
 	type ParsedDefinitionData,
 } from './definitions/parser/index.js';
-import type { ParsedDeleteResourceDefinition } from './definitions/parser/delete.js';
-import type { ParsedVersionDefinition } from './definitions/parser/version.js';
 import type { ParsedRawResourceDefinition } from './definitions/parser/rawResource.js';
 import {
 	type ParsedSignDefinitionWithP12File,
 	type ParsedSignDefinitionWithPemFile,
 	isValidDigestAlgorithm,
 } from './definitions/parser/sign.js';
-
+import type { ParsedVersionDefinition } from './definitions/parser/version.js';
 import deleteResources from './emit/delete.js';
 import emitIcons from './emit/icons.js';
 import emitRawResources from './emit/raw.js';
 import emitVersion from './emit/version.js';
-
+import { readFile, writeFile } from './fs.js';
+import * as log from './log.js';
+import type Options from './Options.js';
 import { doSign, prepare } from './signing/index.js';
 
 type ParsedSignDefinitionWithP12FileAndPartialPemFile =
@@ -547,7 +543,7 @@ export default async function run(options: Options): Promise<void> {
 		const inFile = await readFile(options.in);
 		log.debug(
 			`Parse the executable file '${options.in}' (ignore-signed: ${
-				options['ignore-signed'] ?? false ? 'true' : 'false'
+				(options['ignore-signed'] ?? false) ? 'true' : 'false'
 			}).`
 		);
 		executable = PE.NtExecutable.from(inFile, {
@@ -564,8 +560,8 @@ export default async function run(options: Options): Promise<void> {
 		options.in !== undefined
 			? /\.(?:exe|com)$/i.test(options.in)
 			: options.asExeFile !== undefined
-			? options.asExeFile
-			: false;
+				? options.asExeFile
+				: false;
 	const modified = await emitResources(isExe, res, convertedDefData);
 
 	if (modified) {

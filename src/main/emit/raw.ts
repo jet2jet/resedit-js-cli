@@ -1,6 +1,6 @@
+import type { ParsedRawResourceDefinition } from '../definitions/parser/rawResource.js';
 import { readFile } from '../fs.js';
 import * as log from '../log.js';
-import type { ParsedRawResourceDefinition } from '../definitions/parser/rawResource.js';
 import type EmitResParameter from './EmitResParameter.js';
 
 function arrayBufferViewToArrayBuffer(view: ArrayBufferView): ArrayBuffer {

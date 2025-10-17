@@ -1,13 +1,13 @@
-import parseIcons, { type ParsedIconDefinition } from './icons.js';
-import parseRawResource, {
-	type ParsedRawResourceDefinition,
-} from './rawResource.js';
-import parseVersion, { type ParsedVersionDefinition } from './version.js';
-import parseSignDefinition, { type ParsedSignDefinition } from './sign.js';
 import {
 	type ParsedDeleteResourceDefinition,
 	parseDeleteResource,
 } from './delete.js';
+import parseIcons, { type ParsedIconDefinition } from './icons.js';
+import parseRawResource, {
+	type ParsedRawResourceDefinition,
+} from './rawResource.js';
+import parseSignDefinition, { type ParsedSignDefinition } from './sign.js';
+import parseVersion, { type ParsedVersionDefinition } from './version.js';
 
 export interface ParsedDefinitionData {
 	lang?: number;
@@ -28,7 +28,7 @@ export default function parseDefinitionData(
 	const ret: ParsedDefinitionData = {};
 	// check properties
 	Object.keys(data).forEach((key) => {
-		const value: unknown = (data as any)[key];
+		const value = (data as Record<string, unknown>)[key];
 		switch (key) {
 			case 'lang':
 				if (typeof value !== 'number') {

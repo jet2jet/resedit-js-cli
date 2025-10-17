@@ -1,7 +1,11 @@
 import * as crypto from 'crypto';
 import type * as PE from 'pe-library';
 import * as ResEdit from 'resedit';
-
+import type {
+	DigestAlgorithmType,
+	CertificateSelectMode,
+} from '../definitions/DefinitionData.js';
+import type { ParsedSignDefinition } from '../definitions/parser/sign.js';
 import { readFile } from '../fs.js';
 import * as log from '../log.js';
 import requestTimestamp from './requestTimestamp.js';
@@ -12,11 +16,6 @@ import {
 	pickPrivateKeyFromPem,
 	verifyDERCertificates,
 } from './signUtil.js';
-import type {
-	DigestAlgorithmType,
-	CertificateSelectMode,
-} from '../definitions/DefinitionData.js';
-import type { ParsedSignDefinition } from '../definitions/parser/sign.js';
 
 class MySignerObject implements ResEdit.SignerObject {
 	public timestampData?(reqData: ArrayBuffer): Promise<ArrayBufferView>;
@@ -43,6 +42,7 @@ class MySignerObject implements ResEdit.SignerObject {
 	public getCertificateData(): ArrayBufferView[] {
 		return this.certificates;
 	}
+	// eslint-disable-next-line @typescript-eslint/require-await
 	public async digestData(
 		dataIterator: Iterator<ArrayBuffer, void, undefined>
 	) {
@@ -56,6 +56,7 @@ class MySignerObject implements ResEdit.SignerObject {
 		}
 		return hash.digest();
 	}
+	// eslint-disable-next-line @typescript-eslint/require-await
 	public async encryptData(
 		dataIterator: Iterator<ArrayBuffer, void, undefined>
 	) {
@@ -94,8 +95,8 @@ export async function prepareForSigningByP12(
 				e == null
 					? ''
 					: typeof e === 'object' && 'message' in e
-					? String(e.message)
-					: e
+						? String(e.message)
+						: '(unknown)'
 			)})`
 		);
 	}

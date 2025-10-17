@@ -1,8 +1,8 @@
+import { PredefinedResourceTypeName } from '@/definitions/DefinitionData.js';
 import {
 	parseDeleteResource,
 	type ParsedDeleteResourceDefinition,
 } from '@/definitions/parser/delete.js';
-import { PredefinedResourceTypeName } from '@/definitions/DefinitionData.js';
 
 describe('definitions/parser/delete', () => {
 	describe('invalid data', () => {

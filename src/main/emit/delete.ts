@@ -1,6 +1,6 @@
-import * as log from '../log.js';
 import { PredefinedResourceTypeNameForDelete } from '../definitions/DefinitionData.js';
 import type { ParsedDeleteResourceDefinition } from '../definitions/parser/delete.js';
+import * as log from '../log.js';
 import type EmitResParameter from './EmitResParameter.js';
 
 export default function deleteResources(
@@ -15,7 +15,7 @@ export default function deleteResources(
 	for (const d of delData) {
 		let found = false;
 		for (let i = res.entries.length - 1; i >= 0; --i) {
-			const entry = res.entries[i]!;
+			const entry = res.entries[i];
 			switch (d.type) {
 				case PredefinedResourceTypeNameForDelete.allCursor:
 					if (

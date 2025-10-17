@@ -3,6 +3,8 @@ import type * as requestNamespace from 'request';
 import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return */
+
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
 const DUMMY_RESPONSE_DATA = Buffer.from(new ArrayBuffer(16));
@@ -28,7 +30,7 @@ describe('requestSimpleUsingModule', () => {
 	});
 	beforeEach(() => {
 		Object.keys(mockLog).forEach((method) => {
-			((mockLog as any)[method] as jest.Mock).mockClear();
+			(mockLog[method as keyof typeof mockLog] as jest.Mock).mockClear();
 		});
 	});
 

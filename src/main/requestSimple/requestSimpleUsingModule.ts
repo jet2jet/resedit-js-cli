@@ -1,8 +1,7 @@
 import { createRequire } from 'module';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import type requestNamespace = require('request');
-
 import * as log from '../log.js';
-
 import type SimpleCallback from './SimpleCallback.js';
 import type SimpleOptions from './SimpleOptions.js';
 
@@ -10,11 +9,10 @@ const require = createRequire(import.meta.url);
 
 const request: typeof requestNamespace | null = (() => {
 	try {
-		const packageJson:
+		const packageJson = require('request/package.json') as unknown as
 			| Record<string, unknown>
 			| null
-			// eslint-disable-next-line @typescript-eslint/no-var-requires
-			| undefined = require('request/package.json');
+			| undefined;
 		if (
 			typeof packageJson !== 'object' ||
 			packageJson === null ||
@@ -29,7 +27,7 @@ const request: typeof requestNamespace | null = (() => {
 				);
 			}
 		}
-		return require('request');
+		return require('request') as typeof requestNamespace;
 	} catch {
 		return null;
 	}
@@ -52,6 +50,7 @@ export default function requestSimpleUsingModule(
 	};
 	request!(url, options, (err: unknown, res, body) => {
 		if (err !== null && err !== undefined) {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 			cb(err, res.headers, body);
 		} else {
 			if (res.statusCode < 200 || res.statusCode >= 400) {
@@ -60,9 +59,11 @@ export default function requestSimpleUsingModule(
 						`Server error ${res.statusCode} ${res.statusMessage}`
 					),
 					res.headers,
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 					body
 				);
 			} else {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 				cb(null, res.headers, body);
 			}
 		}

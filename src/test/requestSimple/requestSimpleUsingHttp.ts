@@ -1,18 +1,17 @@
-import { jest } from '@jest/globals';
 import { createRequire } from 'module';
+import { jest } from '@jest/globals';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import type nockNamespace = require('nock');
-
+import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
 import type { SimpleOptions } from '@/requestSimple';
-
-import { timeoutErrorPromise } from '../testUtils/index.js';
 
 const require = createRequire(import.meta.url);
 const nock = require('nock') as typeof nockNamespace;
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
-const DUMMY_REQUEST_DATA = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]).buffer;
+const DUMMY_REQUEST_DATA = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8]);
 const DUMMY_RESPONSE_DATA = Buffer.from(new ArrayBuffer(16));
 
 describe('requestSimpleUsingHttp', () => {
@@ -33,7 +32,7 @@ describe('requestSimpleUsingHttp', () => {
 	});
 	beforeEach(() => {
 		Object.keys(mockLog).forEach((method) => {
-			((mockLog as any)[method] as jest.Mock).mockClear();
+			(mockLog[method as keyof typeof mockLog] as jest.Mock).mockClear();
 		});
 	});
 

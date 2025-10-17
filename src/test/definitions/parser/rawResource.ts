@@ -1,7 +1,7 @@
+import { PredefinedResourceTypeName } from '@/definitions/DefinitionData.js';
 import parseRawResource, {
 	type ParsedRawResourceDefinition,
 } from '@/definitions/parser/rawResource.js';
-import { PredefinedResourceTypeName } from '@/definitions/DefinitionData.js';
 
 describe('definitions/parser/rawResource', () => {
 	describe('invalid data', () => {

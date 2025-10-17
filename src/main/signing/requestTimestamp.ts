@@ -1,5 +1,4 @@
 import * as log from '../log.js';
-
 import requestSimple, { type SimpleOptions } from '../requestSimple/index.js';
 
 /**

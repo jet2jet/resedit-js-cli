@@ -31,7 +31,7 @@ describe('signing/requestTimestamp', () => {
 	});
 	beforeEach(() => {
 		Object.keys(mockLog).forEach((method) => {
-			((mockLog as any)[method] as jest.Mock).mockClear();
+			(mockLog[method as keyof typeof mockLog] as jest.Mock).mockClear();
 		});
 		mockRequestSimple.default.mockClear();
 	});
@@ -61,6 +61,7 @@ describe('signing/requestTimestamp', () => {
 					'Content-Type': 'application/timestamp-query',
 					'Content-Length': `${DUMMY_REQUEST_DATA.byteLength}`,
 				},
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				body: expect.any(Buffer),
 			}),
 			expect.anything()
@@ -95,6 +96,7 @@ describe('signing/requestTimestamp', () => {
 					'Content-Type': 'application/timestamp-query',
 					'Content-Length': `${DUMMY_REQUEST_DATA.byteLength}`,
 				},
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				body: expect.any(Buffer),
 			}),
 			expect.anything()
@@ -123,6 +125,7 @@ describe('signing/requestTimestamp', () => {
 					'Content-Type': 'application/timestamp-query',
 					'Content-Length': `${DUMMY_REQUEST_DATA.byteLength}`,
 				},
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				body: expect.any(Buffer),
 			}),
 			expect.anything()

@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import { timeoutErrorPromise } from '../testUtils/index.js';
 import type * as Log from '@/log';
+import type SimpleOptions from '@/requestSimple/SimpleOptions.js';
 
 const DUMMY_SERVER_HOST = 'localhost';
 const DUMMY_SERVER_PATH = '/dummy';
@@ -27,27 +28,30 @@ describe('requestSimpleUsingFetch', () => {
 	});
 	beforeEach(() => {
 		Object.keys(mockLog).forEach((method) => {
-			((mockLog as any)[method] as jest.Mock).mockClear();
+			(mockLog[method as keyof typeof mockLog] as jest.Mock).mockClear();
 		});
 	});
 
 	let isModuleAvailable = true;
 
 	let responseSuccess = true;
-	const mockFetch = jest.fn(async () => {
+	const mockFetch = jest.fn(() => {
 		const dummyHeaders = new Map<string, string>();
 		Object.keys(DUMMY_RESPONSE_HEADER).forEach((key) => {
-			dummyHeaders.set(key, (DUMMY_RESPONSE_HEADER as any)[key]);
+			dummyHeaders.set(
+				key,
+				DUMMY_RESPONSE_HEADER[key as keyof typeof DUMMY_RESPONSE_HEADER]
+			);
 		});
-		return {
-			async arrayBuffer() {
-				return DUMMY_RESPONSE_DATA;
+		return Promise.resolve({
+			arrayBuffer() {
+				return Promise.resolve(DUMMY_RESPONSE_DATA);
 			},
 			headers: dummyHeaders,
 			ok: responseSuccess,
 			status: responseSuccess ? 200 : 400,
 			statusText: '',
-		};
+		});
 	});
 
 	beforeAll(() => {
@@ -65,6 +69,7 @@ describe('requestSimpleUsingFetch', () => {
 		jest.resetModules();
 		isModuleAvailable = true;
 		responseSuccess = true;
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		delete (global as any).fetch;
 		mockFetch.mockClear();
 	});
@@ -81,6 +86,7 @@ describe('requestSimpleUsingFetch', () => {
 		});
 		it('should return true if global fetch is available', async () => {
 			isModuleAvailable = false;
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			(global as any).fetch = mockFetch;
 
 			const isAvailable = (
@@ -110,9 +116,14 @@ describe('requestSimpleUsingFetch', () => {
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
-				const dummyHeaders: any = { __tag: 'dummyHeaders' };
-				const dummyBody: any = { __tag: 'dummyBody' };
-				const dummyOptions: any = {
+				const dummyHeaders: Record<string, string> = {
+					__tag: 'dummyHeaders',
+				};
+				// This is not a real Buffer but it should not be touched in requestSimpleUsingFetch
+				const dummyBody: Buffer = {
+					__tag: 'dummyBody',
+				} as unknown as Buffer;
+				const dummyOptions: SimpleOptions = {
 					method: 'DUMMY',
 					headers: dummyHeaders,
 					body: dummyBody,
@@ -154,9 +165,14 @@ describe('requestSimpleUsingFetch', () => {
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
-				const dummyHeaders: any = { __tag: 'dummyHeaders' };
-				const dummyBody: any = { __tag: 'dummyBody' };
-				const dummyOptions: any = {
+				const dummyHeaders: Record<string, string> = {
+					__tag: 'dummyHeaders',
+				};
+				// This is not a real Buffer but it should not be touched in requestSimpleUsingFetch
+				const dummyBody: Buffer = {
+					__tag: 'dummyBody',
+				} as unknown as Buffer;
+				const dummyOptions: SimpleOptions = {
 					method: 'DUMMY',
 					headers: dummyHeaders,
 					body: dummyBody,
@@ -199,9 +215,14 @@ describe('requestSimpleUsingFetch', () => {
 				).default;
 
 				const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
-				const dummyHeaders: any = { __tag: 'dummyHeaders' };
-				const dummyBody: any = { __tag: 'dummyBody' };
-				const dummyOptions: any = {
+				const dummyHeaders: Record<string, string> = {
+					__tag: 'dummyHeaders',
+				};
+				// This is not a real Buffer but it should not be touched in requestSimpleUsingFetch
+				const dummyBody: Buffer = {
+					__tag: 'dummyBody',
+				} as unknown as Buffer;
+				const dummyOptions: SimpleOptions = {
 					method: 'DUMMY',
 					headers: dummyHeaders,
 					body: dummyBody,
@@ -243,6 +264,7 @@ describe('requestSimpleUsingFetch', () => {
 		describe('using global fetch', () => {
 			beforeEach(() => {
 				isModuleAvailable = false;
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				(global as any).fetch = mockFetch;
 			});
 			performTest();

@@ -1,8 +1,6 @@
 import * as http from 'http';
 import * as https from 'https';
-
 import * as log from '../log.js';
-
 import type SimpleCallback from './SimpleCallback.js';
 import type SimpleOptions from './SimpleOptions.js';
 
@@ -17,7 +15,15 @@ export default function requestSimpleUsingHttp(
 	const httpCallback = (res: http.IncomingMessage) => {
 		const results: Buffer[] = [];
 		res.on('data', (chunk) => {
-			results.push(chunk);
+			if (
+				typeof chunk === 'object' &&
+				chunk != null &&
+				chunk instanceof Buffer
+			) {
+				results.push(chunk);
+			} else if (typeof chunk === 'string') {
+				results.push(Buffer.from(chunk, 'utf-8'));
+			}
 		});
 		res.on('end', () => {
 			const buff = Buffer.concat(results);

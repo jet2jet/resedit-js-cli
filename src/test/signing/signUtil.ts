@@ -1,10 +1,10 @@
+import { CertificateSelectMode } from '@/definitions/DefinitionData.js';
 import {
 	type CertLike,
 	type ChainDataT,
 	filterAndSortCertListByChain,
 	makeChainList,
 } from '@/signing/signUtil.js';
-import { CertificateSelectMode } from '@/definitions/DefinitionData.js';
 
 const DUMMY_CERT_1_A: CertLike = {
 	issuer: { hash: 'a' },

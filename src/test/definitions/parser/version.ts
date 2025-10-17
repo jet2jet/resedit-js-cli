@@ -419,7 +419,7 @@ describe('definitions/parser/version', () => {
 			const testVersionParsing = <
 				TFieldMS extends 'fileVersionMS' | 'productVersionMS',
 				TFieldLS extends 'fileVersionLS' | 'productVersionLS',
-				TFieldString extends 'FileVersion' | 'ProductVersion'
+				TFieldString extends 'FileVersion' | 'ProductVersion',
 			>(
 				fieldsMS: TFieldMS,
 				fieldsLS: TFieldLS,

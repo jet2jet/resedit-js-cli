@@ -5,16 +5,16 @@ import type * as LogLevel from 'loglevel';
 import type YArgsFactory from 'yargs';
 import type { Arguments, Options as YargsOptions } from 'yargs';
 import type * as YArgsHelper from 'yargs/helpers';
-import type Options from './Options.js';
-import type { DeletePredefinedOptions } from './Options.js';
-import run from './run.js';
-import thisVersion from './version.js';
 import {
 	certificateSelectModeValues,
 	PredefinedResourceTypeName,
 	PredefinedResourceTypeNameForDelete,
 } from './definitions/DefinitionData.js';
 import { getValidDigestAlgorithm } from './definitions/parser/sign.js';
+import type Options from './Options.js';
+import type { DeletePredefinedOptions } from './Options.js';
+import run from './run.js';
+import thisVersion from './version.js';
 
 const require = createRequire(import.meta.url);
 const loglevel = require('loglevel') as typeof LogLevel;
@@ -112,7 +112,7 @@ async function main(): Promise<number> {
 						};
 						return prev;
 					},
-					// eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter, @typescript-eslint/consistent-type-assertions
+
 					{} as DeletePredefinedOptionsYargOptions
 				)
 			)

@@ -6,7 +6,7 @@ const log = require('loglevel') as typeof LogLevel;
 
 function makeLogger(type: 'trace' | 'debug' | 'info' | 'warn' | 'error') {
 	const prefix = '[' + type.toUpperCase() + ']';
-	return (...args: any[]) => {
+	return (...args: unknown[]) => {
 		log[type](prefix, ...args);
 	};
 }

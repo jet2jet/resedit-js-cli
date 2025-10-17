@@ -1,5 +1,4 @@
 import type * as ResEdit from 'resedit';
-
 import { validateIntegerValue, validateStringValue } from './utils.js';
 
 export interface ParsedVersionStrings {
@@ -32,7 +31,6 @@ const standardVersionStringKeys: Record<string, string> = {
 };
 
 function getPreferredPropNamesForVersion(
-	// eslint-disable-next-line @typescript-eslint/ban-types
 	data: object,
 	pickExtraValuesFirst: boolean
 ): string[] {
@@ -103,7 +101,7 @@ function parseVersionBase(
 			}
 			// validate if each values are string and add to 'ret'
 			getPreferredPropNamesForVersion(value, false).forEach((k) => {
-				const v = (value as any)[k];
+				const v = (value as Record<string, unknown>)[k];
 				validateStringValue(v, `${propName}.extraValues,${k}`);
 				ret[k] = v;
 			});
@@ -128,8 +126,13 @@ export function parseVersionTranslation(
 	}
 	props.forEach((prop) => {
 		if (prop === 'lang') {
-			const v = (data as any)[prop];
-			validateIntegerValue(v, `${propName}.lang`);
+			if (typeof data !== 'object' || !data) {
+				throw new Error(
+					`Invalid data: '${propName}.lang' is not an object`
+				);
+			}
+			const v = (data as Record<string, unknown>)[prop];
+			validateIntegerValue(v, `${propName}.lang.${prop}`);
 			lang = v;
 		} else {
 			throw new Error(
@@ -162,7 +165,7 @@ export default function parseVersion(data: unknown): ParsedVersionDefinition {
 		const adjustedKey = key.replace(/^([A-Z])/, (_, c: string) =>
 			c.toLowerCase()
 		);
-		const value = (data as any)[key];
+		const value = (data as Record<string, unknown>)[key];
 		switch (adjustedKey) {
 			// from VersionFixedInfo
 			// (the name which begins with capital character is allowed)

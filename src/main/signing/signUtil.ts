@@ -106,12 +106,12 @@ export function filterAndSortCertListByChain<T extends CertLike>(
 // @internal
 export function filterAndSortCertListByChain<
 	TCert extends CertLike,
-	T extends { cert?: TCert }
+	T extends { cert?: TCert },
 >(list: T[], certSelect: CertificateSelectMode): T[];
 // @internal
 export function filterAndSortCertListByChain<
 	TCert extends CertLike,
-	T extends { cert?: TCert }
+	T extends { cert?: TCert },
 >(list: Array<T | TCert>, certSelect: CertificateSelectMode): Array<T | TCert> {
 	type TElem = T | TCert;
 	const concatChainData = (prev: TElem[], d: ChainDataT<TCert>): TElem[] => {
@@ -207,12 +207,11 @@ export function verifyDERCertificates(
 	// try to read as pkcs7 message data (.p7b)
 	try {
 		// (unfortunately messageFromAsn1 is not defined now)
-		const signedData: any = (forge.pkcs7 as any).messageFromAsn1(asn1);
+		const signedData = forge.pkcs7.messageFromAsn1(asn1);
 		if (!('certificates' in signedData)) {
 			throw new Error();
 		}
-		const certificates: NodeForge.pki.Certificate[] =
-			signedData.certificates;
+		const certificates = signedData.certificates;
 		// if no error has occurred, it is valid p7b data
 		let asn1Cert: NodeForge.asn1.Asn1;
 		switch (certSelect) {

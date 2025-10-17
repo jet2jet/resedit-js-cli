@@ -1,11 +1,10 @@
 import * as crypto from 'crypto';
-
-import { validateStringValue } from './utils.js';
 import {
 	CertificateSelectMode,
 	type DigestAlgorithmType,
 	certificateSelectModeValues,
 } from '../../definitions/DefinitionData.js';
+import { validateStringValue } from './utils.js';
 
 export interface ParsedSignDefinitionBase {
 	password: string | undefined;
@@ -111,7 +110,7 @@ export default function parseSignDefinition(
 	let digestAlgorithm: DigestAlgorithmType = 'sha256';
 	let timestampServer: string | undefined;
 	keys.forEach((key) => {
-		const value: unknown = (data as any)[key];
+		const value = (data as Record<string, unknown>)[key];
 		switch (key) {
 			case 'p12File':
 				validateStringValue(value, 'sign.p12File');

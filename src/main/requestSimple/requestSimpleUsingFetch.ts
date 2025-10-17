@@ -1,6 +1,5 @@
 import type nodeFetch from 'node-fetch';
 import * as log from '../log.js';
-
 import type SimpleCallback from './SimpleCallback.js';
 import type SimpleOptions from './SimpleOptions.js';
 
