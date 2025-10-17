@@ -53,7 +53,7 @@ describe('signing/requestTimestamp', () => {
 			.default;
 		const url = `http://${DUMMY_SERVER_HOST}${DUMMY_SERVER_PATH}`;
 		const resp = await requestTimestamp(url, DUMMY_REQUEST_DATA);
-		expect(mockRequestSimple.default).toBeCalledWith(
+		expect(mockRequestSimple.default).toHaveBeenCalledWith(
 			url,
 			expect.objectContaining<SimpleOptions>({
 				method: 'POST',
@@ -87,7 +87,7 @@ describe('signing/requestTimestamp', () => {
 		await expect(
 			requestTimestamp(url, DUMMY_REQUEST_DATA)
 		).rejects.toThrow();
-		expect(mockRequestSimple.default).toBeCalledWith(
+		expect(mockRequestSimple.default).toHaveBeenCalledWith(
 			url,
 			expect.objectContaining<SimpleOptions>({
 				method: 'POST',
@@ -115,7 +115,7 @@ describe('signing/requestTimestamp', () => {
 		await expect(requestTimestamp(url, DUMMY_REQUEST_DATA)).rejects.toEqual(
 			dummyError
 		);
-		expect(mockRequestSimple.default).toBeCalledWith(
+		expect(mockRequestSimple.default).toHaveBeenCalledWith(
 			url,
 			expect.objectContaining<SimpleOptions>({
 				method: 'POST',

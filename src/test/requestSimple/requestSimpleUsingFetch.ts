@@ -135,12 +135,12 @@ describe('requestSimpleUsingFetch', () => {
 					timeoutErrorPromise(500),
 				]);
 
-				expect(mockFetch).toBeCalledWith(url, {
+				expect(mockFetch).toHaveBeenCalledWith(url, {
 					method: 'DUMMY',
 					headers: dummyHeaders,
 					body: dummyBody,
 				});
-				expect(dummyCb).toBeCalledWith(
+				expect(dummyCb).toHaveBeenCalledWith(
 					null,
 					DUMMY_RESPONSE_HEADER,
 					DUMMY_RESPONSE_DATA
@@ -179,12 +179,12 @@ describe('requestSimpleUsingFetch', () => {
 					timeoutErrorPromise(500),
 				]);
 
-				expect(mockFetch).toBeCalledWith(url, {
+				expect(mockFetch).toHaveBeenCalledWith(url, {
 					method: 'DUMMY',
 					headers: dummyHeaders,
 					body: dummyBody,
 				});
-				expect(dummyCb).toBeCalledWith(
+				expect(dummyCb).toHaveBeenCalledWith(
 					expect.any(Error),
 					DUMMY_RESPONSE_HEADER,
 					DUMMY_RESPONSE_DATA
@@ -224,12 +224,12 @@ describe('requestSimpleUsingFetch', () => {
 					timeoutErrorPromise(500),
 				]);
 
-				expect(mockFetch).toBeCalledWith(url, {
+				expect(mockFetch).toHaveBeenCalledWith(url, {
 					method: 'DUMMY',
 					headers: dummyHeaders,
 					body: dummyBody,
 				});
-				expect(dummyCb).toBeCalled();
+				expect(dummyCb).toHaveBeenCalled();
 				expect(dummyCb.mock.calls[0][0]).toEqual(dummyError);
 			});
 		}

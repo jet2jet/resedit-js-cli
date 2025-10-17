@@ -104,13 +104,13 @@ describe('requestSimpleUsingHttp', () => {
 			]);
 
 			if (responseType === ResponseType.Success) {
-				expect(dummyCb).toBeCalledWith(
+				expect(dummyCb).toHaveBeenCalledWith(
 					null,
 					expect.anything(),
 					DUMMY_RESPONSE_DATA
 				);
 			} else {
-				expect(dummyCb).toBeCalled();
+				expect(dummyCb).toHaveBeenCalled();
 				expect(dummyCb.mock.calls[0][0]).toBeInstanceOf(Error);
 			}
 			scope.done();

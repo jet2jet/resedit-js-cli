@@ -140,14 +140,14 @@ describe('requestSimpleUsingModule', () => {
 				timeoutErrorPromise(500),
 			]);
 
-			expect(mockRequest).toBeCalledTimes(1);
-			expect(mockLog.warn).toBeCalledTimes(0);
-			expect(mockRequest).toBeCalledWith(
+			expect(mockRequest).toHaveBeenCalledTimes(1);
+			expect(mockLog.warn).toHaveBeenCalledTimes(0);
+			expect(mockRequest).toHaveBeenCalledWith(
 				url,
 				expect.objectContaining({ ...dummyOptions, encoding: null }),
 				expect.anything()
 			);
-			expect(dummyCb).toBeCalledWith(
+			expect(dummyCb).toHaveBeenCalledWith(
 				null,
 				DUMMY_RESPONSE_HEADER,
 				DUMMY_RESPONSE_DATA
@@ -179,14 +179,14 @@ describe('requestSimpleUsingModule', () => {
 				timeoutErrorPromise(500),
 			]);
 
-			expect(mockRequest).toBeCalledTimes(1);
-			expect(mockLog.warn).toBeCalledTimes(1);
-			expect(mockRequest).toBeCalledWith(
+			expect(mockRequest).toHaveBeenCalledTimes(1);
+			expect(mockLog.warn).toHaveBeenCalledTimes(1);
+			expect(mockRequest).toHaveBeenCalledWith(
 				url,
 				expect.objectContaining({ ...dummyOptions, encoding: null }),
 				expect.anything()
 			);
-			expect(dummyCb).toBeCalledWith(
+			expect(dummyCb).toHaveBeenCalledWith(
 				null,
 				DUMMY_RESPONSE_HEADER,
 				DUMMY_RESPONSE_DATA
@@ -219,14 +219,14 @@ describe('requestSimpleUsingModule', () => {
 				timeoutErrorPromise(500),
 			]);
 
-			expect(mockRequest).toBeCalledTimes(1);
-			expect(mockLog.warn).toBeCalledTimes(0);
-			expect(mockRequest).toBeCalledWith(
+			expect(mockRequest).toHaveBeenCalledTimes(1);
+			expect(mockLog.warn).toHaveBeenCalledTimes(0);
+			expect(mockRequest).toHaveBeenCalledWith(
 				url,
 				expect.objectContaining({ ...dummyOptions, encoding: null }),
 				expect.anything()
 			);
-			expect(dummyCb).toBeCalled();
+			expect(dummyCb).toHaveBeenCalled();
 			expect(dummyCb.mock.calls[0][0]).toBeInstanceOf(Error);
 		});
 	});

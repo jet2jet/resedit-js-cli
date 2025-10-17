@@ -53,7 +53,7 @@ describe('requestSimple', () => {
 		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingFetchFn);
-		expect(mockIsFetchAvailableFn).toBeCalledWith();
+		expect(mockIsFetchAvailableFn).toHaveBeenCalledWith();
 	});
 
 	it("should be 'requestSimpleUsingModule' if fetch is not available but request is available", async () => {
@@ -63,8 +63,8 @@ describe('requestSimple', () => {
 		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingModuleFn);
-		expect(mockIsFetchAvailableFn).toBeCalledWith();
-		expect(mockIsRequestAvailableFn).toBeCalledWith();
+		expect(mockIsFetchAvailableFn).toHaveBeenCalledWith();
+		expect(mockIsRequestAvailableFn).toHaveBeenCalledWith();
 	});
 
 	it("should be 'requestSimpleUsingFetch' if both fetch and request are available", async () => {
@@ -74,7 +74,7 @@ describe('requestSimple', () => {
 		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingFetchFn);
-		expect(mockIsFetchAvailableFn).toBeCalledWith();
+		expect(mockIsFetchAvailableFn).toHaveBeenCalledWith();
 	});
 
 	it("should be 'requestSimpleUsingHttp' if both request and fetch are not available", async () => {
@@ -84,7 +84,7 @@ describe('requestSimple', () => {
 		const request = (await import('@/requestSimple/index.js')).default;
 
 		expect(request).toBe(mockUsingHttpFn);
-		expect(mockIsFetchAvailableFn).toBeCalledWith();
-		expect(mockIsRequestAvailableFn).toBeCalledWith();
+		expect(mockIsFetchAvailableFn).toHaveBeenCalledWith();
+		expect(mockIsRequestAvailableFn).toHaveBeenCalledWith();
 	});
 });
