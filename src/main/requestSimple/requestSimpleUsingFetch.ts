@@ -1,3 +1,4 @@
+import { EnvHttpProxyAgent, setGlobalDispatcher } from 'undici';
 import * as log from '../log.js';
 import type SimpleCallback from './SimpleCallback.js';
 import type SimpleOptions from './SimpleOptions.js';
@@ -6,6 +7,10 @@ type GlobalFetch = typeof globalThis.fetch;
 
 const fetchFunction: GlobalFetch | null = (() => {
 	if (typeof fetch === 'function') {
+		// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+		if (process.env.HTTPS_PROXY || process.env.HTTP_PROXY) {
+			setGlobalDispatcher(new EnvHttpProxyAgent());
+		}
 		return fetch;
 	}
 	return null;
