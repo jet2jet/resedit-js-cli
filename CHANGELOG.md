@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.0.0
+
+- **\[Breaking changes\]** Drop older Node.js version (now ensures v20.19.5 or later)
+- **\[Breaking changes\]** Drop using `require` and `node-fetch` since current Node.js supports native `fetch` function
+  - To use proxy for adding timestamp, please set `HTTP_PROXY` or `HTTPS_PROXY` environment variable.
+- (development) Update devDependencies packages excluding `typescript`
+
 ## v2.1.0
 
 - Add `--raw2` option to specify resource type from predefined names

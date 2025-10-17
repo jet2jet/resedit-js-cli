@@ -439,19 +439,9 @@ Specifies an algorithm for generating digest. Some algorithms are available only
 
 Specifies a URL of the Time Stamping Authority (TSA), to add a time-stamp information for signed binary. The server must accept and response Time-Stamp Protocol (TSP) based on RFC 3161.
 
-By default Node.js native `fetch`, or `http` or `https` module will be used for connection, but you can use [request](https://www.npmjs.com/package/request) module or [node-fetch](https://www.npmjs.com/package/node-fetch) by installing it manually as followings:
+resedit-cli uses Node.js native `fetch`, or `http` or `https` module will be used for connection. For proxy, if `fetch` is available, resedit-cli uses `HTTP_PROXY` or `HTTPS_PROXY` environment variables (via `EnvHttpProxyAgent` in undici).
 
-```
-npm install resedit-cli request
-- or -
-npm install resedit-cli node-fetch
-```
-
-> - For `request`, at least `request@2.88.0` is expected. If less than 2.88.0, a warning log will be printed.
-> - For `node-fetch`, `node-fetch@3` is expected. You can instead set `global.fetch` variable with a valid function. This means that you can use another `fetch` library such as `isomorphic-fetch`.
-> - Currently if both `request` and fetch are available, fetch is used.
-
-By installing one of them, you can connect to the server with features that those module supports, such as with a HTTP proxy. (If those modules are not installed, HTTP proxies cannot be used.)
+> Starting from v3.0.0, `request` and `node-fetch` are no longer used.
 
 If this parameter is omitted, a time-stamp will not be added.
 
