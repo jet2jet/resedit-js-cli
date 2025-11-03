@@ -2,10 +2,8 @@
   "name": "resedit-cli",
   "version": "3.0.0",
   "engines": {
-    "node": ">=20.19.5",
-    "npm": ">=11.5.1"
+    "node": ">=20"
   },
-  "engineStrict": true,
   "description": "Command-line tool for editing Windows Resource data in executable binaries",
   "bin": {
     "resedit": "dist/cli.js"
