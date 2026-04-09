@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.0
+
+- Update dependencies
+
 ## v3.0.1
 
 - Remove npm version from engines and 'engineStrict' for convenience
