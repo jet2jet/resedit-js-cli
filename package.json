@@ -52,8 +52,8 @@
     "node-forge": "^1.4.0",
     "pe-library": "^2.0.1",
     "resedit": "^3.0.1",
-    "undici": "^7.24.7",
-    "yargs": "^17.7.1"
+    "undici": "^7.29.1",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
