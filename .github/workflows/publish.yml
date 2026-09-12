@@ -11,6 +11,8 @@ concurrency:
 jobs:
   get-vars:
     uses: ./.github/workflows/nodevars.yml
+    permissions:
+      contents: read
 
   build:
     name: Build package
